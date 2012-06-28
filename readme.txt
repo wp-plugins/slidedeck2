@@ -1,7 +1,7 @@
 === SlideDeck 2 Lite ===
 Contributors: dtelepathy, kynatro, jamie3d, dtrenkner, oriontimbers, bkenyon
 Donate link: http://www.slidedeck.com/
-Tags: Slider, dynamic, slide show, slideshow, widget, Search Engine Optimized, seo, jquery, plugin, pictures, slide, skinnable, skin, posts, video, photo, media, image gallery, iPad, iphone, vertical slides, touch support, theme
+Tags: dynamic, image gallery, iPad, jquery, media, photo, pictures, plugin, posts, Search Engine Optimized, seo, skinnable, slide, slide show, slider, slideshow, theme, touch support, video, widget, Flickr, Instagram, 500px, RSS, Pinterest, Google+, Twitter, YouTube, Vimeo, Dailymotion, Picasa, Dribbble
 Requires at least: 3.3
 Tested up to: 3.4.1
 Stable tag: trunk
@@ -11,9 +11,11 @@ Create SlideDecks on your WordPress blogging platform. Manage SlideDeck content 
 
 == Description ==
 
-The SlideDeck WordPress slider plugin allows you to easily create a content slider widget or slideshow on your WordPress blog without having to write any code. Just create a new slider and insert it into your post via the WYSIWYG editor's SlideDeck picker. 
+= Content Slider by SlideDeck 2 =
+= Easily create content sliders for your WordPress site without code. Use images & text, plus YouTube, Flickr, Pinterest & more =
+SlideDeck 2 for WordPress is a slider plugin that lets you easily create content sliders out of almost any content. Connect to a variety of Content Sources like YouTube, Flickr, Twitter, WordPress posts and Pinterest to create gorgeous, dynamic sliders in a few clicks - no coding is required.
 
-**Requirements:** PHP5+, WordPress 3.3+
+**Requirements:** WordPress 3.3+, PHP5 and higher 
 
 **Important Links:**
 
@@ -24,8 +26,13 @@ The SlideDeck WordPress slider plugin allows you to easily create a content slid
 
 1. Upload the `slidedeck2-lite` folder and all its contents to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Create a new SlideDeck from the interface on the Manage Page
-4. Insert a SlideDeck in your post or page by clicking on the `Embed a SlideDeck` button in the rich text editor or the button in the sidebar in the post/page view. 
+3. Create a new SlideDeck from the “SlideDeck » Manage” menu in the control panel sidebar
+4. Insert a SlideDeck in your post or page by clicking on the "Embed a SlideDeck" button above the rich text editor in the post/page view.
+
+You can also place a SlideDeck in your template or theme via the PHP command “do_shortcode()”. Just pass the ID of the SlideDeck you want to render. For example:
+`<?php echo do_shortcode( "[SlideDeck2 id=1644]" ); ?>`
+
+Where 1644 is the SlideDeck's ID. You can also see this code snippet when you save a new SlideDeck for the first time.
 
 == Screenshots ==
 
