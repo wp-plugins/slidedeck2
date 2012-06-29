@@ -9,7 +9,10 @@
 				<p>A great story needs a beginning and an end. Covers give users context for what you're sharing. They're great for product tours, slideshows and more.</p>
 				<img height="189" id="covers-modal-upsell" src="https://s3.amazonaws.com/slidedeck-pro/lite_upsell_assets/images/covers-modal-upsell.jpg" alt="SlideDeck Covers" />
 			</div>
-			<?php include( SLIDEDECK2_DIRNAME . '/views/upsells/_upsell-modal-cta-block.php' ); ?>
+			<div class="cta">
+				<a class="slidedeck-noisy-button" href="<?php echo slidedeck2_action( "/upgrades" ); ?>" class="button slidedeck-noisy-button"><span>Upgrade to Personal</span></a>
+				<a class="features-link" href="http://www.slidedeck.com/features?utm_campaign=sd2_lite&utm_medium=handslap_link&utm_source=handslap_covers&utm_content=slides_slider_image" target="_blank">or learn more about other SlideDeck features</a>
+			</div>
 		</div>
 	</div>
 </div>

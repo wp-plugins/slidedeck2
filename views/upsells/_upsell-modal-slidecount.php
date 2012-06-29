@@ -9,7 +9,10 @@
 				<p>You've got a lot of web content sources and slides fill up fast when they're coming in dynamically. Display all your web content across any number of slides.</p>
 				<img height="114" id="covers-modal-upsell" src="https://s3.amazonaws.com/slidedeck-pro/lite_upsell_assets/images/slide-count-modal-upsell.jpg" alt="More Slides" />
 			</div>
-			<?php include( SLIDEDECK2_DIRNAME . '/views/upsells/_upsell-modal-cta-block.php' ); ?>
+			<div class="cta">
+				<a class="slidedeck-noisy-button" href="<?php echo slidedeck2_action( "/upgrades" ); ?>" class="button slidedeck-noisy-button"><span>Upgrade to Personal</span></a>
+				<a class="features-link" href="http://www.slidedeck.com/features?utm_campaign=sd2_lite&utm_medium=handslap_link&utm_source=handslap_slide_count&utm_content=summer_vacation_three_covers" target="_blank">or learn more about other SlideDeck features</a>
+			</div>
 		</div>
 	</div>
 </div>
