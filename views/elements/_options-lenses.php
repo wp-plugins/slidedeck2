@@ -1,4 +1,4 @@
-<?php do_action( "{$namespace}_lens_selection_before_lenses", $lenses, $slidedeck ); ?>
+<?php do_action( "{$this->namespace}_lens_selection_before_lenses", $lenses, $slidedeck ); ?>
 
 <?php foreach( $lenses as &$lens ): ?>
     <label class="lens<?php if( $lens['slug'] == $slidedeck['lens'] ) echo ' selected'; ?>">
@@ -9,6 +9,6 @@
     </label >
 <?php endforeach; ?>
 
-<?php do_action( "{$namespace}_lens_selection_after_lenses", $lenses, $slidedeck ); ?>
+<?php do_action( "{$this->namespace}_lens_selection_after_lenses", $lenses, $slidedeck ); ?>
 
 <input type="hidden" name="_wpnonce_update_available_lenses" value="<?php echo wp_create_nonce( 'slidedeck-update-available-lenses' ); ?>" />

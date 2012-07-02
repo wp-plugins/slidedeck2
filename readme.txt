@@ -63,6 +63,10 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 
 
 == Changelog ==
+= 2.1.20120702 =
+* Adjusted the YouTube API call so no related videos are shown at the end of playback
+* Fixed the `slidedeck_lens_selection_before_lenses` and `slidedeck_lens_selection_after_lenses` hooks so they no longer throw notices
+
 = 2.1.20120628 =
 * Creation of a Lite version of the SlideDeck 2 Plugin
 * Fixed some logic bugs with uploading lenses

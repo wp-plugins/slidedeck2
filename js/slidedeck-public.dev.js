@@ -118,6 +118,7 @@ function onYouTubePlayerAPIReady() {
                     'wmode': 'opaque',
                     'showinfo': 0,
                     'autohide': 1,
+                    'rel': 0,
                     'disablekb': 1,
                     'iv_load_policy': 3,
                     'modestbranding': 1
