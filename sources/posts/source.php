@@ -8,7 +8,8 @@ class SlideDeckSource_Posts extends SlideDeck {
     // The available sorting methods for posts
     var $post_type_sorts = array(
         'recent' => "Recent",
-        'popular' => "Popular"
+        'popular' => "Popular",
+        'menu_order' => "User Sort Order"
     );
     
     var $options_model = array(
@@ -452,6 +453,11 @@ class SlideDeckSource_Posts extends SlideDeck {
             case "popular":
                 $query_args['orderby'] = "comment_count date";
                 $query_args['order'] = "DESC";
+            break;
+            
+            case "menu_order":
+                $query_args['orderby'] = "menu_order";
+                $query_args['order'] = "ASC";
             break;
         }
         

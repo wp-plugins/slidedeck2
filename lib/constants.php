@@ -26,7 +26,7 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 // The current version of this plugin
-if( !defined( 'SLIDEDECK2_VERSION' ) ) define( 'SLIDEDECK2_VERSION', '2.1.20120702' );
+if( !defined( 'SLIDEDECK2_VERSION' ) ) define( 'SLIDEDECK2_VERSION', '2.1.20120705' );
 
 // Environment - change to "development" to load .dev.js JavaScript files (DON'T FORGET TO TURN IT BACK BEFORE USING IN PRODUCTION)
 if( !defined( 'SLIDEDECK2_ENVIRONMENT' ) ) define( 'SLIDEDECK2_ENVIRONMENT', 'production' );

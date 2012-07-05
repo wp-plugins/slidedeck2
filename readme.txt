@@ -63,6 +63,15 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 
 
 == Changelog ==
+= 2.1.20120705 =
+* Added min-width value to Flickr source flyout to fix rendering display in Webkit browsers (Safari/Chrome)
+* Appended to the sort logic. If the deck only has one source, we don't sort by date. If it has more than one source, we sort by date.
+* Added an additional sort option to the WordPress Posts content source. You can now sort by menu_order
+* Fixed an issue with the YouTube content source where videos in a playlist did not have the correct date ordering under some circumstances
+* Added Pinterest icon to the sources image on the manage page
+* Refined lens selection view
+* Added a "jQuery Hook" (custom event) for the re-filling of the deck options area and fixed a display issue with the options area
+
 = 2.1.20120702 =
 * Adjusted the YouTube API call so no related videos are shown at the end of playback
 * Fixed the `slidedeck_lens_selection_before_lenses` and `slidedeck_lens_selection_after_lenses` hooks so they no longer throw notices

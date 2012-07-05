@@ -619,6 +619,9 @@ var tb_position = updateTBSize;
                     
                     // Disable the covers UI if necessary
                     self.checkDisableCoversUI();
+                    
+                    // Trigger the custom lens change event
+                    $('body').trigger('slidedeck:lens-change-update-choices');
                 
                     SlideDeckPreview.ajaxUpdate();
                     

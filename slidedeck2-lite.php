@@ -15,7 +15,7 @@
  Description: Create SlideDecks on your WordPress blogging platform and insert
 them into templates and posts. Get started creating SlideDecks from the new
 SlideDeck menu in the left hand navigation.
- Version: 2.1.20120702
+ Version: 2.1.20120705
  Author: digital-telepathy
  Author URI: http://www.dtelepathy.com
  License: GPL3
@@ -3147,14 +3147,14 @@ class SlideDeckLitePlugin {
 	 * on the SlideDeck options pane, when editing a deck.
 	 */
     function slidedeck_lens_selection_after_lenses( $slidedeck ) {
-    	echo '';
+    	include( SLIDEDECK2_DIRNAME . '/views/upsells/_upsell-additional-lenses.php' );
     }
 	
 	/**
 	 * Adds extra content to the base of the source modal
 	 */
 	function slidedeck_source_modal_after_sources(){
-		include (SLIDEDECK2_DIRNAME . '/views/upsells/_source-modal-additional-sources-upsell.php');
+		include( SLIDEDECK2_DIRNAME . '/views/upsells/_source-modal-additional-sources-upsell.php');
 	}
 
     /**

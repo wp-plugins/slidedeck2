@@ -1549,6 +1549,7 @@ class SlideDeck {
                         $video_meta['description'] = $response_json->entry->{'media$group'}->{'media$description'}->{'$t'};
                         $video_meta['thumbnail'] = 'http://img.youtube.com/vi/' . $video_id . '/mqdefault.jpg';
                         $video_meta['full_image'] = 'http://img.youtube.com/vi/' . $video_id . '/0.jpg';
+						$video_meta['created_at'] = strtotime( $response_json->entry->published->{'$t'} );
                         
                         if( isset( $response_json->entry->author ) ) {
                             $author = reset( $response_json->entry->author );
@@ -1937,8 +1938,12 @@ class SlideDeck {
         if( $slidedeck['options']['randomize'] == true ) {
             shuffle( $slides );
         } else {
-        	// Only sort the SlideDeck by time if this is not a Custom SlideDeck
-        	if( !in_array( "custom", $slidedeck['source'] ) ) {
+        	/**
+			 * Only sort the SlideDeck by time if this is not a Custom SlideDeck
+			 * Also, if there's more than one source, we have to sort it by time. If there's
+			 * only one source, then we should do no sorting.
+			 */
+        	if( !in_array( "custom", $slidedeck['source'] ) && ( count( $slidedeck['source'] ) > 1 ) ) {
 	            usort( $slides, array( &$this, '_sort_by_time' ) );
         	}
         }

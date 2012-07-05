@@ -162,7 +162,7 @@ class SlideDeckSource_Youtube extends SlideDeck {
             
             // Create a cache key
             $cache_key = $slidedeck_id . $feed_url . $slidedeck['options']['cache_duration'] . $this->name;
-            
+			
             $response_json = slidedeck2_cache_read( $cache_key );
             
             if( !$response_json ) {
@@ -203,9 +203,14 @@ class SlideDeckSource_Youtube extends SlideDeck {
                         $videos[$key]['author_url'] = "http://www.youtube.com/user/" . $author->name->{'$t'};
                     }
                     
+					// Set the created time even though we'll overload it shortly...
                     $videos[$key]['created_at'] = strtotime( $entry->published->{'$t'} );
-    
+					
+    				// Fetch the meta for this specific video
                     $videos[$key]['video_meta'] = $this->get_video_meta_from_url( $url );
+					
+					// Overwrite the created_at date with potentially more accurate info.
+					$videos[$key]['created_at'] = $videos[$key]['video_meta']['created_at'];
                 }
                 
                 $count++;

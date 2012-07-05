@@ -117,6 +117,10 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
 	width: 524px;
 	margin-left: -262px;
 }
+#slidedeck-upsell-simplemodal.for-lenses {
+	width: 664px;
+	margin-left: -332px;
+}
 #slidedeck-upsell-simplemodal img#covers-modal-upsell{
 	display: block;
 	margin-left: -25px;
@@ -184,5 +188,80 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
 	border-radius: 6px;
 }
 
-
+/* Additional Lenses */
+#slidedeck-section-lenses .lens.placeholder {
+	cursor: pointer;
+	text-decoration: none;
+	zoom: 1; /* Triggers has layout? */
+	filter: alpha(opacity=30);
+	opacity: 0.3;
+}
+/* Additional lenses in modal */
+#slidedeck-upsell-simplemodal.for-lenses .background .inner .copyblock{
+	margin-bottom: 40px;
+}
+#slidedeck-upsell-simplemodal .lens {
+	cursor: default;
+	text-decoration: none;
+    position: relative;
+    display: block;
+    float: left;
+    width: 160px;
+    height: 150px;
+    overflow: hidden;
+    padding: 8px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -o-border-radius: 5px;
+    border-radius: 5px;
+    border: 1px solid #FFFFFF;
+    margin-right: 14px;
+    margin-bottom: 0px;
+}
+#slidedeck-upsell-simplemodal .lens:first-child { margin-left: 0; }
+#slidedeck-upsell-simplemodal .lens .thumbnail {
+    position: relative;
+    display: block;
+    width: 152px;
+    height: 113px;
+    padding: 3px;
+    margin: 0 auto;
+    border: 1px solid #aeb8c6;
+    background: #FFFFFF;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -o-border-radius: 5px;
+    border-radius: 5px;
+    z-index: 2;
+}
+#slidedeck-upsell-simplemodal .lens .thumbnail img {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -o-border-radius: 3px;
+    border-radius: 3px;
+    max-width: 152px;
+    max-height: 113px;
+}
+#slidedeck-upsell-simplemodal .lens span.shadow {
+    display: block;
+    position: absolute;
+    top: 122px;
+    left: 50%;
+    margin-left: -87px;
+    width: 170px;
+    height: 10px;
+    background: url('../images/lens-thumbnail-shadow.png') center center no-repeat;
+    z-index: 1;
+}
+#slidedeck-upsell-simplemodal .lens .title {
+    display: block;
+    margin: 0;
+    text-align: center;
+    font: bold 14px/22px sans-serif;
+    color: #5a5d67;
+    padding-top: 6px;
+}
 

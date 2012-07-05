@@ -1,6 +1,7 @@
 .slidedeck-content-source.source-flickr .fancy-select{ color: #333; }
 .slidedeck-content-source #options-flickr_userid { min-width: 153px; }
 
+#content-source-flickr { min-width: 465px; }
 #content-source-flickr em {
     display: block;
     line-height: normal;

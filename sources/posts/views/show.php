@@ -44,7 +44,7 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
                     <?php slidedeck2_html_input( 'options[post_type]', $slidedeck['options']['post_type'], array( 'type' => 'select', 'label' => __( "Post Type", $this->namespace ), 'attr' => array( 'class' => 'fancy' ), 'values' => $post_types ) ); ?>
                 </li>
                 <li>
-                    <?php slidedeck2_html_input( 'options[post_type_sort]', $slidedeck['options']['post_type_sort'], array( 'type' => 'radio', 'label' => __( "Which Posts?", $this->namespace ), 'attr' => array( 'class' => 'fancy' ), 'values' => $post_type_sorts ) ); ?>
+                    <?php slidedeck2_html_input( 'options[post_type_sort]', $slidedeck['options']['post_type_sort'], array( 'type' => 'select', 'label' => __( "Which Posts? (order by)", $this->namespace ), 'attr' => array( 'class' => 'fancy' ), 'values' => $post_type_sorts ) ); ?>
                 </li>
                 <li>
                     <?php slidedeck2_html_input( 'options[use-custom-post-excerpt]', $slidedeck['options']['use-custom-post-excerpt'], $this->options_model['Setup']['use-custom-post-excerpt'] ); ?>

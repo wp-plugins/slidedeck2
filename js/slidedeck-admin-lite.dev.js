@@ -1,5 +1,5 @@
 /**
- * SlideDeck 2 Pro for WordPress Lite Admin JavaScript
+ * SlideDeck 2 Lite for WordPress Lite Admin JavaScript
  * 
  * More information on this project:
  * http://www.slidedeck.com/
@@ -7,7 +7,7 @@
  * Full Usage Documentation: http://www.slidedeck.com/usage-documentation 
  * 
  * @package SlideDeck
- * @subpackage SlideDeck 2 Pro for WordPress
+ * @subpackage SlideDeck 2 Lite for WordPress
  * 
  * @author dtelepathy
  */
@@ -33,41 +33,61 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
 (function($){
 	$(document).ready(function(){
 		
-		// Lite slide UI limits
-		if( $('#options-total_slides').length ){
-			$('#options-total_slides').attr('readonly', true);
-			$('#options-total_slides').parent().append('<em><a class="upgrade-modal" href="' + slideDeck2AddonsURL + '" rel="slidecount">Upgrade</a> to get more slides per deck.</em>');
-		}
+		// Bind to the custom lens change event
+		$('body').bind( 'slidedeck:lens-change-update-choices', function(){
+			// Lite slide UI limits
+			if( $('#options-total_slides').length ){
+				$('#options-total_slides').attr('readonly', true);
+				$('#options-total_slides').parent().append('<em><a class="upgrade-modal" href="' + slideDeck2AddonsURL + '" rel="slidecount">Upgrade</a> to get more slides per deck.</em>');
+			}
+			
+			// Covers UI Limit
+			if( $('#slidedeck-covers').length ){
+				$('#slidedeck-covers').append('<span class="lite-disabled-mask"><em><a class="upgrade-modal" href="' + slideDeck2AddonsURL + '" rel="covers">Upgrade</a> to get access to covers.</em></span>');
+			}
+		});
 		
-		// Covers UI Limit
-		if( $('#slidedeck-covers').length ){
-			$('#slidedeck-covers').append('<span class="lite-disabled-mask"><em><a class="upgrade-modal" href="' + slideDeck2AddonsURL + '" rel="covers">Upgrade</a> to get access to covers.</em></span>');
-		}
+		$('body').trigger( 'slidedeck:lens-change-update-choices' );
 		
 		// Modals for the upsells
 		if( $('.upgrade-modal').length ){
+			var context = 'upsell';
+			
 			
 			// Generic Upgrade modal.
 			SlideDeckPlugin.UpgradeModal = {
+				addForClass: function( theClass ){
+					// Remove the previous pattern
+					$('#slidedeck-' + context + '-simplemodal')[0].className = $('#slidedeck-' + context + '-simplemodal')[0].className.replace(/for\-[a-z]+\s?/, '');
+					// Add the new class
+					$('#slidedeck-' + context + '-simplemodal').addClass( 'for-' + theClass );
+				},
+				
 		        open: function(data){
 		            var self = this;
 		            
 		            if(!this.modal){
 		                this.modal = new SimpleModal({
-		                    context: "upsell"
+		                    context: context
 		                });
 		            }
 					this.modal.open(data);
 				}
 			};
 			
-			$('.upgrade-modal').bind( 'click', function(event){
+			$('#slidedeck_form').delegate( '.upgrade-modal', 'click', function(event){
 				event.preventDefault();
-				
-	            $.get(ajaxurl + "?action=slidedeck_upsell_modal_content&feature=" + $(this).attr('rel') , function(data){
+				var slug = $(this).attr('rel');
+				 
+	            $.get(ajaxurl + "?action=slidedeck_upsell_modal_content&feature=" + slug , function(data){
 					SlideDeckPlugin.UpgradeModal.open(data);
+					SlideDeckPlugin.UpgradeModal.addForClass( slug );
+					
+					// Make sure the <a> tags do nothing in the lenses upgrade modal
+					 $('#slidedeck-upsell-simplemodal a.lens.placeholder').bind( 'click', function(event){
+					 	event.preventDefault();
+					 });
 	            });
-				
 			});
 		}
 	});
