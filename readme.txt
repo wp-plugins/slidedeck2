@@ -63,6 +63,14 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 
 
 == Changelog ==
+= 2.1.20120711 =
+* SlideDecks are no longer rendered in feeds (Even Feedburner!). They are shown as a link instead.
+* Updated Twitter icons to reflect logo update
+* Rearranged some localization code
+* Added an option to define a `SLIDEDECK_LICENSE_KEY` constant with your license key in your wp-config file
+* Added a GMT override to the "time ago" calculations for the display of dates in lenses
+* SlideDecks being rendered in iFrames now respect the 'open in same window' option
+
 = 2.1.20120705 =
 * Added min-width value to Flickr source flyout to fix rendering display in Webkit browsers (Safari/Chrome)
 * Appended to the sort logic. If the deck only has one source, we don't sort by date. If it has more than one source, we sort by date.

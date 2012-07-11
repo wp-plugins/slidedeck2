@@ -12,10 +12,8 @@
 /*
  Plugin Name: SlideDeck 2 Lite
  Plugin URI: http://www.slidedeck.com/wordpress
- Description: Create SlideDecks on your WordPress blogging platform and insert
-them into templates and posts. Get started creating SlideDecks from the new
-SlideDeck menu in the left hand navigation.
- Version: 2.1.20120705
+ Description: Create SlideDecks on your WordPress blogging platform and insert them into templates and posts.
+ Version: 2.1.20120711
  Author: digital-telepathy
  Author URI: http://www.dtelepathy.com
  License: GPL3
@@ -44,6 +42,8 @@ class SlideDeckLitePlugin {
     var $package_slug = 'single';
     static $namespace = "slidedeck";
     static $friendly_name = "SlideDeck 2";
+	static $cohort_name = 'ecf8915';
+	static $cohort_variation = '';
 
 	// Generally, we are not installing addons. If we are, this gets set to true.
 	static $slidedeck_addons_installing = false;
@@ -138,7 +138,7 @@ class SlideDeckLitePlugin {
          * Make this plugin available for translation.
          * Translations can be added to the /languages/ directory.
          */
-        load_theme_textdomain( $this->namespace, SLIDEDECK2_DIRNAME . '/languages' );
+        load_plugin_textdomain( $this->namespace, false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
         // Load all library files used by this plugin
         $lib_files = glob( SLIDEDECK2_DIRNAME . '/lib/*.php' );
@@ -334,6 +334,7 @@ class SlideDeckLitePlugin {
         }
 
         self::check_plugin_updates( );
+		
 
         $installed_version = get_option( "slidedeck_version", false );
         $installed_license = get_option( "slidedeck_license", false );
@@ -345,9 +346,12 @@ class SlideDeckLitePlugin {
             }
         }
 
+        // First time installation
         if( !$installed_version ) {
-            // First time installation
             slidedeck2_km( "SlideDeck Installed" );
+			
+			// Setup the cohorts data
+			self::set_cohort_data();
         }
 
         if( $installed_version && version_compare( SLIDEDECK2_VERSION, $installed_version, '>' ) ) {
@@ -1612,6 +1616,7 @@ class SlideDeckLitePlugin {
         $license_key = $_REQUEST['data']['license_key'];
         $install_link = false;
         $installable_addons = false;
+		$cohort_data = self::get_cohort_data();
 		
 		// Save the key if it's valid.
 		// TODO: Maybe refactor...
@@ -1655,6 +1660,7 @@ class SlideDeckLitePlugin {
 					'installed_addons' => SlideDeckLitePlugin::$addons_installed,
 					'user_is_back' => $this->user_is_back,
 					'upgraded_to_tier' => $this->upgraded_to_tier,
+					'cohort_data' => $cohort_data,
 				), 
     			'cookies' => array(),
     			'sslverify' => false
@@ -1953,7 +1959,20 @@ class SlideDeckLitePlugin {
      * @return string
      */
     function get_license_key( ) {
-        return (string)$this->get_option( 'license_key' );
+    	// Is a license key defined as a constant?
+    	$defined_key = '';
+		if( defined( 'SLIDEDECK_LICENSE_KEY' ) )
+			$defined_key = SLIDEDECK_LICENSE_KEY;
+		
+		// Is there a stored key?
+    	$stored_key = $this->get_option( 'license_key' );
+		
+		// If the stored key is blank, then use the defined key.
+		if( empty( $stored_key ) ){
+			return (string) $defined_key;
+		}
+		
+        return (string) $stored_key;
     }
 
     /**
@@ -2996,6 +3015,54 @@ class SlideDeckLitePlugin {
         exit ;
     }
 
+	/**
+	 * Sets up the user's cohort data
+	 * 
+	 * @uses get_option()
+	 * @uses add_option()
+	 */
+	static function set_cohort_data() {
+		$data = array(
+			'name' => self::$cohort_name,
+			'variation' => self::$cohort_variation,
+			'year' => date("Y"),
+			'month' => date("m")
+		);
+		
+		// Only set the cohort if it does not exist. 
+		if( get_option( self::$namespace . '_cohort', false ) === false ) {
+			add_option( self::$namespace . '_cohort', $data );
+		}
+	}
+	
+	/**
+	 * Sets up the user's cohort data
+	 * 
+	 * @uses get_option()
+	 * @uses add_option()
+	 */
+	static function get_cohort_data() {
+		return get_option( self::$namespace . '_cohort', false );
+	}
+
+	/**
+	 * Outputs the cohort info as a query string
+	 * 
+	 * @param $starting_character
+	 * 
+	 * @uses self::get_cohort_data()
+	 */
+	static function get_cohort_query_string( $starting_character = '?' ) {
+		$cohorts = self::get_cohort_data();
+		$processed = array();
+		foreach( $cohorts as $key => $value ){
+			if( !empty( $value ) ){
+				$processed['cohort_' . $key] = $value;
+			}
+		}
+		return $starting_character . http_build_query( $processed );
+	}
+
     /**
      * Process the SlideDeck shortcode
      *
@@ -3007,9 +3074,19 @@ class SlideDeckLitePlugin {
      * @return object The processed shortcode
      */
     function shortcode( $atts ) {
-        extract( shortcode_atts( array( 'id' => false, 'width' => null, 'height' => null, 'include_lens_files' => (boolean)true, 'iframe' => false, 'nocovers' => (boolean)false, 'preview' => (boolean)false ), $atts ) );
-
+    	global $post;
+		$default_deck_link_text = '';
+		
+		if( isset( $atts['id'] ) && !empty( $atts['id'] ) )
+    		$default_deck_link_text = get_the_title( $atts['id'] ) . ' <small>[' . __( "see the SlideDeck", $this->namespace ) . ']</small>';
+    	
+        extract( shortcode_atts( array( 'id' => false, 'width' => null, 'height' => null, 'include_lens_files' => (boolean)true, 'iframe' => false, 'feed_link_text' => $default_deck_link_text, 'nocovers' => (boolean)false, 'preview' => (boolean)false ), $atts ) );
+		
         if( $id !== false ) {
+			// If this is a feed, just render a link
+			if( $this->is_feed() )
+				return '<div class="slidedeck-link"><a href="' . get_permalink( $post->ID ) . '#SlideDeck-' . $id . '">' . $feed_link_text . '</a></div>';
+		
             if( $iframe !== false ) {
                 return $this->_render_iframe( $id, $width, $height, $nocovers );
             } else {
@@ -3019,7 +3096,25 @@ class SlideDeckLitePlugin {
             return "";
         }
     }
-
+	
+	/**
+	 * Is Feed?
+	 * 
+	 * An extension of the is_feed() function.
+	 * We first check WWordPress' built in method and if it passes,
+	 * then we say yes this is a feed. If it fails, we try to detect FeedBurner
+	 * 
+	 * @return boolean
+	 */
+	function is_feed(){
+		if( is_feed() ){
+			return true;
+		}elseif( preg_match( '/feedburner/', strtolower( $_SERVER['HTTP_USER_AGENT'] ) ) ){
+			return true;
+		}
+		return false;
+	}
+	
     /**
      * SlideDeck After Get Filter
      *

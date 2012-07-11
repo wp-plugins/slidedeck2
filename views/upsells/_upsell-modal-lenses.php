@@ -11,7 +11,7 @@
 			</div>
 			<div class="cta">
 				<a class="slidedeck-noisy-button" href="<?php echo slidedeck2_action( "/upgrades" ); ?>" class="button slidedeck-noisy-button"><span>Upgrade to Personal</span></a>
-				<a class="features-link" href="http://demo.slidedeck.com/wp-login.php?utm_campaign=sd2_lite&utm_medium=handslap_link&utm_source=handslap_lenses&utm_content=more_lenses_list" target="_blank">or check out all the lenses in the live demo</a>
+				<a class="features-link" href="http://demo.slidedeck.com/wp-login.php?utm_campaign=sd2_lite&utm_medium=handslap_link&utm_source=handslap_lenses&utm_content=more_lenses_list<?php echo self::get_cohort_query_string('&'); ?>" target="_blank">or check out all the lenses in the live demo</a>
 			</div>
 		</div>
 	</div>

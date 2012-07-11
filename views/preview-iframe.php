@@ -254,9 +254,11 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
         
         <script type="text/javascript">
             (function($){
-                $(document).ready(function(){
-                    $('a').attr('target', '_blank');
-                });
+            	if( window.parent.document.location.href.match(/admin\.php\?page=slidedeck/) ){
+	                $(document).ready(function(){
+	                    $('a').attr('target', '_blank');
+	                });
+            	}
             })(jQuery);
         </script>
     </body>

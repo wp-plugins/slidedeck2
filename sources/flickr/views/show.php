@@ -58,7 +58,7 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="add-button-wrapper flickr">
                     <?php 
                     $tooltip = __('Enter one or more tags separated by commas.') . "<br />" . __('Tags can only be used with recent photos.');
-                    slidedeck2_html_input( 'flickr-add-tag-field', '', array( 'label' => __( "Flickr Tags" . '<span class="tooltip" title="' . $tooltip . '"></span>', $this->namespace ), 'attr' => array( 'size' => 10, 'maxlength' => 255 ) ) );
+                    slidedeck2_html_input( 'flickr-add-tag-field', '', array( 'label' => __( "Flickr Tags", $this->namespace ) . '<span class="tooltip" title="' . $tooltip . '"></span>', 'attr' => array( 'size' => 10, 'maxlength' => 255 ) ) );
                     ?>
                     <a class="flickr-tag-add add-button" href="#add"><?php _e( "Add", $this->namespace ); ?></a>
                 </div>
