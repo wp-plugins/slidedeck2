@@ -59,7 +59,11 @@
         
         elems.slidedeck.find('.sd2-slide-title').removeClass('accent-color');
         elems.slidedeck.find('.sd2-slide-text a').addClass('accent-color');
-        elems.slidedeck.find('.sd2-node-caption .play-video-alternative').addClass('accent-color-background').removeClass('accent-color');
+        if( !elems.frame.hasClass('content-source-custom') ){
+            elems.slidedeck.find('.sd2-node-caption .play-video-alternative').addClass('accent-color-background').removeClass('accent-color');
+        }else{
+            elems.slidedeck.find('.sd2-node-caption .play-video-alternative').addClass('accent-color');
+        }
         
         elems.slidedeck.slidedeck().loaded(function(){
             // check for body classes or options set to add body classes to control navigation

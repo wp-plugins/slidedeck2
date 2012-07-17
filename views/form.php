@@ -81,6 +81,8 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
                 
                     <iframe id="slidedeck-preview" frameborder="0" allowtransparency="yes"  src="<?php echo $iframe_url; ?>" style="width:<?php echo $dimensions['outer_width'] + 2; ?>px;height:<?php echo $dimensions['outer_height'] + 2; ?>px;"></iframe>
                     
+                    <div id="slidedeck-slide-dimensions" class="slidedeck-resizing getting-dimensions"><?php _e( "Slide Area Dimensions Will Be", $namespace ); ?>: <span class="width">700x</span><span class="height">500</span><span class="calculating">Calculating...</span></div>
+                    
                 </div>
                 
             </fieldset>

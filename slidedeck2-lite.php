@@ -13,12 +13,11 @@
  Plugin Name: SlideDeck 2 Lite
  Plugin URI: http://www.slidedeck.com/wordpress
  Description: Create SlideDecks on your WordPress blogging platform and insert them into templates and posts.
- Version: 2.1.20120711
+ Version: 2.1.20120717
  Author: digital-telepathy
  Author URI: http://www.dtelepathy.com
  License: GPL3
  */
-
 /*
  Copyright 2012 digital-telepathy  (email : support@digital-telepathy.com)
 
@@ -129,8 +128,8 @@ class SlideDeckLitePlugin {
      * @uses SlideDeckLitePlugin::wp_register_styles()
      */
     function __construct( ) {
-		SlideDeckLitePlugin::load_constants();
-
+    	SlideDeckLitePlugin::load_constants();
+    	
         $this->friendly_name = SlideDeckLitePlugin::$friendly_name;
         $this->namespace = SlideDeckLitePlugin::$namespace;
 
@@ -270,7 +269,7 @@ class SlideDeckLitePlugin {
 
         $dimensions = $this->get_dimensions( $preview );
 
-        $iframe_url = $this->get_iframe_url( $preview['id'], $dimensions['width'], $dimensions['height'], $dimensions['outer_width'], $dimensions['outer_height'] );
+        $iframe_url = $this->get_iframe_url( $preview['id'], $dimensions['width'], $dimensions['height'], $dimensions['outer_width'], $dimensions['outer_height'], true );
 
         $response = $dimensions;
         $response['preview_id'] = $preview['id'];
@@ -538,6 +537,9 @@ class SlideDeckLitePlugin {
         // Add required JavaScript and Stylesheets for displaying SlideDecks in
         // public view
         add_action( 'wp_print_scripts', array( &$this, 'wp_print_scripts' ) );
+		
+		// Prints some JavaScript constants in the head tag.
+        add_action( 'wp_print_scripts', array( &$this, 'print_header_javascript_constants' ) );
 
         // Front-end only actions
         if( !is_admin( ) ) {
@@ -711,8 +713,12 @@ class SlideDeckLitePlugin {
      * @uses wp_enqueue_script()
      */
     function admin_print_scripts( ) {
+        global $wp_scripts;
+        
         echo '<script type="text/javascript">var SlideDeckInterfaces = {};</script>';
-
+        
+        $wp_scripts->registered["{$this->namespace}-library-js"]->src .= "?noping";
+        
         wp_enqueue_script( "{$this->namespace}-library-js" );
         wp_enqueue_script( "{$this->namespace}-admin" );
         wp_enqueue_script( "{$this->namespace}-admin-lite" );
@@ -1399,15 +1405,22 @@ class SlideDeckLitePlugin {
         $slidedeck = $this->SlideDeck->get( $slidedeck_id );
 
         $lens = $this->Lens->get( $slidedeck['lens'] );
-
-        $preview = true;
+        
+        // Is this a preview or an iframe=1 shortcode embed?
+        $preview = false;
+        if( isset( $_GET['preview'] ) ) {
+            if( (int) $_GET['preview'] === 1 ) {
+                $preview = true;
+            }
+        }
+        
         $namespace = $this->namespace;
 
         if( isset( $outer_width ) ) {
             $preview_scale_ratio = $outer_width / 347;
             $preview_font_size = intval( min( $preview_scale_ratio * 1000, 1139 ) ) / 1000;
         }
-
+        
         $scripts = apply_filters( "{$this->namespace}_iframe_scripts", array( 'jquery', 'jquery-easing', 'scrolling-js', 'slidedeck-library-js', 'slidedeck-public' ), $slidedeck );
 
         $content_url = defined( 'WP_CONTENT_URL' ) ? WP_CONTENT_URL : '';
@@ -1881,13 +1894,17 @@ class SlideDeckLitePlugin {
      * @param integer $outer_height Optional outer height of the SlideDeck iframe
      * area
      */
-    function get_iframe_url( $id, $width = null, $height = null, $outer_width = null, $outer_height = null ) {
+    function get_iframe_url( $id, $width = null, $height = null, $outer_width = null, $outer_height = null, $preview = false ) {
+        $uniqueid = uniqid();
+        
         if( func_num_args( ) < 5 ) {
             $slidedeck = $this->SlideDeck->get( $id );
             if( empty( $slidedeck ) )
                 return '';
 
             $slidedeck_dimensions = $this->get_dimensions( $slidedeck );
+            
+            if( !$preview ) $uniqueid = strtotime( $slidedeck['updated_at'] );
         }
 
         if( !isset( $width ) )
@@ -1903,9 +1920,11 @@ class SlideDeckLitePlugin {
             $outer_height = $slidedeck_dimensions['outer_height'];
 
         $dimensions = array( 'width' => $width, 'height' => $height, 'outer_width' => $outer_width, 'outer_height' => $outer_height );
-
-        $url = admin_url( "admin-ajax.php?action={$this->namespace}_preview_iframe&uniqueid=" . uniqid( ) . "&slidedeck={$id}&" . http_build_query( $dimensions ) );
-
+        
+        $url = admin_url( "admin-ajax.php?action={$this->namespace}_preview_iframe&uniqueid=" . $uniqueid . "&slidedeck={$id}&" . http_build_query( $dimensions ) );
+        
+        if( $preview ) $url .= "&preview=1";
+        
         return $url;
     }
 
@@ -2399,7 +2418,7 @@ class SlideDeckLitePlugin {
         $dimensions = $this->get_dimensions( $slidedeck );
 
         // Iframe URL for preview
-        $iframe_url = $this->get_iframe_url( $slidedeck['id'], $dimensions['width'], $dimensions['height'], $dimensions['outer_width'], $dimensions['outer_height'] );
+        $iframe_url = $this->get_iframe_url( $slidedeck['id'], $dimensions['width'], $dimensions['height'], $dimensions['outer_width'], $dimensions['outer_height'], true );
 
         $options_model = $this->get_options_model( $slidedeck );
 
@@ -2791,6 +2810,18 @@ class SlideDeckLitePlugin {
         echo 'var slideDeck2URLPath = "' . SLIDEDECK2_URLPATH . '"' . "\n";
         echo 'var slideDeck2AddonsURL = "' . slidedeck2_action( "/upgrades" ) . '"' . "\n";
         echo 'var slideDeck2iframeByDefault = ' . var_export( $this->get_option( 'iframe_by_default' ), true ) . '; ' . "\n";
+        echo '</script>' . "\n";
+    }
+
+    /**
+     * Run the the_content filters on the passed in text
+     *
+     * prints some JavaScript constants that are used for
+     * covers and other UI elements.
+     */
+    function print_header_javascript_constants( ) {
+        echo '<script type="text/javascript">' . "\n";
+        echo 'window.slideDeck2Version = "' . SLIDEDECK2_VERSION . '"' . "\n";
         echo '</script>' . "\n";
     }
 
@@ -3511,7 +3542,7 @@ class SlideDeckLitePlugin {
         // Lite Admin JavaScript
         wp_register_script( "{$this->namespace}-admin-lite", SLIDEDECK2_URLPATH . "/js/{$this->namespace}-admin-lite" . (SLIDEDECK2_ENVIRONMENT == 'development' ? '.dev' : '') . ".js", array( 'slidedeck-admin' ), SLIDEDECK2_VERSION, true );
         // SlideDeck JavaScript Core
-        wp_register_script( "{$this->namespace}-library-js", SLIDEDECK2_URLPATH . '/js/slidedeck.jquery' . (SLIDEDECK2_ENVIRONMENT == 'development' ? '.dev' : '') . '.js', array( 'jquery' ), '1.3.7' );
+        wp_register_script( "{$this->namespace}-library-js", SLIDEDECK2_URLPATH . '/js/slidedeck.jquery' . (SLIDEDECK2_ENVIRONMENT == 'development' ? '.dev' : '') . '.js', array( 'jquery' ), '1.3.8' );
         // Public Javascript
         wp_register_script( "{$this->namespace}-public", SLIDEDECK2_URLPATH . '/js/slidedeck-public' . (SLIDEDECK2_ENVIRONMENT == 'development' ? '.dev' : '') . '.js', array( 'jquery', 'slidedeck-library-js' ), SLIDEDECK2_VERSION );
         // Mouse Scrollwheel jQuery event library

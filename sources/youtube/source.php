@@ -163,20 +163,26 @@ class SlideDeckSource_Youtube extends SlideDeck {
             // Create a cache key
             $cache_key = $slidedeck_id . $feed_url . $slidedeck['options']['cache_duration'] . $this->name;
 			
-            $response_json = slidedeck2_cache_read( $cache_key );
+            $response = slidedeck2_cache_read( $cache_key );
             
-            if( !$response_json ) {
+            if( !$response ) {
                 $response = wp_remote_get( $feed_url, $args );
                 
                 if( !is_wp_error( $response ) ) {
-                    $response_json = json_decode( $response['body'] );
-                    
                     // Write the cache if a valid response
-                    if( !empty( $response_json ) ) {
-                        slidedeck2_cache_write( $cache_key, $response_json, $slidedeck['options']['cache_duration'] );
+                    if( !empty( $response ) ) {
+                        slidedeck2_cache_write( $cache_key, $response, $slidedeck['options']['cache_duration'] );
                     }
                 }
             }
+            
+            // Fail if an error occured
+            if( is_wp_error( $response ) ) {
+                return false;
+            }
+            
+            $response_json = json_decode( $response['body'] );
+            
             // Fallback fail if response was empty
             if( empty( $response_json ) ) {
                 return false;

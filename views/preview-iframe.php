@@ -37,13 +37,20 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <title><?php echo $slidedeck['title']; ?></title>
         
-        <script type="text/javascript">var SlideDeckLens={};</script>
+        <script type="text/javascript">
+            var SlideDeckLens={};
+            var slideDeck2Version = '<?php echo SLIDEDECK2_VERSION; ?>';
+        </script>
         
         <?php
             foreach( $scripts as $script ) {
                 $src = $wp_scripts->registered[$script]->src;
                 if ( !preg_match( '|^https?://|', $src ) && !( $content_url && 0 === strpos( $src, $content_url ) ) ) {
                     $src = $base_url . $src;
+                }
+                
+                if( $preview && $script == "slidedeck-library-js" ) {
+                    $src.= "?noping";
                 }
                 
                 echo '<script type="text/javascript" src="' . $src . ( strpos( $src, "?" ) !== false ? "&" : "?" ) . "v=" . $wp_scripts->registered[$script]->ver . '"></script>';
@@ -222,7 +229,7 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
         </script>
     </head>
     <body>
-    	<?php if( SLIDEDECK2_ENVIRONMENT != "production" ): ?>
+    	<?php if( SLIDEDECK2_ENVIRONMENT != "production" && $preview ): ?>
     		<span id="status">
     		    <button class="button" onclick="parent.SlideDeckPreview.ajaxUpdate();">Refresh</button> 
     		    <strong>Refreshed:</strong> <?php echo date( "Y-m-d H:i:s"); ?>
@@ -252,14 +259,15 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
         
         <?php $this->print_footer_scripts(); ?>
         
-        <script type="text/javascript">
-            (function($){
-            	if( window.parent.document.location.href.match(/admin\.php\?page=slidedeck/) ){
-	                $(document).ready(function(){
-	                    $('a').attr('target', '_blank');
-	                });
-            	}
-            })(jQuery);
-        </script>
+        <?php if( $preview ): ?>
+            <script type="text/javascript">
+                // Force all links to be target _blank in preview
+                (function($){
+                    $(document).ready(function(){
+                        $('a').attr('target', '_blank');
+                    });
+                })(jQuery);
+            </script>
+        <?php endif; ?>
     </body>
 </html>

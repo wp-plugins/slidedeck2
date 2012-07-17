@@ -1,5 +1,5 @@
 /**
- * SlideDeck 1.3.8 Pro - 2012-06-14
+ * SlideDeck 1.3.8 Pro - 2012-07-17
  * 
  * More information on this project:
  * http://www.slidedeck.com/
@@ -39,9 +39,14 @@ var SlideDeckLens = {};
 (function($){
     window.SlideDeck = function(el,opts){
         var self = this,
-            el = $(el);
+            el = $(el),
+            versionPrefix = '';
         
-        var VERSION = "1.3.8";
+        if( typeof(window.slideDeck2Version) != 'undefined' ){
+        	versionPrefix  = 'sd2-' + window.slideDeck2Version + '-';
+        }
+        
+        var VERSION = versionPrefix + "1.3.8";
         
         this.options = {
             speed: 500,
@@ -235,7 +240,7 @@ var SlideDeckLens = {};
             var scripts = document.getElementsByTagName('script');
             for(var i = 0; i < scripts.length; i++){
                 var src = scripts[i].src;
-                if(src.match(/slidedeck\.jquery(\.(pro|profree))?(\.pack)?\.js/)){
+                if(src.match(/slidedeck\.jquery(\.dev)?\.js/)){
                     var srcSplit = src.split('?');
                     if(srcSplit.length > 1){
                         if(srcSplit[1].match(/noping/)){

@@ -26,14 +26,8 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
 
 /* Navigation Style Outline Overrides */
 .slidedeck-frame a.deck-navigation,
-.slidedeck-frame a.deck-navigation:link,
-.slidedeck-frame a.deck-navigation:visited,
 .slidedeck-frame .vertical-slide-nav a,
-.slidedeck-frame .vertical-slide-nav a:link,
-.slidedeck-frame .vertical-slide-nav a:visited,
-.slidedeck-cover .slidedeck-cover-nav-button,
-.slidedeck-cover .slidedeck-cover-nav-button:link,
-.slidedeck-cover .slidedeck-cover-nav-button:visited {
+.slidedeck-cover .slidedeck-cover-nav-button {
     outline: none;
     border: 0;
 }
@@ -1955,3 +1949,42 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
  * will always be under the clickable area.
  */
 .slidedeck-frame.sd2-show-link-slide dd.slide-type-video a.full-slide-link-hit-area { display: none; }
+
+
+/**
+ *  Video Play Button Styles... made universal
+ */
+
+.slidedeck-frame dl.slidedeck .slide-type-video .video-wrapper .cover .play {
+    width: 92px;
+    height: 0;
+    padding-top: 92px;
+    z-index: 101;
+    overflow: hidden;
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -46px;
+    margin-left: -46px;
+    background: url('../images/play-button.png') no-repeat 0 0;
+}
+.slidedeck-frame dl.slidedeck .slide-type-video .video-wrapper .cover .play:hover,
+.slidedeck-frame dl.slidedeck .slide-type-video .video-wrapper .cover .play:active { background-position: 0 -92px; }
+
+.slidedeck-frame.sd2-small dl.slidedeck .slide-type-video .video-wrapper .cover .play {
+    width: 52px;
+    height: 0;
+    padding-top: 52px;
+    z-index: 101;
+    overflow: hidden;
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -26px;
+    margin-left: -26px;
+    background: url('../images/play-button-small.png') no-repeat 0 0;
+}
+.slidedeck-frame.sd2-small dl.slidedeck .slide-type-video .video-wrapper .cover .play:hover,
+.slidedeck-frame.sd2-small dl.slidedeck .slide-type-video .video-wrapper .cover .play:active { background-position: 0 -52px; }

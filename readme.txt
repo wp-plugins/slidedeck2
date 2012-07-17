@@ -1,4 +1,4 @@
-=== SlideDeck 2 Lite Content Slider ===
+=== SlideDeck 2 Lite ===
 Contributors: dtelepathy, kynatro, jamie3d, dtrenkner, oriontimbers, nielsfogt, bkenyon, dtlabs
 Donate link: http://www.slidedeck.com/
 Tags: dynamic, image gallery, iPad, jquery, media, photo, pictures, plugin, posts, Search Engine Optimized, seo, skinnable, slide, slide show, slider, slideshow, theme, touch support, video, widget, Flickr, Instagram, 500px, RSS, Pinterest, Google+, Twitter, YouTube, Vimeo, Dailymotion, Picasa, Dribbble
@@ -63,8 +63,16 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 
 
 == Changelog ==
+= 2.1.20120717 =
+* Improved how we were affecting the force of target _blank on links when loading SlideDecks in an iframe
+* Fixed bug that was casuing some remote content sources cached responses to load incorrectly, causing a "no content" response when loading the SlideDeck
+* Added actual slide dimensions indicator in SlideDeck preview area
+* Updated IFRAME preview mode to properly identify if it is in a preview or being rendered as part of an iframe=1 shortcode render
+* Modified SlideDeck JavaScript core references to include the ?noping parameter when being rendered as part of the admin control panel
+* Added filters for higher customization of slide spines
+
 = 2.1.20120711 =
-* SlideDecks are no longer rendered in feeds (Even Feedburner!). They are shown as a link instead.
+* SlideDecks are no longer rendered in feeds (Even Feedburner!). They are shown as a link instead
 * Updated Twitter icons to reflect logo update
 * Rearranged some localization code
 * Added an option to define a `SLIDEDECK_LICENSE_KEY` constant with your license key in your wp-config file

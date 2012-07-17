@@ -1988,7 +1988,11 @@ class SlideDeck {
                 $slide['classes'][] = "slide-source-{$slide['source']}";
             }
             
-            $html .= "<dt>{$slide['title']}</dt>";
+			$slide_title = apply_filters( "{$this->namespace}_horizontal_spine_title", $slide['title'], $slidedeck, $slide );
+			$spine_classes = (array) apply_filters( "{$this->namespace}_horizontal_spine_classes", array(), $slidedeck, $slide );
+            $spine_styles = apply_filters( "{$this->namespace}_horizontal_spine_styles", '', $slidedeck, $slide );
+			
+            $html .= "<dt". ( (!empty( $spine_classes ) ) ? ' class="'. implode( " ", $spine_classes ) . '"' :'') . ( (!empty( $spine_styles ) ) ? ' style="'. $spine_styles . '"' :'') .">{$slide_title}</dt>";
             $html .= '<dd style="' . $slide['styles'] . '" class="' . implode( " ", $slide['classes'] ) . '" data-thumbnail-src="' . $slide['thumbnail'] . '">';
 			
             // Vertical Slides

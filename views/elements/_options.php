@@ -76,21 +76,27 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
                             </li>
                             <li id="slidedeck-covers">
                                 <span class="label"><?php _e( "Covers", $namespace ); ?> <span class="tooltip" title="<?php _e( "Covers let you add a title slide to your SlideDeck, and add a call-to-action to the last slide.", $namespace ); ?>"></span></span>
-                                <span class="cover-text"><?php _e( "Front Cover :", $namespace ); ?></span> 
-                                <label for="options-show-front-cover-on" class="label">On
-                                    <input type="radio" id="options-show-front-cover-on" name="options[show-front-cover]" class="fancy" value="1"<?php if( $slidedeck['options']['show-front-cover'] ) echo ' checked="checked"'; ?> />
-                                </label>
-                                <label for="options-show-front-cover-off" class="label">Off
-                                    <input type="radio" id="options-show-front-cover-off" name="options[show-front-cover]" class="fancy" value=""<?php if( !$slidedeck['options']['show-front-cover'] ) echo ' checked="checked"'; ?> />
-                                </label>
-                                <span class="cover-text"><?php _e( "Back Cover :", $namespace ); ?></span> 
-                                <label for="options-show-back-cover-on" class="label">On
-                                    <input type="radio" id="options-show-back-cover-on" name="options[show-back-cover]" class="fancy" value="1"<?php if( $slidedeck['options']['show-back-cover'] ) echo ' checked="checked"'; ?> />
-                                </label>
-                                <label for="options-show-back-cover-off" class="label">Off
-                                    <input type="radio" id="options-show-back-cover-off" name="options[show-back-cover]" class="fancy" value=""<?php if( !$slidedeck['options']['show-back-cover'] ) echo ' checked="checked"'; ?> />
-                                </label>
-                                <a href="<?php echo admin_url( wp_nonce_url( 'admin-ajax.php?action=slidedeck_covers_modal&slidedeck=' . $slidedeck['id'], 'slidedeck-cover-modal' ) ); ?>" id="slidedeck-covers-modal-link" class="button"><?php _e( "Edit", $namespace ); ?></a>
+                                <span class="cover-option">
+                                    <span class="cover-text"><?php _e( "Front Cover :", $namespace ); ?></span> 
+                                    <label for="options-show-front-cover-on" class="label">On
+                                        <input type="radio" id="options-show-front-cover-on" name="options[show-front-cover]" class="fancy" value="1"<?php if( $slidedeck['options']['show-front-cover'] ) echo ' checked="checked"'; ?> />
+                                    </label>
+                                    <label for="options-show-front-cover-off" class="label">Off
+                                        <input type="radio" id="options-show-front-cover-off" name="options[show-front-cover]" class="fancy" value=""<?php if( !$slidedeck['options']['show-front-cover'] ) echo ' checked="checked"'; ?> />
+                                    </label>
+                                </span>
+                                <span class="cover-option">
+                                    <span class="cover-text"><?php _e( "Back Cover :", $namespace ); ?></span> 
+                                    <label for="options-show-back-cover-on" class="label">On
+                                        <input type="radio" id="options-show-back-cover-on" name="options[show-back-cover]" class="fancy" value="1"<?php if( $slidedeck['options']['show-back-cover'] ) echo ' checked="checked"'; ?> />
+                                    </label>
+                                    <label for="options-show-back-cover-off" class="label">Off
+                                        <input type="radio" id="options-show-back-cover-off" name="options[show-back-cover]" class="fancy" value=""<?php if( !$slidedeck['options']['show-back-cover'] ) echo ' checked="checked"'; ?> />
+                                    </label>
+                                </span>
+                                <span class="cover-option cover-option-edit">
+                                    <a href="<?php echo admin_url( wp_nonce_url( 'admin-ajax.php?action=slidedeck_covers_modal&slidedeck=' . $slidedeck['id'], 'slidedeck-cover-modal' ) ); ?>" id="slidedeck-covers-modal-link" class="button"><?php _e( "Edit", $namespace ); ?></a>
+                                </span>
                             </li>
                             <li>
                                 <?php

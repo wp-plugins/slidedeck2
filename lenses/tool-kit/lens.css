@@ -143,22 +143,12 @@ Tags: images, posts, feeds, pages, slidedeck
     right: 0;
     bottom: 0;
 }
-.lens-tool-kit dl.slidedeck .slide-type-video .video-wrapper .play{
-    width: 51px;
-    height: 0;
-    padding-top: 51px;
-    z-index: 101;
-    overflow: hidden;
-    display: block;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-top: -25px;
-    margin-left: -25px;
-    background: url('images/play-button.png') no-repeat 0 0;
+.lens-tool-kit.sd2-title-pos-left dl.slidedeck .slide-type-video .video-wrapper .cover .play {
+    left: 75%;
 }
-.lens-tool-kit dl.slidedeck .slide-type-video .video-wrapper .play:hover{ background-position: 0 -51px; }
-.lens-tool-kit dl.slidedeck .slide-type-video .video-wrapper .play:active{ background-position: 0 -102px; }
+.lens-tool-kit.sd2-title-pos-right dl.slidedeck .slide-type-video .video-wrapper .cover .play {
+    left: 25%;
+}
 .lens-tool-kit dl.slidedeck dt { display: none; }
 
 /* End video stuff */
@@ -453,7 +443,7 @@ Tags: images, posts, feeds, pages, slidedeck
     color: #333;
     background: #fff;
 }
-.lens-tool-kit.sd2-dark .sd-nav-deck .sd-thumb { background-color: #333; }
+.lens-tool-kit.sd2-dark .sd-nav-deck .sd-thumb { background-color: #FFFFFF; }
 .lens-tool-kit .sd-nav-deck .sd-thumb .inner-image {
     display: block;
     position: absolute;
@@ -2476,10 +2466,6 @@ Tags: images, posts, feeds, pages, slidedeck
     left: 40px;
 }
 
-
-
-
-
 /**
  * Setting overflow to hidden and box-shadow to none when covers are on
  * - John
@@ -2504,4 +2490,54 @@ Tags: images, posts, feeds, pages, slidedeck
     right: auto !important;
     bottom: auto !important;
     left: 15px !important;
+}
+
+/* Text-Only */
+.lens-tool-kit.sd2-light .slide-source-custom.slide-type-textonly .sd2-node-caption {
+    background: rgb(255,255,255);
+}
+.lens-tool-kit.sd2-light .slide-source-custom.slide-type-textonly .sd2-node-caption .sd2-slide-text {
+    color: #000000;
+} 
+.lens-tool-kit.sd2-large .slide-source-custom.slide-type-textonly .sd2-slide-title {
+    margin-bottom: 15px;
+}
+.lens-tool-kit.sd2-medium .slide-source-custom.slide-type-textonly .sd2-slide-title {
+    margin-bottom: 10px;
+}
+
+/* Video Play Button */
+.lens-tool-kit.sd2-medium dl.slidedeck .slide-source-custom.custom-layout-body-text .video-wrapper .cover .play,
+.lens-tool-kit.sd2-small dl.slidedeck .slide-source-custom.custom-layout-body-text .video-wrapper .cover .play {
+    display: none;
+}
+.lens-tool-kit .slide-source-custom.slide-type-video .sd2-node-caption .play-video-alternative {
+    display: none;
+    position: absolute;
+    font-size: 1.4em;
+    line-height: 1.6em;
+    color: #fff;
+    height: 28px;
+    line-height: 28px;
+    padding: 0 0 0 35px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-decoration: none;
+    background: url('images/play-button-alt.png') 0 0 no-repeat;
+}
+.lens-tool-kit.sd2-small .slide-source-custom.slide-type-video .sd2-node-caption .play-video-alternative {
+    font-size: 1.1em;
+    height: 22px;
+    line-height: 22px;
+    padding: 0 0 0 27px;
+    background: url('images/play-button-alt-small.png') 0 0 no-repeat;
+}
+.lens-tool-kit.sd2-medium .slide-source-custom.slide-type-video.custom-layout-body-text .sd2-node-caption .play-video-alternative,
+.lens-tool-kit.sd2-small .slide-source-custom.slide-type-video.custom-layout-body-text .sd2-node-caption .play-video-alternative {
+    display: inline-block;
+    bottom: 15px;
+    left: 15px;
+}
+.lens-tool-kit .slide-source-custom.slide-type-video .sd2-node-caption .play-video-alternative:hover {
+    text-decoration: underline;
 }

@@ -803,6 +803,11 @@ fieldset.slidedeck-form-section#slidedeck-section-preview {
     margin-right: 5px;
     float: left;
 }
+#slidedeck-covers span.cover-option {
+    display: inline-block;
+    white-space: nowrap;
+}
+#slidedeck-covers span.cover-option-edit { height: 34px; }
 #slidedeck-covers span.fancy-radios {
     float: left;
     margin-right: 10px;
@@ -1625,7 +1630,7 @@ fieldset.slidedeck-form-section#slidedeck-section-preview {
 #slidedeck-section-preview iframe#slidedeck-preview {
     position: relative;
     display: block;
-    margin: 30px auto;
+    margin: 30px auto 40px;
     -webkit-transition: width 0.5s, height 0.5s;
     -moz-transition: width 0.5s, height 0.5s;
     transition: width 0.5s, height 0.5s;
@@ -3745,4 +3750,42 @@ form.slidedeck-form .slidedeck2-slider-wrapper input[type="text"]:hover {
 #icon-slidedeck2.icon32,
 #icon-update-slidedeck2.icon32 {
     background: url("../images/icon-slidedeck-header.png") center center no-repeat;
+}
+
+#slidedeck-slide-dimensions {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    -webkit-opacity: 1;
+    -moz-opacity: 1;
+    opacity: 1;
+    font: bold 1em sans-serif;
+    text-shadow: 0 0 10px rgba(0,0,0,0.5);
+    color: #fff;
+    -webkit-transition: opacity 1s;
+    -moz-transition: opacity 1s;
+    transition: opacity 1s;
+}
+.texture-light #slidedeck-slide-dimensions {
+    color: #333;
+    text-shadow: none;
+}
+#slidedeck-slide-dimensions.slidedeck-resizing {
+    -webkit-opacity: 0;
+    -moz-opacity: 0;
+    opacity: 0;
+    -webkit-transition: opacity 0.25s;
+    -moz-transition: opacity 0.25s;
+    transition: opacity 0.25s;
+}
+#slidedeck-slide-dimensions .width,
+#slidedeck-slide-dimensions .height { display: inline; }
+#slidedeck-slide-dimensions .calculating { display: none; }
+#slidedeck-slide-dimensions.getting-dimensions .width,
+#slidedeck-slide-dimensions.getting-dimensions .height { display: none; }
+#slidedeck-slide-dimensions.getting-dimensions .calculating { display: inline; }
+#slidedeck-section-preview:hover #slidedeck-slide-dimensions {
+    -webkit-opacity: 1;
+    -moz-opacity: 1;
+    opacity: 1;
 }

@@ -18,7 +18,7 @@ class SlideDeckLens_OTown extends SlideDeckLens_Scaffold {
                     'nav-dots' => 'Dots',
                     'nav-thumb' => "Thumbnails"
 				),
-				'value' => 'nav-dots',
+				'value' => 'nav-numbers',
 				'label' => 'Navigation Type',
 				'description' => "Note: Dots Navigation Type is limited to a max of 10. If you have more than 10 slides, Thumbnails is better for your users.",
 				'weight' => 20
@@ -33,10 +33,10 @@ class SlideDeckLens_OTown extends SlideDeckLens_Scaffold {
                 'type' => 'select',
                 'values' => array(
                     'autoplay-straight' => 'Straight',
-                    'autoplay-snake' => 'Outline',
+                    'autoplay-snake' => 'Snake',
                     'autoplay-hide' => 'None'
                 ),
-                'value' => 'autoplay-straight',
+                'value' => 'autoplay-snake',
                 'label' => 'AutoPlay Indicator',
                 'description' => "Choose the style of the animated timer when AutoPlay and Thumbnails are enabled",
                 'weight' => 30

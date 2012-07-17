@@ -103,7 +103,7 @@ class SlideDeckLens_ToolKit extends SlideDeckLens_Scaffold {
 					'arrowstyle-8' => 'Circle Play Arrow',
 					'arrowstyle-9' => 'Circle Pointer Arrow'
 				),
-				'value' => 'arrowstyle-1',
+				'value' => 'arrowstyle-7',
 				'label' => 'Arrow Style',
 				'description' => "Pick an arrow style that best matches your website's design.",
 				'weight' => 40,

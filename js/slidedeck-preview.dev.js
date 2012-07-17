@@ -63,6 +63,7 @@ var SlideDeckPrefix = "sd2-";
             var data = this.elems.form.serialize();
                 data = data.replace(/action\=([a-zA-Z0-9\-_]+)/gi, "action=slidedeck_preview_iframe_update");
             
+            this.elems.slideDimensions.addClass('getting-dimensions');
             this.elems.iframeBody.find('#mask').addClass('visible');
             
             //this.elems.iframeBody.find('#mask').addClass('visible');
@@ -82,6 +83,7 @@ var SlideDeckPrefix = "sd2-";
                     }
                     
                     if(adjustDimensions){
+                        self.elems.slideDimensions.addClass('slidedeck-resizing');
                         
                         // Removing the height on the inner div so that it will animate to the full height
                         if(previewInner.height() > 0) {
@@ -92,6 +94,9 @@ var SlideDeckPrefix = "sd2-";
                             height: parseInt(data.outer_height, 10) + 2
                         }, 500, function(){
                             self.elems.iframe[0].src = data.url;
+                            self.elems.slideDimensions
+                                .css('margin-left', (0 - parseInt(data.outer_width, 10)/2))
+                                .removeClass('slidedeck-resizing');
                         });
                     } else {
                         self.elems.iframe[0].src = data.url;
@@ -120,6 +125,49 @@ var SlideDeckPrefix = "sd2-";
                 event.preventDefault();
                 return false;
             }).attr('title', "Overlay links disabled for preview");
+            
+            this.updateSlideDimensions();
+        },
+        
+        getSlideDimensions: function(){
+            var slide = this.elems.slidedeck.find('dd.slide').eq(0);
+            
+            if(this.isVertical()){
+                slide = slide.find('.slidesVertical dd').eq(0);
+            }
+            
+            var dimensions = {
+                width: slide.width(),
+                height: slide.height()
+            };
+            
+            return dimensions;
+        },
+        
+        isVertical: function(){
+            // If the HTML element is passed in, detect differently.
+            if(typeof(this.slidedeck.deck == 'undefined')){
+                if(this.elems.slidedeck.find('.slidesVertical').length > 0){
+                    return true;
+                }
+                return false;
+            } else {
+                // Are there vertical slides anywhere on this deck?
+                if(this.slidedeck.verticalSlides){
+                    // Does the vertical slides object exist for the slide we're going to?
+                    if(this.slidedeck.verticalSlides[this.slidedeck.current-1]){
+                        // Does the slide we're going to actually have vertical slides?
+                        if(this.slidedeck.verticalSlides[this.slidedeck.current-1].navChildren){
+                            // Vertical
+                            return true;
+                        } else {
+                            // Horizontal
+                            return false;
+                        }
+                    }
+                }
+            }
+            return false;
         },
         
         realtime: function(elem, value){
@@ -135,6 +183,8 @@ var SlideDeckPrefix = "sd2-";
             if(typeof(this.updates[name]) == 'function'){
                 this.updates[name]($elem, value);
             }
+            
+            this.updateSlideDimensions();
         },
         
         update: function(elem, value){
@@ -170,6 +220,15 @@ var SlideDeckPrefix = "sd2-";
                     self.ajaxUpdate();
                 }
             }
+        },
+        
+        updateSlideDimensions: function(){
+            var dimensions = this.getSlideDimensions();
+            
+            this.elems.slideDimensions.find('.width').text(dimensions.width + "x");
+            this.elems.slideDimensions.find('.height').text(dimensions.height);
+            
+            this.elems.slideDimensions.removeClass('getting-dimensions');
         },
         
         validate: function(elem, value){
@@ -264,9 +323,13 @@ var SlideDeckPrefix = "sd2-";
                 self.eventOnLoad();
             });
             
+            this.elems.slideDimensions = $('#slidedeck-slide-dimensions');
+            
             this.outerWidth = this.elems.iframe.width();
             this.outerHeight = this.elems.iframe.height();
             this.size = this.elems.form.find('input[name="options[size]"]:checked').val();
+            
+            this.elems.slideDimensions.css('margin-left', (0 - this.outerWidth/2)).removeClass('slidedeck-resizing');
         }
     };
     

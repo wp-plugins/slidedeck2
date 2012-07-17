@@ -199,21 +199,23 @@ class SlideDeckSource_Twitter extends SlideDeck {
         // Create a cache key
         $cache_key = 'twitter' . $twitter_username . 'twitter_user';
         
-        // Attempt to read the cache
-        $twitter_user = slidedeck2_cache_read( $cache_key );
+        $response = slidedeck2_cache_read( $cache_key );
         
-        if( !$twitter_user ){
+        if( !$response ) {
             $response = wp_remote_get( $feed_url, $args );
             
             if( !is_wp_error( $response ) ) {
-                $twitter_user = json_decode( $response['body'] );
-                if( !empty( $twitter_user ) ){
-                    if( empty( $twitter_user->error ) ){
-                        // Write the cache
-                        slidedeck2_cache_write( $cache_key, $twitter_user, $this->twitter_fetch_user_cache );
-                        
-                        return $twitter_user;
-                    }
+                // Write the cache
+                slidedeck2_cache_write( $cache_key, $response, $this->twitter_fetch_user_cache );
+            }
+        }
+        
+        if( !is_wp_error( $response ) ) {
+            $twitter_user = json_decode( $response['body'] );
+            
+            if( !empty( $twitter_user ) ) {
+                if( empty( $twitter_user->error ) ) {
+                    return $twitter_user;
                 }
             }
         }

@@ -19,6 +19,8 @@
             elems.vertNavPrev = elems.frame.find('.deck-navigation.vertical.prev');
             elems.vertNavNext = elems.frame.find('.deck-navigation.vertical.next');
         
+        elems.slidedeck.find('.sd2-slide-text a').addClass('accent-color');
+
         deck.loaded(function( deck ){
             
             /**
