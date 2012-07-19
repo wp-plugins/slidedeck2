@@ -22,6 +22,9 @@ SlideDeck 2 for WordPress is a slider plugin that lets you easily create content
 * [More Details](http://www.slidedeck.com/)
 * [Knowledge Base](https://dtelepathy.zendesk.com/categories/20031167-slidedeck-2)
 
+**Lite Version:**
+This Lite version of SlideDeck 2 does not include the full set of 13 content sources that are available in the premium version. To see all the features available in the premium versions, check out the [live demo server](http://demo.slidedeck.com/wp-login.php).
+
 == Installation ==
 
 1. Upload the `slidedeck2-lite` folder and all its contents to the `/wp-content/plugins/` directory
