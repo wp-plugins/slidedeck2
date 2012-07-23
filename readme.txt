@@ -1,4 +1,4 @@
-=== SlideDeck 2 Lite ===
+=== SlideDeck 2 Lite Content Slider ===
 Contributors: dtelepathy, kynatro, jamie3d, dtrenkner, oriontimbers, nielsfogt, bkenyon, dtlabs
 Donate link: http://www.slidedeck.com/
 Tags: dynamic, image gallery, iPad, jquery, media, photo, pictures, plugin, posts, Search Engine Optimized, seo, skinnable, slide, slide show, slider, slideshow, theme, touch support, video, widget, Flickr, Instagram, 500px, RSS, Pinterest, Google+, Twitter, YouTube, Vimeo, Dailymotion, Picasa, Dribbble
