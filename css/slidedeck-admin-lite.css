@@ -206,8 +206,8 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
     position: relative;
     display: block;
     float: left;
-    width: 160px;
-    height: 150px;
+    width: 112px;
+    min-height: 112px;
     overflow: hidden;
     padding: 8px;
     -webkit-border-radius: 5px;
@@ -222,8 +222,8 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
 #slidedeck-upsell-simplemodal .lens .thumbnail {
     position: relative;
     display: block;
-    width: 152px;
-    height: 113px;
+    width: 104px;
+    height: 77px;
     padding: 3px;
     margin: 0 auto;
     border: 1px solid #aeb8c6;
@@ -242,8 +242,8 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
     -moz-border-radius: 3px;
     -o-border-radius: 3px;
     border-radius: 3px;
-    max-width: 152px;
-    max-height: 113px;
+    max-width: 104px;
+    max-height: 78px;
 }
 #slidedeck-upsell-simplemodal .lens span.shadow {
     display: block;
@@ -264,4 +264,29 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
     color: #5a5d67;
     padding-top: 6px;
 }
+#slidedeck-table .right #slidedeck-social-buttons {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+#slidedeck-social-buttons .tweeet-button { padding: 17px 0 10px 0; }
+#slidedeck-social-buttons .like-button { height: 32px; }
 
+#slidedeck-section-lenses .lens.placeholder .has-subtitle.title,
+#slidedeck-upsell-simplemodal .lens.placeholder .has-subtitle.title {
+	margin-top: -0.5em;
+}
+#slidedeck-section-lenses .lens .subtitle {
+	color: #000;
+}
+
+.lens.placeholder .subtitle,
+#slidedeck-upsell-simplemodal .lens .subtitle {
+	margin: 0;
+	padding: 0;
+	font-size: 12px;
+	line-height: 13px;
+	text-align: center;
+	font-style: italic;
+	display: block;
+	margin-top: -3px;
+}

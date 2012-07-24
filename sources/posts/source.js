@@ -19,7 +19,7 @@
                     if( checkedItems.length ){
 		                var postType = $('[name="options[post_type]"]').find('option:selected').val();
                     	for (var i=0; i < checkedItems.length; i++) {
-					  		var taxonomy = checkedItems[i].id.split('-')[2];
+					  		var taxonomy = self.getTaxonomySlugFromNameAttr( $( checkedItems[i] ).attr('name') );
 							self.updateTerms(postType, taxonomy);
 						}
                     }
@@ -170,6 +170,23 @@
             }
         },
         
+        /**
+         * Fetches the slug of the taxonomy from the name attribute
+         * Will extract 'my-slug' from 'options[taxonomies][my-slug]'
+         * 
+         * This will basically do a regex search for the last bracketed
+         * value and return it if one is found.
+         *  
+         */
+        getTaxonomySlugFromNameAttr: function( name ){
+        	var matches = name.match( /\[([a-zA-Z\-_]+)\]$/ );
+        	if( typeof( matches[1] ) != 'undefined' ){
+        		return matches[1];
+        	}
+        	
+        	return false;
+        },
+        
         initialize: function(){
             var self = this;
             
@@ -222,7 +239,8 @@
             	event.preventDefault();
             	
 				var t = $(this).attr("href");
-				var taxonomy = $(this).parents('.categorydiv').attr('id').split('-')[1];
+				var taxonomy = self.getTaxonomySlugFromNameAttr( $(this).parents('.categorydiv').attr('name') );
+				
 			    $(this).parent().addClass("tabs").siblings("li").removeClass("tabs");
 			    $("#" + taxonomy + "-tabs").siblings(".tabs-panel").hide();
 			    $(t).show();
@@ -245,8 +263,7 @@
              */
             this.elems.form.delegate('#slidedeck-filters input', 'change', function(event){
                 var postType = $('[name="options[post_type]"]').find('option:selected').val();
-                var taxonomy = $(this).attr('id').split('-')[2];
-                
+                var taxonomy = self.getTaxonomySlugFromNameAttr( $(this).attr('name') );
                 var value = this.value;
                 value = ( value == 1 ) ? true : false;
                 

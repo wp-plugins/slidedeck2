@@ -6,7 +6,7 @@
 		<div class="inner">
 			<div class="copyblock">
 			    <h3><?php _e( "More lenses? Yep, we've got those ready for you", $this->namespace ); ?></h3>
-				<p>We have 5 additional highly-crafted SlideDeck lenses available to all our Personal tier customers and up.</p>
+				<p><?php _e("We have 7 additional highly-crafted SlideDeck lenses available to all our Personal tier customers and up."); ?></p>
 				<?php include( SLIDEDECK2_DIRNAME . '/views/upsells/_upsell-additional-lenses.php' ); ?>
 			</div>
 			<div class="cta">

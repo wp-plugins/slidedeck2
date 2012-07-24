@@ -444,6 +444,21 @@ class SlideDeck {
 				    'maxLabel' => "Loosest",
 				    'step' => 10
 				)
+            ),
+            'indexType' => array(
+                'type' => 'hidden',
+                'data' => 'string',
+                'label' => "Index Type",
+                'value' => "numbers",
+                'values' => array(
+                    'hide' => "Turn off the indices", // sets javascript index option to boolean(false)
+                    'numbers' => "1, 2, 3, 4, 5 etc.", // sets javascript index option to boolean(true)
+                    'lc-letters' => "a, b, c, d, e etc.",
+                    'uc-letters' => "A, B, C, D, E etc.",
+                    'lc-roman' => "i, ii, iii, iv, v etc.",
+                    'uc-roman' => "I, II, III, IV, V etc."
+                ),
+                'description' => "Set the index type for your spines."
             )
         ),
         'Playback' => array( 
@@ -747,12 +762,31 @@ class SlideDeck {
         
         // Make sure this is this SlideDeck type
         if( $this->is_valid( $source ) ) {
-            $default_lens = "tool-kit";
+            $default_lens = SLIDEDECK2_DEFAULT_LENS;
             
             if( isset( $this->default_lens ) )
                 $default_lens = $this->default_lens;
             
             $lens = $default_lens;
+			
+			/**
+			 * What follows is a check for a special kind of bug.
+			 * If a content source specifies a lens different than the
+			 * default, and the lens is not available, we default to the plugin default.
+			 */
+			// Get all the loaded lenses
+			$SlideDeckLens = new SlideDeckLens();
+	        $lenses = $SlideDeckLens->get();
+
+			// Get all the loaded lens slugs
+	        $available_lenses = array();
+	        foreach( $lenses as $lens )
+				$available_lenses[] = $lens['slug'];
+			
+			// If the requested lens isn't available, revert.
+			if( !in_array( $lens, $available_lenses ) )
+				$lens = SLIDEDECK2_DEFAULT_LENS;
+			
         }
         
         return $lens;
@@ -2033,7 +2067,7 @@ class SlideDeck {
         $html .= '<a class="deck-navigation vertical next" href="#next-vertical"><span>Next</span></a>';
         
         $html.= apply_filters( "{$this->namespace}_render_slidedeck_after", "", $slidedeck );
-        $html.= '<a href="http://www.slidedeck.com/?utm_campaign=sd2_lite&utm_medium=chiclet&utm_source=' . urlencode( $_SERVER['HTTP_HOST'] ) . '&utm_content=sd2_lite_chiclet" rel="external" class="slidedeck-2-bug">SlideDeck 2 Beta</a>';
+        $html.= '<a href="http://www.slidedeck.com/?utm_campaign=sd2_lite&utm_medium=chiclet&utm_source=' . urlencode( $_SERVER['HTTP_HOST'] ) . '&utm_content=sd2_lite_chiclet" rel="external" class="slidedeck-2-bug">SlideDeck 2</a>';
         $html.= '</div>';
         
         // Additional JavaScript for rendering vertical slides
@@ -2066,6 +2100,26 @@ class SlideDeck {
             'x' => round( ( $javascript_options['touchThreshold'] / 100 ) * $width ),
             'y' => round( ( $javascript_options['touchThreshold'] / 100 ) * $height )
 		);
+        
+        switch( $slidedeck['options']['indexType'] ) {
+            case 'lc-letters':
+                $javascript_options['index'] = array('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z');
+                break;
+            case 'uc-letters':
+                $javascript_options['index'] = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
+                break;
+            case 'lc-roman':
+                $javascript_options['index'] = array('i','ii','iii','iv','v','vi','vii','viii','xi','x','xi','xii','xiii','xiv','xv','xvi','xvii','xviii','xix','xx','xxi','xxii','xxiii','xiv','xv');
+                break;
+            case 'uc-roman':
+                $javascript_options['index'] = array('I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII','XIII','XIV','XV','XVI','XVII','XVIII','XIX','XX','XXI','XXII','XXIII','XXIV','XXV');
+                break;
+            case 'hide':
+                $javascript_options['index'] = false;
+                break;
+            default:
+                $javascript_options['index'] = true;
+        }
         
         /**
          * Added on 2012-05-14 by Jamie

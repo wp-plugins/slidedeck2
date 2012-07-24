@@ -1,5 +1,5 @@
 /**
- * SlideDeck 1.3.8 Pro - 2012-07-17
+ * SlideDeck 1.3.9 Pro - 2012-07-18
  * 
  * More information on this project:
  * http://www.slidedeck.com/
@@ -40,10 +40,15 @@ var SlideDeckLens = {};
     window.SlideDeck = function(el,opts){
         var self = this,
             el = $(el),
-            versionPrefix = '';
+            versionPrefix = '',
+            distribution = 'pro';
         
         if( typeof(window.slideDeck2Version) != 'undefined' ){
         	versionPrefix  = 'sd2-' + window.slideDeck2Version + '-';
+        }
+        
+        if( typeof(window.slideDeck2Distribution) != 'undefined' ){
+        	distribution  = window.slideDeck2Distribution;
         }
         
         var VERSION = versionPrefix + "1.3.8";
@@ -253,7 +258,7 @@ var SlideDeckLens = {};
             if(bugSet === false){
                 bugSet = true;
                 var bug = new Image();
-                    bug.src = (document.location.protocol == "https:" ? "https:" : "http:") + "//www.slidedeck.com/6885858486f31043e5839c735d99457f045affd0/" + VERSION + "/pro";
+                    bug.src = (document.location.protocol == "https:" ? "https:" : "http:") + "//www.slidedeck.com/6885858486f31043e5839c735d99457f045affd0/" + VERSION + "/" + distribution;
             }
         };
         
