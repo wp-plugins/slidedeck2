@@ -40,6 +40,7 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
         <script type="text/javascript">
             var SlideDeckLens={};
             var slideDeck2Version = '<?php echo SLIDEDECK2_VERSION; ?>';
+            var slideDeck2Distribution = '<?php echo strtolower( SLIDEDECK2_LICENSE ); ?>';
         </script>
         
         <?php

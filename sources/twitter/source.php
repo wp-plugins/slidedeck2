@@ -93,7 +93,10 @@ class SlideDeckSource_Twitter extends SlideDeck {
                 	'class' => "fancy"
 				),
                 'description' => "If an image cannot be found, use the user's location map as a background image"
-            )
+            ),
+            'size' => array(
+            	'value' => 'small'
+			)
         )
     );
     

@@ -8,6 +8,10 @@ class SlideDeckLens_OTown extends SlideDeckLens_Scaffold {
             'titleFont' => array(
                 'value' => "oswald"
             ),
+            'hideSpines' => array(
+                'type' => 'hidden',
+                'value' => true
+            )
         ),
         'Navigation' => array(
 			'navigation-type' => array(

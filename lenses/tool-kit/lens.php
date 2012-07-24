@@ -44,6 +44,10 @@ class SlideDeckLens_ToolKit extends SlideDeckLens_Scaffold {
 				'label' => 'Text Color Variation',
 				'weight' => 60
 			),
+            'hideSpines' => array(
+                'type' => 'hidden',
+                'value' => true
+            )
         ),
 		'Navigation' => array(
             'navigation-position' => array(

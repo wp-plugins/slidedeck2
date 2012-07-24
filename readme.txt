@@ -15,7 +15,7 @@ Create SlideDecks on your WordPress blogging platform. Manage SlideDeck content 
 = Easily create content sliders for your WordPress site without code. Use images & text, plus YouTube, Flickr, Pinterest & more =
 SlideDeck 2 for WordPress is a slider plugin that lets you easily create content sliders out of almost any content. Connect to a variety of Content Sources like YouTube, Flickr, Twitter, WordPress posts and Pinterest to create gorgeous, dynamic sliders in a few clicks - no coding is required.
 
-**Requirements:** WordPress 3.3+, PHP5 and higher 
+**Requirements:** WordPress 3.3+, PHP5 and higher
 
 **Important Links:**
 
@@ -66,6 +66,13 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 
 
 == Changelog ==
+= 2.1.20120724 =
+* Added logic to make more of the lenses cleanly copyable
+* Twitter source now specifies small as a starting size
+* If the default lens for a source is not available, the default SlideDeck lens is used instead
+* Added Twitter, Facebook, and Google+ share buttons to the Lite plugin sidebar; show us some love and spread the word!
+* Fixed a bug where a taxonomy name with a dash in it eg: `my-custom-categories` would cause the WordPress posts taxonomy chooser (in SlideDeck) to fail
+
 = 2.1.20120717 =
 * Improved how we were affecting the force of target _blank on links when loading SlideDecks in an iframe
 * Fixed bug that was casuing some remote content sources cached responses to load incorrectly, causing a "no content" response when loading the SlideDeck
@@ -106,5 +113,8 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 * Fixed an issue where jQuery Masonry was not being enqueued
 
 == Upgrade Notice ==
+= 2.1.20120724 =
+A few bug fixes and the new 'Reporter' lens
+
 = 2.1.20120628 =
 Lite Plugin is available

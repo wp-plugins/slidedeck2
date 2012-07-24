@@ -13,7 +13,7 @@
  Plugin Name: SlideDeck 2 Lite
  Plugin URI: http://www.slidedeck.com/wordpress
  Description: Create SlideDecks on your WordPress blogging platform and insert them into templates and posts.
- Version: 2.1.20120717
+ Version: 2.1.20120724
  Author: digital-telepathy
  Author URI: http://www.dtelepathy.com
  License: GPL3
@@ -559,6 +559,7 @@ class SlideDeckLitePlugin {
         add_filter( 'plugin_action_links', array( &$this, 'plugin_action_links' ), 10, 2 );
 		
         add_filter( "{$this->namespace}_sidebar_ad_url", array( &$this, 'slidedeck_sidebar_ad_url' ) );
+        add_action( 'slidedeck_manage_sidebar_bottom', array( &$this, 'slidedeck_manage_sidebar_bottom' ) );
         add_filter( "{$this->namespace}_form_content_source", array( &$this, 'slidedeck_form_content_source' ), 10, 2 );
         add_filter( "{$this->namespace}_options_model", array( &$this, 'slidedeck_options_model' ), 9999, 2 );
 		add_filter( "{$this->namespace}_options_model", array( &$this, 'slidedeck_options_model_slide_count' ), 5, 2 );
@@ -1748,9 +1749,19 @@ class SlideDeckLitePlugin {
 
         /**
          * If the lens is compatible with having its JS copied,
-         * then we can attempt to do so.
+         * then we can attempt to do so. The eventual plan is to
+		 * have all lenses support this.
          */
-        $lens_whitelist = array( 'tool-kit', );
+        $lens_whitelist = array(
+	        'block-title',
+	        'fashion',
+	        'half-moon',
+	        'o-town',
+	        'proto',
+        	'tool-kit',
+	        'reporter',
+	        'video'
+		);
         if( in_array( $data['lens'], $lens_whitelist ) )
             $replace_js = true;
 
@@ -2814,7 +2825,7 @@ class SlideDeckLitePlugin {
     }
 
     /**
-     * Run the the_content filters on the passed in text
+     * Print JavaScript Constants
      *
      * prints some JavaScript constants that are used for
      * covers and other UI elements.
@@ -2822,6 +2833,7 @@ class SlideDeckLitePlugin {
     function print_header_javascript_constants( ) {
         echo '<script type="text/javascript">' . "\n";
         echo 'window.slideDeck2Version = "' . SLIDEDECK2_VERSION . '"' . "\n";
+        echo 'window.slideDeck2Distribution = "' . strtolower( SLIDEDECK2_LICENSE ) . '"' . "\n";
         echo '</script>' . "\n";
     }
 
@@ -3165,6 +3177,15 @@ class SlideDeckLitePlugin {
         $url = '//www.slidedeck.com/wordpress-plugin-iab-lite/';
         
         return $url;
+    }
+
+    /**
+     * Hook into slidedeck_manage_sidebar_bottom action
+     * 
+     * Output signup form in SlideDeck manage page sidebar.
+     */
+    public function slidedeck_manage_sidebar_bottom() {
+        include (SLIDEDECK2_DIRNAME . '/views/elements/_sidebar-social.php' );
     }
 
     /**
@@ -3542,7 +3563,7 @@ class SlideDeckLitePlugin {
         // Lite Admin JavaScript
         wp_register_script( "{$this->namespace}-admin-lite", SLIDEDECK2_URLPATH . "/js/{$this->namespace}-admin-lite" . (SLIDEDECK2_ENVIRONMENT == 'development' ? '.dev' : '') . ".js", array( 'slidedeck-admin' ), SLIDEDECK2_VERSION, true );
         // SlideDeck JavaScript Core
-        wp_register_script( "{$this->namespace}-library-js", SLIDEDECK2_URLPATH . '/js/slidedeck.jquery' . (SLIDEDECK2_ENVIRONMENT == 'development' ? '.dev' : '') . '.js', array( 'jquery' ), '1.3.8' );
+        wp_register_script( "{$this->namespace}-library-js", SLIDEDECK2_URLPATH . '/js/slidedeck.jquery' . (SLIDEDECK2_ENVIRONMENT == 'development' ? '.dev' : '') . '.js', array( 'jquery' ), '1.3.9' );
         // Public Javascript
         wp_register_script( "{$this->namespace}-public", SLIDEDECK2_URLPATH . '/js/slidedeck-public' . (SLIDEDECK2_ENVIRONMENT == 'development' ? '.dev' : '') . '.js', array( 'jquery', 'slidedeck-library-js' ), SLIDEDECK2_VERSION );
         // Mouse Scrollwheel jQuery event library
