@@ -40,17 +40,21 @@
 		 * also has the added side-effect of removing letterboxing for YouTube.
 		 */
         if( !empty( $nodes['video_meta']['thumbnail'] ) ): ?>
+        
     	<div class="image">
 			<div class="slidedeck-vertical-center-outer">
 			    <div class="slidedeck-vertical-center-middle">
 			        <div class="slidedeck-vertical-center-inner">
-						<img src="<?php echo $nodes['video_meta']['thumbnail']; ?>" alt="<?php echo $title; ?> Image" class="slide-image" />
-						<span class="border" style="<?php echo $image_border_style; ?>">&nbsp;</span>
+						<a class="sd2-image-link" href="<?php echo $permalink; ?>" target="<?php echo $target; ?>">
+							<img src="<?php echo $nodes['video_meta']['thumbnail']; ?>" alt="<?php echo $title; ?> Image" class="slide-image" style="<?php echo $image_style; ?>" />
+							<span class="sd2-border" style="<?php echo $image_border_style; ?>">&nbsp;</span>
+						</a>
 					</div>
 				</div>
 			</div>
 			<a class="play-video-alternative" href="#play">Play</a>
     	</div>
+    	
         <?php endif; ?>
 	</div>
 </div>
