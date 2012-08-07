@@ -75,11 +75,29 @@ function __isVerticalDeck( slidedeck ){
 }
 
 /**
+ * Is this an iOS browser?
+ * 
+ * @return boolean
+ */
+function __slidedeck2_isiOS(){
+    var iOS = false;
+    
+    if(
+        // If iOS
+        navigator.userAgent.match(/like Mac OS X/i)
+        // If iPad - Specifically
+        || navigator.userAgent.match(/iPad/i)
+    ) iOS = true;
+    
+    return iOS;
+}
+
+/**
  * Is this a mobile browser
  * 
  * @return boolean
  */
-function __isMobile(){
+function __slidedeck2_isMobile(){
     var mobile = false;
     
     if(
@@ -120,6 +138,7 @@ function onYouTubePlayerAPIReady() {
                     'autohide': 1,
                     'rel': 0,
                     'disablekb': 1,
+                    'cc_load_policy': 0,
                     'iv_load_policy': 3,
                     'modestbranding': 1
                 }
@@ -134,6 +153,10 @@ function onYouTubePlayerAPIReady() {
                     case 0:
                         // Video Ended...
                         jQuery.data( deckElement[0], 'video-slidedeck' ).videoEnded( videoIndex, 'youtube', deckId );
+                    break;
+                    case 1:
+                        // Add the video playing class to the deck if a YouTube video is playing.
+                        jQuery(deckElement[0]).parents('.slidedeck-frame').addClass("sd2-video-playing");
                     break;
                 }
                 iFrameYouTubePlayer.youTubePlayerState = video.data;
@@ -181,6 +204,11 @@ window.dmAsyncInit = function(){
             // Attach some events on the player (using standard DOM events)
             dailymotionPlayer.addEventListener("ended", function(e){
                 jQuery.data( deckElement[0], 'video-slidedeck' ).videoEnded( videoIndex, dailymotionPlayer.playerType, deckId );
+            });
+            
+            // Add the video playing class to the deck if a Dailymotion video is playing.
+            dailymotionPlayer.addEventListener("playing", function(e){
+                jQuery(deckElement[0]).parents('.slidedeck-frame').addClass("sd2-video-playing");
             });
             
             // Push the players into their global space.                
@@ -350,21 +378,6 @@ function briBriFlex(elem, max){
             $(this).closest('.cover').find('.play').trigger('click');
         });
         
-        // Only for IE - detect background image url and update style for DD element
-        if( $.browser.msie ){
-            if( $.browser.version <= 8.0 ){
-                deck.slides.each(function(ind){
-                    if( $(deck.slides[ind]).css('background-image') != 'none' ){
-                        var imgurl = $(deck.slides[ind]).css('background-image').match( /url\([\"\'](.*)[\"\']\)/ )[1];
-                        $(deck.slides[ind]).css({
-                            background: 'none'
-                        });
-                        deck.slides[ind].style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + imgurl + "', sizingMethod='scale')";
-                    }
-                });
-            }
-        }
-        
         // Get the old complete and before options
         var deckOptions = deck.options;
         var oldBefore = deck.options.before;
@@ -448,6 +461,11 @@ function briBriFlex(elem, max){
                     // Listen for the Finished event
                     froogaloop.addEvent('finish', function(data) {
                         jQuery.data( thedeck.deck[0], 'video-slidedeck' ).videoEnded( videoIndex, 'vimeo', thedeck.deck[0].id );
+                    });
+                    
+                    // Add the video playing class to the deck if a Vimeo video is playing.
+                    froogaloop.addEvent('play', function(data) {
+                        jQuery(thedeck.deck[0]).parents('.slidedeck-frame').addClass("sd2-video-playing");
                     });
                 });
                 vimeoPlayer.playerType = 'vimeo';
@@ -884,9 +902,16 @@ function briBriFlex(elem, max){
             return false;
         }
         
-        if(__isMobile() && this.elems.frame.hasClass('show-overlay-hover')){
+        if(__slidedeck2_isMobile() && this.elems.frame.hasClass('show-overlay-hover')){
             this.elems.frame.removeClass('show-overlay-hover');
             this.elems.frame.addClass('show-overlay-always');
+        }
+        
+        /**
+         * Hide the video cover on iOS. 
+         */
+        if(__slidedeck2_isiOS()){
+        	this.elems.frame.addClass('sd2-is-ios');
         }
         
         // The SlideDeck Overlay container
@@ -1037,18 +1062,45 @@ function briBriFlex(elem, max){
     $(document).ready(function(){
         // Initialize Overlays and nav for each SlideDeck
         $('.slidedeck').each(function(){
+            var $slidedeck = $(this);
+            var $slides = $slidedeck.find('dd');
+            
             if(!$.data(this, 'SlideDeckFadingNav'))
                 $.data(this, 'SlideDeckFadingNav', new SlideDeckFadingNav(this));
                 
             if(!$.data(this, 'SlideDeckOverlay'))
                 $.data(this, 'SlideDeckOverlay', new SlideDeckOverlay(this));
                 
-            $('.slidedeck').has('.slide-type-video').each(function(){
+            $slidedeck.has('.slide-type-video').each(function(){
                 if(typeof($.data(this, 'video-slidedeck')) == 'undefined'){
                     $.data(this, 'video-slidedeck', new SlideDeckVideoAPIs(this));
                 }
             });
             
+            // Only for IE - detect background image url and update style for DD element
+            if( $.browser.msie ){
+                if( $.browser.version <= 8.0 ){
+                    $slides.each(function(ind){
+                        var slide = $slides.eq(ind);
+                        var slideBackground = slide.find('.sd2-slide-background');
+                        if(slideBackground.length){
+                            if( slideBackground.css('background-image') != 'none' ){
+                                var imgurl = slideBackground.css('background-image').match( /url\([\"\'](.*)[\"\']\)/ )[1];
+                                slideBackground.css({
+                                    background: 'none'
+                                });
+                                
+                                var sizingMethod = "scale";
+                                if(slide.hasClass('sd2-image-scaling-none')){
+                                    sizingMethod = "image";
+                                }
+                                
+                                slideBackground[0].style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + imgurl + "', sizingMethod='" + sizingMethod + "')";
+                            }
+                        }
+                    });
+                }
+            }
         });
     });
 })(jQuery);

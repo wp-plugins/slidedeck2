@@ -189,7 +189,6 @@ class SlideDeckSource_Pinterest extends SlideDeck {
 	            if( $has_image ) {
 	            	$thumbnail = $has_image;
 	            	$full_image = preg_replace( '/_b\./', '.', $has_image );
-	                $slide['styles'] = 'background-image: url(' . $full_image . ');';
 	                $slide['classes'][] = "has-image";
 	                $slide['thumbnail'] = $thumbnail;
 	                $slide['type'] = "image";

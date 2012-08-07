@@ -66,6 +66,16 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 
 
 == Changelog ==
+= 2.1.20120807 =
+* Fixed a bug in the WordPress Post Content Source that was excluding search of the post content area for imagery when the user chose to use the excerpt instead of the post content for the slide copy.
+* Created new ability to choose how an image is scaled in a slide (no scaling, scale to fit, scale and crop)
+* Fixed bug with IE that was preventing links from being clickable in slides with certain lenses
+* Changed the way video slides are handled (on iOS) for better compatibility and better playback starting
+* Nav arrows are now hidden while a video is playing (on iOS) as they are unclickable anyway
+* Fixed but with O-Town lens JavaScript that was preventing proper completion of lens render in some cases
+* Moving the slidedeck2 options to its own option key in the database (resolves a conflict with SlideDeck 1)
+* Fixed a toggle issue with the Twitter content source flyout
+
 = 2.1.20120724 =
 * Added logic to make more of the lenses cleanly copyable
 * Twitter source now specifies small as a starting size

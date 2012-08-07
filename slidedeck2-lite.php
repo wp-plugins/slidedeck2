@@ -13,7 +13,7 @@
  Plugin Name: SlideDeck 2 Lite
  Plugin URI: http://www.slidedeck.com/wordpress
  Description: Create SlideDecks on your WordPress blogging platform and insert them into templates and posts.
- Version: 2.1.20120724
+ Version: 2.1.20120807
  Author: digital-telepathy
  Author URI: http://www.dtelepathy.com
  License: GPL3
@@ -87,7 +87,7 @@ class SlideDeckLitePlugin {
     var $menu = array( );
 
     // Name of the option_value to store plugin options in
-    var $option_name = "slidedeck_global_options";
+    var $option_name = "slidedeck2_global_options";
 
     var $sizes = array( 'small' => array( 'label' => "Small", 'width' => 300, 'height' => 300 ), 'medium' => array( 'label' => "Medium", 'width' => 500, 'height' => 500 ), 'large' => array( 'label' => "Large", 'width' => 960, 'height' => 500 ), 'custom' => array( 'label' => "Custom", 'width' => 500, 'height' => 500 ) );
 
@@ -315,7 +315,13 @@ class SlideDeckLitePlugin {
 
     /**
      * Hook into register_activation_hook action
-     *
+     * 
+     * NOTE: DO NOT RELY ON THIS PLUGIN HOOK FOR DATABASE MIGRATIONS
+     * -------------------------------------------------------------
+     * WordPress will not run the activation hook properly when it is bulk upgrading plugins
+     * so database migrations and the like will not run if the user has selected to bulk update
+     * all of their SlideDeck plugins at once. 
+     * 
      * Put code here that needs to happen when your plugin is first activated
      * (database
      * creation, permalink additions, etc.)
@@ -403,7 +409,24 @@ class SlideDeckLitePlugin {
 
         update_option( "slidedeck_version", SLIDEDECK2_VERSION );
         update_option( "slidedeck_license", SLIDEDECK2_LICENSE );
-
+		
+		
+		/**
+		 * Installation timestamp: SlideDeck 2
+		 */
+		$existing_timestamp = get_option( 'slidedeck2_installed', false );
+		if( !$existing_timestamp ){
+			update_option( 'slidedeck2_installed', time() );
+		}
+		
+		/**
+		 * Installation timestamp: SlideDeck 2 Lite
+		 */
+		$existing_timestamp = get_option( 'slidedeck2_lite_installed', false );
+		if( !$existing_timestamp ){
+			update_option( 'slidedeck2_lite_installed', time() );
+		}
+		
         // Activation
         slidedeck2_km( "SlideDeck Activated" );
     }
@@ -524,11 +547,12 @@ class SlideDeckLitePlugin {
         add_action( "wp_ajax_{$this->namespace}_stage_background", array( &$this, 'ajax_stage_background' ) );
         add_action( "wp_ajax_{$this->namespace}_update_available_lenses", array( &$this, 'ajax_update_available_lenses' ) );
         add_action( "wp_ajax_{$this->namespace}_validate_copy_lens", array( &$this, 'ajax_validate_copy_lens' ) );
-        add_action( "wp_ajax_{$this->namespace}_upsell_modal_content", array( &$this, 'ajax_upsell_modal_content' ) );
         add_action( "wp_ajax_{$this->namespace}_verify_license_key", array( &$this, 'ajax_verify_license_key' ) );
         add_action( "wp_ajax_{$this->namespace}_verify_addons_license_key", array( &$this, 'ajax_verify_addons_license_key' ) );
         add_action( "wp_ajax_{$this->namespace}2_blog_feed", array( &$this, 'ajax_blog_feed' ) );
         add_action( "wp_ajax_{$this->namespace}2_tweet_feed", array( &$this, 'ajax_tweet_feed' ) );
+
+        add_action( "wp_ajax_{$this->namespace}_upsell_modal_content", array( &$this, 'ajax_upsell_modal_content' ) );
 
         // Append necessary lens and initialization script commands to the bottom
         // of the DOM for proper loading
@@ -557,18 +581,20 @@ class SlideDeckLitePlugin {
         // Add a settings link next to the "Deactivate" link on the plugin
         // listing page
         add_filter( 'plugin_action_links', array( &$this, 'plugin_action_links' ), 10, 2 );
-		
-        add_filter( "{$this->namespace}_sidebar_ad_url", array( &$this, 'slidedeck_sidebar_ad_url' ) );
-        add_action( 'slidedeck_manage_sidebar_bottom', array( &$this, 'slidedeck_manage_sidebar_bottom' ) );
+
         add_filter( "{$this->namespace}_form_content_source", array( &$this, 'slidedeck_form_content_source' ), 10, 2 );
         add_filter( "{$this->namespace}_options_model", array( &$this, 'slidedeck_options_model' ), 9999, 2 );
-		add_filter( "{$this->namespace}_options_model", array( &$this, 'slidedeck_options_model_slide_count' ), 5, 2 );
-		add_filter( "{$this->namespace}_after_get", array( &$this, 'slidedeck_after_get' ) );
         add_filter( "{$this->namespace}_create_custom_slidedeck_block", array( &$this, 'slidedeck_create_custom_slidedeck_block' ) );
         add_filter( "{$this->namespace}_create_dynamic_slidedeck_block", array( &$this, 'slidedeck_create_dynamic_slidedeck_block' ) );
+        add_filter( "{$this->namespace}_get_slides", array( &$this, 'slidedeck_get_slides' ), 1000, 2 );
+		
+		add_filter( "{$this->namespace}_options_model", array( &$this, 'slidedeck_options_model_slide_count' ), 5, 2 );
+		add_filter( "{$this->namespace}_after_get", array( &$this, 'slidedeck_after_get' ) );
+        add_action( "{$this->namespace}_manage_sidebar_bottom", array( &$this, 'slidedeck_manage_sidebar_bottom' ) );
+        add_filter( "{$this->namespace}_sidebar_ad_url", array( &$this, 'slidedeck_sidebar_ad_url' ) );
         add_filter( "{$this->namespace}_lens_selection_after_lenses", array( &$this, 'slidedeck_lens_selection_after_lenses' ) );
         add_filter( "{$this->namespace}_source_modal_after_sources", array( &$this, 'slidedeck_source_modal_after_sources' ) );
-
+        
         // Add shortcode to replace SlideDeck shortcodes in content with
         // SlideDeck contents
         add_shortcode( 'SlideDeck2', array( &$this, 'shortcode' ) );
@@ -2079,7 +2105,22 @@ class SlideDeckLitePlugin {
     function get_option( $option_name ) {
         // Load option values if they haven't been loaded already
         if( !isset( $this->options ) || empty( $this->options ) ) {
-            $this->options = get_option( $this->option_name, $this->defaults );
+            /**
+             * If the SlideDeck 2 global options key doesn't
+             * exist, then we should copy the old key over to the new one.
+             */
+            $slidedeck_global_options = get_option( $this->option_name, false );
+            if( $slidedeck_global_options === false ) {
+                $old_slidedeck_global_options = get_option( "slidedeck_global_options", false );
+                if( empty( $slidedeck_global_options ) && !empty( $old_slidedeck_global_options ) ){
+                    // If the new options array is empty, and there's an old one, copy the old ones over.
+                    update_option( "slidedeck2_global_options", $old_slidedeck_global_options );
+                }
+                
+                $slidedeck_global_options = get_option( $this->option_name, $this->defaults );
+            }
+            
+            $this->options = $slidedeck_global_options;
         }
 
         if( array_key_exists( $option_name, $this->options ) ) {
@@ -3270,6 +3311,34 @@ class SlideDeckLitePlugin {
                 echo '<link rel="stylesheet" type="text/css" href="' . $href . (strpos( $href, "?" ) !== false ? "&" : "?") . "v=" . $wp_styles->registered["slidedeck-deck-{$source}-admin"]->ver . '" />';
             }
         }
+    }
+    
+    /**
+     * Hook into slidedeck_get_slides filter
+     * 
+     * Modify slide array to add classes based on certain settings
+     * 
+     * @param array $slides Array of slides to render
+     * @param array $slidedeck The SlideDeck object
+     * 
+     * @return array
+     */
+    function slidedeck_get_slides( $slides, $slidedeck ) {
+        if( $this->slidedeck_is_dynamic( $slidedeck ) ) {
+            if( isset( $slidedeck['options']['image_scaling'] ) ) {
+                foreach( $slides as &$slide ) {
+                    if( isset( $slide['vertical_slides'] ) ) {
+                        foreach( $slide['vertical_slides'] as &$vertical_slide ) {
+                            $vertical_slide['classes'][] = $this->SlideDeck->prefix . "image-scaling-" . $slidedeck['options']['image_scaling'];
+                        }
+                    } else {
+                        $slide['classes'][] = $this->SlideDeck->prefix . "image-scaling-" . $slidedeck['options']['image_scaling'];
+                    }
+                }
+            }
+        }
+        
+        return $slides;
     }
 
     /**

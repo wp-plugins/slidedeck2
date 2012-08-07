@@ -163,12 +163,12 @@
                     var $verticalSlide = elems.verticalSlides.eq(ind);
                     thumbSrc[ind] = $verticalSlide.attr('data-thumbnail-src');
                     
-                    var $backgroundImageElement = $verticalSlide.find('.sd2-slide-background, .slide-image');
+                    var $backgroundImageElement = $verticalSlide.find('.sd2-slide-background');
                     var backgroundImage = $backgroundImageElement.css('background-image');
 
                     if( backgroundImage == undefined ){
                         navigation.verticalNavLinksInner.eq(ind).addClass('no-thumb');
-                    }else{
+                    } else {
                         // Only for IE - detect background image url and update style for DD element
                         if( $.browser.msie && ($.browser.version <= 8.0)  ){
                             if( backgroundImage != 'none' ){
@@ -467,7 +467,7 @@
             // Get old complete() of the Vertical SlideDeck if it exists, and then set new complete() and append old one to it.
             var oldComplete = verticalDeck.options.complete;
             verticalDeck.options.complete = function(deck){
-                if(typeof(oldComplete(deck)) == 'function')
+                if(typeof(oldComplete) == 'function')
                     oldComplete(deck);
                     
                 verticalSlideIndicatorUpdate( deck.current );

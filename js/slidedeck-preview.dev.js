@@ -561,6 +561,16 @@ var SlideDeckPrefix = "sd2-";
         }
     };
 
+    SlideDeckPreview.updates['options[image_scaling]'] = function($elem, value){
+        $elem.find('option').each(function(){
+            if(this.value == value){
+                SlideDeckPreview.elems.slidedeck.find('dd').addClass(SlideDeckPrefix + 'image-scaling-' + this.value);
+            } else {
+                SlideDeckPreview.elems.slidedeck.find('dd').removeClass(SlideDeckPrefix + 'image-scaling-' + this.value);
+            }
+        });
+    };
+
     $(document).ready(function(){
         SlideDeckPreview.initialize();
     });

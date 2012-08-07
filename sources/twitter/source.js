@@ -8,13 +8,13 @@
             this.elems.form = $('#slidedeck-update-form');
             this.slidedeck_id = $('#slidedeck_id').val();
             
-            this.elems.form.delegate('#options-search_or_user-user, #options-search_or_user-search', 'change', function(event){
+            this.elems.form.delegate('#options-twitter_search_or_user-user, #options-twitter_search_or_user-search', 'change', function(event){
                 switch( event.target.id ){
-                    case 'options-search_or_user-user':
+                    case 'options-twitter_search_or_user-user':
                         $('li.twitter-search').hide();
                         $('li.twitter-username').show();
                     break;
-                    case 'options-search_or_user-search':
+                    case 'options-twitter_search_or_user-search':
                         $('li.twitter-username').hide();
                         $('li.twitter-search').show();
                     break;

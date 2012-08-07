@@ -381,7 +381,16 @@ class SlideDeckSource_Posts extends SlideDeck {
                         }
                         
                         $first_image = reset( $attachments->posts );
-                        $thumbnail = wp_get_attachment_image_src( $first_image->ID, array( $expanded_width, $expanded_height ) );
+                        
+                        // Determine image size to retrieve (closest size greater to SlideDeck size, or full of image scaling is off)
+                        $image_size = array( $expanded_width, $expanded_height );
+                        if( isset( $slidedeck['options']['image_scaling'] ) ) {
+                            if( $slidedeck['options']['image_scaling'] == "none" ) {
+                                $image_size = "full";
+                            }
+                        }
+                        
+                        $thumbnail = wp_get_attachment_image_src( $first_image->ID, $image_size );
                         $image_src = $thumbnail[0];
                     }
                 }
@@ -392,7 +401,15 @@ class SlideDeckSource_Posts extends SlideDeck {
                     if( is_numeric( $slide['id'] ) ) {
                         $thumbnail_id = get_post_thumbnail_id( $slide['id'] );
                         if( $thumbnail_id ) {
-                            $thumbnail = wp_get_attachment_image_src( $thumbnail_id, array( $expanded_width, $expanded_height ) );
+                            // Determine image size to retrieve (closest size greater to SlideDeck size, or full of image scaling is off)
+                            $image_size = array( $expanded_width, $expanded_height );
+                            if( isset( $slidedeck['options']['image_scaling'] ) ) {
+                                if( $slidedeck['options']['image_scaling'] == "none" ) {
+                                    $image_size = "full";
+                                }
+                            }
+                            
+                            $thumbnail = wp_get_attachment_image_src( $thumbnail_id, $image_size );
                             $image_src = $thumbnail[0];
                         }
                     }
@@ -517,15 +534,6 @@ class SlideDeckSource_Posts extends SlideDeck {
             $author = get_userdata( $post->post_author );
             $post_content = $post->post_content;
             
-            /**
-             * If the users would like to override their post content with their 
-             * post excerpt. We love our users. Really we do!
-             * TODO: Figure out a way for users to use shortcodes in post_content if they _really really really_ want to.
-             */
-            if( isset( $slidedeck['options']['use-custom-post-excerpt'] ) && !empty( $slidedeck['options']['use-custom-post-excerpt'] ) )
-                if( $slidedeck['options']['use-custom-post-excerpt'] && !empty( $post->post_excerpt ) )
-                $post_content = $post->post_excerpt;
-            
             $slide = array(
                 'id' => $post_id,
                 'title' => $post->post_title,
@@ -536,6 +544,7 @@ class SlideDeckSource_Posts extends SlideDeck {
                 'author_email' => $author->user_email,
                 'author_avatar' => slidedeck2_get_avatar( $author->user_email ),
                 'content' => $post_content,
+                'excerpt' => $post->post_excerpt,
                 'created_at' => strtotime( $post->post_date_gmt ),
                 'local_created_at' => $post->post_date
             );
@@ -793,10 +802,17 @@ class SlideDeckSource_Posts extends SlideDeck {
             // Look to see if an image is associated with this slide
             $has_image = $this->get_image( $slide_nodes, $slidedeck );
             
+            /**
+             * If the users would like to override their post content with their 
+             * post excerpt. We love our users. Really we do!
+             */
+            if( isset( $slidedeck['options']['use-custom-post-excerpt'] ) && !empty( $slidedeck['options']['use-custom-post-excerpt'] ) )
+                if( $slidedeck['options']['use-custom-post-excerpt'] && !empty( $post->post_excerpt ) )
+                $slide_nodes['content'] = $slide_nodes['excerpt'];
+            
             $slide_nodes['content'] = strip_shortcodes( $slide_nodes['content'] );
             
             if( $has_image ) {
-                $slide['styles'] = 'background-image: url(' . $has_image . ');';
                 $slide['classes'][] = "has-image";
                 $slide['type'] = "image";
                 $slide['thumbnail'] = $this->_get_post_thumbnail( $slide_nodes['id'], $has_image );

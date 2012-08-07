@@ -47,22 +47,6 @@
                 }
             }
             
-            // Only for IE - detect background image url and update style for DD element
-            if( $.browser.msie ){
-                if( $.browser.version <= 8.0 ){
-                    elems.slides.each(function(ind){
-                        if( $(elems.slides[ind]).css('background-image') != 'none' ){
-                            var imgurl = $(elems.slides[ind]).css('background-image').match( /url\([\"\'](.*)[\"\']\)/ )[1];
-                            $(elems.slides[ind]).css({
-                                background: 'none'
-                            });
-                            elems.slides[ind].style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + imgurl + "', sizingMethod='scale')";
-                        };
-                    });
-                }
-            }
-            
-            
         	var overlay = function(){
         		if(elems.frame.hasClass('sd2-frame')){
     	    		jQuery('<div class="sd-lens-shadow-top"></div><div class="sd-lens-shadow-left"></div><div class="sd-lens-shadow-corner"></div>').appendTo(elems.slidedeck);

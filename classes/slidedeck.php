@@ -196,6 +196,18 @@ class SlideDeck {
                 'value' => true,
                 'label' => "Hide Slide Title Bars",
                 'description' => "Not all lenses work well with slide title bars turned on"
+            ),
+            'image_scaling' => array(
+                'type' => 'select',
+                'data' => "string",
+                'value' => "cover",
+                'values' => array(
+                    'none' => "Do Not Scale Images",
+                    'cover' => "Scale Proportionally and Crop",
+                    'contain' => "Scale Proportionally and Do Not Crop"
+                ),
+                'label' => "Image Scaling",
+                'description' => "Changes the way that feature images on a slide are scaled (IE 8 and below do not support proportional scaling)"
             )
         ),
         'Content' => array(

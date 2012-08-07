@@ -272,11 +272,6 @@ class SlideDeckSource_Flickr extends SlideDeck {
 	            $slide_nodes['source'] = $slide['source'];
 	            $slide_nodes['type'] = $slide['type'];
                 
-                // In-line styles to apply to the slide DD element
-                $slide_styles = array(
-                    'background-image' => 'url(' . $slide_nodes['image'] . ')'
-                );
-                
                 // Build an in-line style tag if needed
                 if( !empty( $slide_styles ) ) {
                     foreach( $slide_styles as $property => $value ) {

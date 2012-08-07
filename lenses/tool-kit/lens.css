@@ -38,7 +38,6 @@ Tags: images, posts, feeds, pages, slidedeck
 }
 .lens-tool-kit .slidedeck dd {
     width: 100%;
-    background-size: cover;
     background-position: center center;
     background-color: #000000;
 }
@@ -120,7 +119,7 @@ Tags: images, posts, feeds, pages, slidedeck
     height: 100%;
     z-index: 1;
 }
-.lens-tool-kit dl.slidedeck .slide-type-video .video-wrapper .cover{
+.lens-tool-kit dl.slidedeck .slide-type-video .video-wrapper .cover {
     position: absolute;
     z-index: 2;
     top: 0;
@@ -129,11 +128,11 @@ Tags: images, posts, feeds, pages, slidedeck
     bottom: 0;
     background-position: center center;
     background-repeat: no-repeat;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
 }
+.lens-tool-kit.sd2-dark dl.slidedeck .slide-type-video .video-wrapper .cover { background-color: #000; }
+.lens-tool-kit.sd2-light dl.slidedeck .slide-type-video .video-wrapper .cover { background-color: #fff; }
+.lens-tool-kit dl.slidedeck .slide-type-video.sd2-image-scaling-cover .video-wrapper .cover { background-size: cover; }
+.lens-tool-kit dl.slidedeck .slide-type-video.sd2-image-scaling-contain .video-wrapper .cover { background-size: contain; }
 /* Necessary because IE ignores click events on children of elements that have filter: CSS proprties. #hate_ie */
 .lens-tool-kit dl.slidedeck .slide-type-video .video-wrapper .cover .ie-background-image {
     position: absolute;
@@ -545,6 +544,7 @@ Tags: images, posts, feeds, pages, slidedeck
 .lens-tool-kit.sd2-nav-thumb.sd2-small .sd-nav-deck { height: 35px; }
 .lens-tool-kit .sd-node-title-box {
     position: absolute;
+    z-index: 2;
     display: none;
     left: 0;
     right: 0;
@@ -581,20 +581,20 @@ Tags: images, posts, feeds, pages, slidedeck
 .lens-tool-kit.sd2-show-readmore .sd-node-title-box .readmore { display: inline; }
 .lens-tool-kit.sd2-small .sd-node-title-box .slide-text { display: none; }
 .lens-tool-kit.sd2-title-light .sd-node-title-box {
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#80ffffff,endColorstr=#80ffffff);
+    background: #fff;
     background: rgba(255,255,255,.8);
     color: #000;
 }
-.lens-tool-kit.sd2-medium.content-source-twitter .sd-node-title-box {
+.lens-tool-kit.sd2-medium .slide-source-twitter .sd-node-title-box {
     padding-left: 60px;
     padding-right: 60px;
 }
 .lens-tool-kit.sd2-small .slide-source-twitter .sd-node-title-box { font-size: 0.8em; }
 .lens-tool-kit.sd2-medium .slide-source-twitter .sd-node-title-box { font-size: 1.3em; }
 .lens-tool-kit.sd2-large .slide-source-twitter .sd-node-title-box { font-size: 1.4em; }
-.lens-tool-kit.content-source-twitter .sd-node-title-box h2 { margin: 0; }
+.lens-tool-kit .slide-source-twitter .sd-node-title-box h2 { margin: 0; }
 .lens-tool-kit.sd2-title-dark .sd-node-title-box {
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#80000000,endColorstr=#80000000);
+    background: #000;
     background: rgba(0,0,0,.8);
     color: #FFF;
 }
@@ -624,7 +624,7 @@ Tags: images, posts, feeds, pages, slidedeck
 .lens-tool-kit.sd2-small .sd-node-title-box {
     padding: 0 15px;
 }
-.lens-tool-kit.sd2-small.content-source-twitter .sd-node-title-box { display: block; }
+.lens-tool-kit.sd2-small .slide-source-twitter .sd-node-title-box { display: block; }
 .lens-tool-kit.sd2-nav-pos-top.sd2-nav-dots.sd2-frame .sd-nav-wrapper { top: 25px; }
 .lens-tool-kit.sd2-nav-pos-top.sd2-nav-dots.sd2-hairline .sd-nav-wrapper { top: 15px; }
 .lens-tool-kit.sd2-nav-pos-top.sd2-nav-hanging.sd2-nav-dots .sd-nav-wrapper { top: 0px; }

@@ -24,6 +24,18 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
 */
 .slidedeck { z-index: 2; }
 
+.slidedeck dd .sd2-slide-background {
+    position: absolute;
+    display: block;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
 /* Navigation Style Outline Overrides */
 .slidedeck-frame a.deck-navigation,
 .slidedeck-frame .vertical-slide-nav a,
@@ -1988,3 +2000,27 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
 }
 .slidedeck-frame.sd2-small dl.slidedeck .slide-type-video .video-wrapper .cover .play:hover,
 .slidedeck-frame.sd2-small dl.slidedeck .slide-type-video .video-wrapper .cover .play:active { background-position: 0 -52px; }
+
+.slidedeck-frame dl.slidedeck dd.sd2-image-scaling-contain .sd2-slide-background { background-size: contain; }
+.slidedeck-frame dl.slidedeck dd.sd2-image-scaling-cover .sd2-slide-background { background-size: cover; }
+.slidedeck-frame dl.slidedeck dd.sd2-image-scaling-none .sd2-slide-background { background-size: none; }
+
+
+/* Hide the video cover elements on iOS */
+/* This is the best we can do for now to avoid the play video bug */
+.slidedeck-frame.sd2-is-ios dl.slidedeck .slide-type-video .video-wrapper .cover {
+	display: none !important;
+}
+
+.slidedeck-frame.sd2-is-ios dl.slidedeck .slide-type-video .video-wrapper iframe {
+	-webkit-transform:scale(0.01);
+}
+.slidedeck-frame.sd2-is-ios dl.slidedeck .slide-type-video.active .video-wrapper iframe {
+	-webkit-transform:scale(1);
+}
+
+/* Hide the nav arrows on iOS while the video is playing */
+.slidedeck-frame.sd2-is-ios.sd2-video-playing a.deck-navigation {
+    visibility: hidden !important;
+    opacity: 0 !important; 
+}

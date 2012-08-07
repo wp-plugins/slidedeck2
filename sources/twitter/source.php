@@ -56,7 +56,7 @@ class SlideDeckSource_Twitter extends SlideDeck {
             ),
             'twitter_q' => array(
             	'data' => "string",
-            	'value' => "",
+            	'value' => "#wordpress",
             	'type' => "text",
 				'label' => "Search Term",
 				'attr' => array(
@@ -624,7 +624,6 @@ class SlideDeckSource_Twitter extends SlideDeck {
             $has_image = !empty( $slide_nodes['image'] );
             
             if( $has_image ) {
-                $slide['styles'] = 'background-image: url(' . $slide_nodes['image'] . ');';
                 $slide['thumbnail'] = $slide_nodes['image'];
                 $slide['classes'][] = "has-image";
                 $slide['type'] = "image";
