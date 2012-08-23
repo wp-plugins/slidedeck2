@@ -41,9 +41,16 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
         <link rel="stylesheet" type="text/css" href="<?php echo SLIDEDECK2_URLPATH; ?>/css/fancy-form.css" media="screen" />
         <link rel="stylesheet" type="text/css" href="<?php echo SLIDEDECK2_URLPATH; ?>/css/slidedeck-admin.css" media="all" />
         
-        <script type="text/javascript" src="<?php echo $wp_scripts->registered['jquery']->src; ?>"></script>
-        <script type="text/javascript" src="<?php echo $wp_scripts->registered['slidedeck-admin']->src; ?>"></script>
-        <script type="text/javascript" src="<?php echo $wp_scripts->registered['fancy-form']->src; ?>"></script>
+        <?php
+            foreach( $scripts as $script ) {
+                $src = $wp_scripts->registered[$script]->src;
+                if ( !preg_match( '|^https?://|', $src ) && !( $content_url && 0 === strpos( $src, $content_url ) ) ) {
+                    $src = $base_url . $src;
+                }
+                
+                echo '<script type="text/javascript" src="' . $src . ( strpos( $src, "?" ) !== false ? "&" : "?" ) . "v=" . $wp_scripts->registered[$script]->ver . '"></script>';
+            }
+        ?>
         
         <style type="text/css">
             body, html {

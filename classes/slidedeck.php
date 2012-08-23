@@ -757,6 +757,32 @@ class SlideDeck {
     }
     
     /**
+     * Get the cache busting increment
+     * 
+     * @uses get_option()
+     * 
+     * @return int
+     */
+    private function _cache_get_buster() {
+        $cache_buster = get_option( $this->namespace . '-cache-buster', 1 );
+        
+        return $cache_buster;
+    }
+    
+    /**
+     * Increment the cache buster
+     * 
+     * @uses SlideDeck::_cache_get_buster()
+     * @uses update_option()
+     */
+    private function _cache_increment_buster() {
+        $cache_buster = $this->_cache_get_buster();
+        $cache_buster++;
+        
+        update_option( $this->namespace . '-cache-buster', $cache_buster );
+    }
+    
+    /**
      * SlideDeck Default lens hook-in
      * 
      * Hook for slidedeck_default_lens filter to change the default, starting lens
@@ -943,7 +969,7 @@ class SlideDeck {
      * @return array
      */
     function _slidedeck_options_model( $options_model, $slidedeck ) {
-        global $slidedeck_fonts;
+        $slidedeck_fonts = $this->get_fonts( $slidedeck );
         
         foreach( (array) $slidedeck_fonts as $key => $font ) {
             $options_model['Appearance']['titleFont']['values'][$key] = $font['label'];
@@ -1076,6 +1102,9 @@ class SlideDeck {
         
         $slidedeck = $this->get( $slidedeck_id, null, null, $post_status );
         
+        // Increment the cache buster
+        $this->_cache_increment_buster();
+        
         do_action( "{$this->namespace}_after_create", $slidedeck_id, $slidedeck );
         
         return $slidedeck;
@@ -1131,6 +1160,9 @@ class SlideDeck {
         // Delete the SlideDeck entry
         wp_delete_post( $id, true );
         
+        // Increment the cache buster
+        $this->_cache_increment_buster();
+        
         do_action( "{$this->namespace}_after_delete", $id, $source );
     }
 	
@@ -1156,6 +1188,47 @@ class SlideDeck {
 		delete_post_meta( $slidedeck_preview_id, "{$this->namespace}_source", $source );
 	}
     
+    /**
+     * Duplicate's a SlideDeck
+     * 
+     * Takes the ID of an existing deck and duplicates the
+     * deck along with all the settings.
+     * 
+     * @param integer $slidedeck_id Source SlideDeck ID
+     * 
+     * @uses SlideDeck::get()
+     * @uses wp_insert_post()
+     * @uses SlideDeck::save()
+     * 
+     * @return array
+     */
+    final public function duplicate_slidedeck( $slidedeck_id ) {
+        global $wpdb;
+        
+        $slidedeck = $this->get( $slidedeck_id );
+        $slidedeck['title'] = $slidedeck['title'] . " Copy";
+        
+        $post_args = array(
+            'post_status' => 'publish',
+            'post_type' => SLIDEDECK2_POST_TYPE,
+            'post_title' => $slidedeck['title']
+        );
+        $slidedeck_copy_id = wp_insert_post( $post_args );
+        
+        $get_post_meta_sql = "SELECT * FROM {$wpdb->postmeta} WHERE post_id = %d";
+        $slidedeck_postmetas = $wpdb->get_results( $wpdb->prepare( $get_post_meta_sql, $slidedeck_id ) );
+        foreach( $slidedeck_postmetas as $slidedeck_postmeta ) {
+            add_post_meta( $slidedeck_copy_id, $slidedeck_postmeta->meta_key, maybe_unserialize( $slidedeck_postmeta->meta_value ) );
+        }
+        
+        // Increment the cache buster
+        $this->_cache_increment_buster();
+        
+        do_action( "{$this->namespace}_duplicate_slidedeck", $slidedeck_id, $slidedeck_copy_id );
+        
+        return $slidedeck;
+    }
+
     /**
      * Convenience method for loading SlideDecks
      * 
@@ -1214,8 +1287,13 @@ class SlideDeck {
             }
         }
         
-        $cache_key = md5( __METHOD__ . $sql );
-        $slidedecks = wp_cache_get( $cache_key );
+        $cache_key = $this->namespace . "--" . md5( __METHOD__ . $sql );
+        // For group selections of SlideDecks, add the cache buster incremement
+        if( !isset( $id ) ) {
+            $cache_key.= "-" . $this->_cache_get_buster();
+        }
+        
+        $slidedecks = wp_cache_get( $cache_key, "{$this->namespace}-get" );
         
         if( $slidedecks == false ) {
             $query_posts = $wpdb->get_results( $sql );
@@ -1240,7 +1318,7 @@ class SlideDeck {
                 $slidedecks[] = $slidedeck;
             }
             
-            wp_cache_set( $cache_key, $slidedecks );
+            wp_cache_set( $cache_key, $slidedecks, "{$this->namespace}-get" );
         }
 
         if( $orderby == "slidedeck_source" ) {
@@ -1359,9 +1437,9 @@ class SlideDeck {
         
         $sql = $wpdb->prepare( "SELECT * FROM {$wpdb->posts} WHERE {$wpdb->posts}.ID = %d", $slidedeck_id );
         
-        $cache_key = md5( $sql );
+        $cache_key = $this->namespace . "--" . md5( $sql );
         
-        $parent_id = wp_cache_get( $cache_key );
+        $parent_id = wp_cache_get( $cache_key, "{$this->namespace}-get-parent-id" );
         
         if( $parent_id == false ) {
             $row = $wpdb->get_row( $sql );
@@ -1374,7 +1452,7 @@ class SlideDeck {
                 $parent_id = $row->ID;
             }
             
-            wp_cache_set( $cache_key, $parent_id );
+            wp_cache_set( $cache_key, $parent_id, "{$this->namespace}-get-parent-id" );
         }
         
         return $parent_id;
@@ -1690,9 +1768,9 @@ class SlideDeck {
      * @return array
      */
     function get_options( $id, $deprecated, $lens, $source ) {
-        $cache_key = md5( serialize( func_get_args() ) );
+        $cache_key = $this->namespace . "--" . md5( serialize( func_get_args() ) );
         
-        $options = wp_cache_get( $cache_key );
+        $options = wp_cache_get( $cache_key, "{$this->namespace}-options" );
         
         if( $options == false ) {
             $stored_options = (array) get_post_meta( $id, "{$this->namespace}_options", true );
@@ -1701,7 +1779,7 @@ class SlideDeck {
             
             $options = array_merge( (array) $default_options, $stored_options );
             
-            wp_cache_set( $cache_key, $options );
+            wp_cache_set( $cache_key, $options, "{$this->namespace}-options" );
         }
         
         return $options;
@@ -2412,42 +2490,4 @@ class SlideDeck {
         
         return $slidedeck_preview;
     }
-	
-    /**
-     * Duplicate's a SlideDeck
-     * 
-     * Takes the ID of an existing deck and duplicates the
-	 * deck along with all the settings.
-     * 
-     * @param integer $slidedeck_id Source SlideDeck ID
-     * 
-     * @uses SlideDeck::get()
-     * @uses wp_insert_post()
-     * @uses SlideDeck::save()
-     * 
-     * @return array
-     */
-	final public function duplicate_slidedeck( $slidedeck_id ) {
-        global $wpdb;
-        
-        $slidedeck = $this->get( $slidedeck_id );
-		$slidedeck['title'] = $slidedeck['title'] . " Copy";
-		
-        $post_args = array(
-            'post_status' => 'publish',
-            'post_type' => SLIDEDECK2_POST_TYPE,
-            'post_title' => $slidedeck['title']
-        );
-        $slidedeck_copy_id = wp_insert_post( $post_args );
-        
-        $get_post_meta_sql = "SELECT * FROM {$wpdb->postmeta} WHERE post_id = %d";
-        $slidedeck_postmetas = $wpdb->get_results( $wpdb->prepare( $get_post_meta_sql, $slidedeck_id ) );
-        foreach( $slidedeck_postmetas as $slidedeck_postmeta ) {
-            add_post_meta( $slidedeck_copy_id, $slidedeck_postmeta->meta_key, maybe_unserialize( $slidedeck_postmeta->meta_value ) );
-        }
-        
-        do_action( "{$this->namespace}_duplicate_slidedeck", $slidedeck_id, $slidedeck_copy_id );
-        
-        return $slidedeck;
-	}
 }

@@ -228,6 +228,8 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
         		});
         	})(jQuery);
         </script>
+        
+        <?php do_action( "{$namespace}_iframe_header", $slidedeck, $preview ); ?>
     </head>
     <body>
     	<?php if( SLIDEDECK2_ENVIRONMENT != "production" && $preview ): ?>
@@ -270,5 +272,7 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
                 })(jQuery);
             </script>
         <?php endif; ?>
+        
+        <?php do_action( "{$namespace}_iframe_footer", $slidedeck, $preview ); ?>
     </body>
 </html>

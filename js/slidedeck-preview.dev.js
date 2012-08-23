@@ -72,6 +72,7 @@ var SlideDeckPrefix = "sd2-";
                 type: "GET",
                 dataType: "json",
                 data: data,
+                cache: false,
                 success: function(data){
                     var adjustDimensions = false;
                     var previewInner = $('#slidedeck-section-preview .inner');

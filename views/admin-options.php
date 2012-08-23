@@ -53,7 +53,10 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
                                 </div>
                             </li>
                             <li>
-                            	<?php slidedeck2_html_input( 'data[disable_wpautop]', $data['disable_wpautop'], array( 'attr' => array( 'class' => 'fancy' ), 'type' => 'radio', 'label' => "Disable <code>wpautop()</code> function?" ) ); ?>
+                                <?php slidedeck2_html_input( 'data[always_load_assets]', $data['always_load_assets'], array( 'attr' => array( 'class' => 'fancy' ), 'type' => 'radio', 'label' => "Always load SlideDeck JavaScript/CSS on every page?" ) ); ?><br />
+                            </li>
+                            <li>
+                                <?php slidedeck2_html_input( 'data[disable_wpautop]', $data['disable_wpautop'], array( 'attr' => array( 'class' => 'fancy' ), 'type' => 'radio', 'label' => "Disable <code>wpautop()</code> function?" ) ); ?>
                             </li>
                             <li>
                             	<?php slidedeck2_html_input( 'data[dont_enqueue_scrollwheel_library]', $data['dont_enqueue_scrollwheel_library'], array( 'attr' => array( 'class' => 'fancy' ), 'type' => 'radio', 'label' => "Don't enqueue the jquery.mousewheel.js library (if you have your own solution)" ) ); ?>

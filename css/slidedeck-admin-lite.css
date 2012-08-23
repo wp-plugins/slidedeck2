@@ -290,3 +290,138 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
 	display: block;
 	margin-top: -3px;
 }
+
+/* 7 day discount upgrade */
+#discount-upgrade-notice {
+    width: 978px;
+    height: 35px;
+    margin-top: 31px;
+    border-radius: 4px;
+    border: 1px solid #d0e6d4;
+    background: #ebf7eb;
+    text-align: center;
+    position: relative;
+}
+
+#discount-upgrade-notice > p {
+    font-size: 13px;
+    color: #797f94;
+    font-family: sans-serif;
+    margin: 10px 0 0;
+}
+
+#discount-upgrade-notice > p strong {
+    font-weight: bold;
+    color: #333;
+}
+
+#discount-upgrade-notice > p a {
+    color: #4ba0ff;
+    text-decoration: none;
+}
+
+#discount-upgrade-notice > p a:hover { text-decoration: underline; }
+
+/* Discount upgrade pointer */
+.slidedeck_installation-discount {
+    left: 440px !important;
+    width: 432px !important;
+}
+
+.slidedeck_installation-discount .wp-pointer-content {
+    border: none;
+    background: #f5f6f9;
+    padding-bottom: 0;
+}
+
+.slidedeck_installation-discount.wp-pointer .wp-pointer-content h3 {
+    height: 49px;
+    padding-bottom: 0;
+    padding-top: 0;
+    margin-bottom: 0;
+    border: none;
+    line-height: 49px;
+    background: url('../images/discount-purple-bar.png') 0 0 repeat-x;
+}
+
+.slidedeck_installation-discount.wp-pointer .wp-pointer-content h3::before {
+    background: url('../images/discount-info.png') 0 0 no-repeat;
+}
+
+.slidedeck_installation-discount.wp-pointer .wp-pointer-content .more-info {
+    padding: 25px 33px;
+    overflow: hidden;
+}
+
+.slidedeck_installation-discount.wp-pointer .wp-pointer-content .more-info > strong {
+    font-weight: bold;
+    font-family: sans-serif;
+    font-size: 15px;
+    color: #333;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.slidedeck_installation-discount.wp-pointer .wp-pointer-content .more-info p {
+    margin: 0;
+    padding: 0;
+    color: #797f94;
+    font-family: sans-serif;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 22px;
+    margin-bottom: 15px;
+}
+
+.slidedeck_installation-discount .wp-pointer-arrow {
+    background-image: url('../images/discount-arrow.png');
+}
+
+.slidedeck_installation-discount.wp-pointer .wp-pointer-content .more-info span.the-offer {
+    display: block;
+    position: relative;
+    float: left;
+    width: 174px;
+    height: 43px;
+    margin-left: 10px;
+    background: #3c3c3c;
+    border-radius: 6px;
+    border: 1px solid #222425;
+    box-shadow: 0 3px 0 #222425, inset 0 1px 1px rgba(255,255,255,0.3), inset 0 -1px 0 rgba(255,255,255,0.1);
+    text-align: center;
+    font-family: sans-serif;
+    font-size: 32px;
+    color: #fff;
+    font-weight: bold;
+    line-height: 43px;
+}
+
+.slidedeck_installation-discount.wp-pointer .wp-pointer-content .more-info span.the-offer > span {
+    position: absolute;
+    width: 174px;
+    height: 3px;
+    top: 21px;
+    left: 0;
+    background: url('../images/discount-offer-overlay.png') 0 0 repeat-x;
+}
+
+.slidedeck_installation-discount.wp-pointer .wp-pointer-content .more-info span.no-margin {
+    margin-left: 0;
+}
+
+.slidedeck_installation-discount.wp-pointer .wp-pointer-content .more-info a.button.slidedeck-noisy-button {
+    top: 25px;
+    z-index: 1000;
+}
+
+.slidedeck_installation-discount.wp-pointer .wp-pointer-content .more-info a.button.slidedeck-noisy-button span {
+    height: 30px;
+    padding: 0 20px;
+    line-height: 30px;
+}
+
+.slidedeck_installation-discount.wp-pointer .wp-pointer-buttons {
+    position: relative;
+    top: -25px;
+    padding-right: 37px;
+}

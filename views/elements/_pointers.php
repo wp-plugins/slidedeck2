@@ -39,6 +39,7 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
             
                 $('<?php echo $pointer['selector']; ?>').pointer({
                     content: '<?php echo $pointer['content']; ?>',
+                    pointerClass: 'wp-pointer <?php echo $pointer['id']; ?>',
                     position: {
                         edge: '<?php echo $pointer['position']['edge']; ?>',
                         align: '<?php echo $pointer['position']['align']; ?>'

@@ -1,5 +1,5 @@
 === SlideDeck 2 Lite Content Slider ===
-Contributors: dtelepathy, kynatro, jamie3d, dtrenkner, oriontimbers, nielsfogt, bkenyon, dtlabs
+Contributors: dtelepathy, kynatro, jamie3d, dtrenkner, oriontimbers, nielsfogt, bkenyon, barefootceo, dtlabs
 Donate link: http://www.slidedeck.com/
 Tags: dynamic, image gallery, iPad, jquery, media, photo, pictures, plugin, posts, Search Engine Optimized, seo, skinnable, slide, slide show, slider, slideshow, theme, touch support, video, widget, Flickr, Instagram, 500px, RSS, Pinterest, Google+, Twitter, YouTube, Vimeo, Dailymotion, Picasa, Dribbble
 Requires at least: 3.3
@@ -66,6 +66,16 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 
 
 == Changelog ==
+= 2.1.20120823 =
+* SlideDeck will now intelligently only load assets for SlideDecks for non-iframe embedded SlideDecks.
+* Added an option that will turn off loading of SlideDeck base assets (common JavaScript/CSS files) on every page. When this option is turned on, SlideDeck will always load the base assets even if it doesn't detect a SlideDeck being loaded in the posts on the page (useful for template embedded SlideDecks). When this option is turned off SlideDeck will intelligently load assets only when it detects a SlideDeck embedded in a post on the page.
+* Optimized caching namespacing and cache busting techniques to prevent Object Caching problems with persistent caching plugins like W3 Total Cache, WP Super Cache, Quick Cache and the like.
+* Modified slidedeck_get_font filter to be more hookable to allow users to manually add their own fonts to the fonts list.
+* Fixed bug that was preventing the insert SlideDeck modal from working in WordPress installations that were installed in a sub-folder.
+* Added no-cache headers to AJAX calls on the SlideDeck preview to prevent cached responses from coming back
+* Added "slidedeck_iframe_header" and "slidedeck_iframe_footer" actions to the IFRAME render template. This action receives two parameters: $slidedeck (the SlideDeck object Array) and $preview (a boolean of whether or not this is a preview render). Hook into these actions to add additional header and footer content to your IFRAME rendered SlideDecks.
+* Fixed bug with the Tool Kit lens that prevented the Dark/Light variations from working on Custom Content SlideDecks with image slides.
+
 = 2.1.20120807 =
 * Fixed a bug in the WordPress Post Content Source that was excluding search of the post content area for imagery when the user chose to use the excerpt instead of the post content for the slide copy.
 * Created new ability to choose how an image is scaled in a slide (no scaling, scale to fit, scale and crop)

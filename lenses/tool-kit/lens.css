@@ -142,12 +142,17 @@ Tags: images, posts, feeds, pages, slidedeck
     right: 0;
     bottom: 0;
 }
-.lens-tool-kit.sd2-title-pos-left dl.slidedeck .slide-type-video .video-wrapper .cover .play {
+.lens-tool-kit.sd2-title-pos-left dl.slidedeck .slide-type-video .video-wrapper .cover .play,
+.lens-tool-kit.sd2-title-pos-left dl.slidedeck .slide-type-video.custom-layout-body-text.custom-caption-position-left .video-wrapper .cover .play {
     left: 75%;
 }
-.lens-tool-kit.sd2-title-pos-right dl.slidedeck .slide-type-video .video-wrapper .cover .play {
+.lens-tool-kit.sd2-title-pos-right dl.slidedeck .slide-type-video .video-wrapper .cover .play,
+.lens-tool-kit.sd2-title-pos-left dl.slidedeck .slide-type-video.custom-layout-body-text.custom-caption-position-right .video-wrapper .cover .play {
     left: 25%;
 }
+.lens-tool-kit.sd2-title-pos-left dl.slidedeck .slide-type-video.custom-layout-caption .video-wrapper .cover .play,
+.lens-tool-kit.sd2-title-pos-left dl.slidedeck .slide-type-video.custom-layout-caption .video-wrapper .cover .play,
+.lens-tool-kit.sd2-title-pos-left dl.slidedeck .slide-type-video.custom-layout-none .video-wrapper .cover .play { left: 50%; }
 .lens-tool-kit dl.slidedeck dt { display: none; }
 
 /* End video stuff */
@@ -2494,7 +2499,8 @@ Tags: images, posts, feeds, pages, slidedeck
 
 /* Text-Only */
 .lens-tool-kit.sd2-light .slide-source-custom.slide-type-textonly .sd2-node-caption {
-    background: rgb(255,255,255);
+    background: #fff;
+    background: rgba(255,255,255,0.75);
 }
 .lens-tool-kit.sd2-light .slide-source-custom.slide-type-textonly .sd2-node-caption .sd2-slide-text {
     color: #000000;
@@ -2503,6 +2509,21 @@ Tags: images, posts, feeds, pages, slidedeck
     margin-bottom: 15px;
 }
 .lens-tool-kit.sd2-medium .slide-source-custom.slide-type-textonly .sd2-slide-title {
+    margin-bottom: 10px;
+}
+
+/* Text-Only */
+.lens-tool-kit.sd2-light .slide-source-custom.slide-type-image .sd2-node-caption {
+    background: #fff;
+    background: rgba(255,255,255,0.75);
+}
+.lens-tool-kit.sd2-light .slide-source-custom.slide-type-image .sd2-node-caption .sd2-slide-text {
+    color: #000000;
+} 
+.lens-tool-kit.sd2-large .slide-source-custom.slide-type-image .sd2-slide-title {
+    margin-bottom: 15px;
+}
+.lens-tool-kit.sd2-medium .slide-source-custom.slide-type-image .sd2-slide-title {
     margin-bottom: 10px;
 }
 
