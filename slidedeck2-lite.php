@@ -3196,7 +3196,7 @@ class SlideDeckLitePlugin {
      * When did they install Lite?
 	 */
 	static function get_installation_date() {
-	    $floor_date = strtotime( "08-23-2012" );
+	    $floor_date = strtotime( "Aug 23, 2012" );
 	    $installed = get_option( self::$namespace . '2_lite_installed', $floor_date );
         $installed = max( $installed, $floor_date );
 	    $current_time = time();
