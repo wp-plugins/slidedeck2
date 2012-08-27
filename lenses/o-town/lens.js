@@ -154,8 +154,22 @@
                 }
             });
             if( isThumbnailNav ){
+            	// Check to prevent JS crash:
+            	/**
+            	 * If the O-Town height is less than 110px, it causes a
+            	 * JavaScript lockup on the page... 
+            	 */
+            	if( navigation.verticalNavElemsWrapper.height() < 110 ){
+            		// Remove the vertical nav wrapper
+            		elems.frame.find('.vertical-slide-nav-wrapper').hide();
+            		elems.verticalSlides.each(function(){
+            			// Set the slide background and slides to have a left position of 0.
+            			$(this).find('.slide-content, .sd2-slide-background').css({left: 0});
+            		});
+            		return false;
+            	}
+            	
                 navigation.verticalNavLinksInner = navigation.verticalNavLinks.find('span.slide-nav-inner');
-                
                 var thumbSrc = new Array();
                 
                 // Add CSS Background Image property to Thumbnail Nav

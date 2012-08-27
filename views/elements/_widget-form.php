@@ -45,3 +45,15 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
         <?php _e( "Deploy SlideDeck using an iframe", $namespace ); ?>
     </label>
 </p>
+<p>
+    <label>
+        <input type="checkbox" value="1" name="<?php echo $this->get_field_name( $namespace . '_use_ress' ); ?>" id="<?php echo $this->get_field_id( $namespace . '_use_ress'); ?>"<?php if( $use_ress ) echo ' checked="checked"'; ?> />
+        <?php _e( "Use RESS? (responsive)", $namespace ); ?>
+    </label>
+</p>
+<p>
+    <label>
+        <input type="checkbox" value="1" name="<?php echo $this->get_field_name( $namespace . '_proportional' ); ?>" id="<?php echo $this->get_field_id( $namespace . '_proportional'); ?>"<?php if( $proportional ) echo ' checked="checked"'; ?> />
+        <?php _e( "Proportional? (applies to RESS)", $namespace ); ?>
+    </label>
+</p>

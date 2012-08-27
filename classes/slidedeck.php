@@ -613,6 +613,7 @@ class SlideDeck {
     
     // SlideDecks that are being rendered to the page (to prevent duplicate HTML tag IDs)
     var $rendered_slidedecks = array();
+    var $rendered_slidedeck_iframes = array();
     
     // Base file path for a source
     var $basedir = "";
@@ -1228,6 +1229,32 @@ class SlideDeck {
         
         return $slidedeck;
     }
+	
+	/**
+	 * Fetches and sorts the slides
+	 */
+	function fetch_and_sort_slides( $slidedeck ) {
+        // Hook in for any SlideDeck type to control the slide output
+        $slides = apply_filters( "{$this->namespace}_get_slides", array(), $slidedeck );
+        
+        if( $slidedeck['options']['randomize'] == true ) {
+            shuffle( $slides );
+        } else {
+        	/**
+			 * Only sort the SlideDeck by time if this is not a Custom SlideDeck
+			 * Also, if there's more than one source, we have to sort it by time. If there's
+			 * only one source, then we should do no sorting.
+			 */
+        	if( !in_array( "custom", $slidedeck['source'] ) && ( count( $slidedeck['source'] ) > 1 ) ) {
+	            usort( $slides, array( &$this, '_sort_by_time' ) );
+        	}
+        }
+        
+        // Truncate the slides down to the limit the user specified
+        $slides = array_slice( $slides, 0, $slidedeck['options']['total_slides'] );
+        
+		return $slides;
+	}
 
     /**
      * Convenience method for loading SlideDecks
@@ -1957,6 +1984,8 @@ class SlideDeck {
      * @param array $styles Optional array of styles to apply to the SlideDeck element
      * @param boolean $include_lens_files Optional argument to include lens file output with the SlideDeck HTML
      * @param boolean $preview Is this a preview?
+	 * @param boolean $echo_js Should we echo or include the JavaScript files?
+	 * @param integer $start A potential override for the start slide
      * 
      * @global $SlideDeckPlugin
      * 
@@ -1967,11 +1996,14 @@ class SlideDeck {
      * 
      * @return string
      */
-    final public function render( $id, $styles = array(), $include_lens_files = true, $preview = false ) {
+    final public function render( $id, $styles = array(), $include_lens_files = true, $preview = false, $echo_js = false, $start = false ) {
         global $SlideDeckPlugin;
         
         $slidedeck = $this->get( $id );
         
+        $override_width = isset( $styles['width'] ) ? $styles['width'] : false;
+        $override_height = isset( $styles['height'] ) ? $styles['height'] : false;
+
         // Return an empty string if no SlideDeck was found by the requested ID
         if( empty( $slidedeck ) ) {
             return "";
@@ -2008,13 +2040,17 @@ class SlideDeck {
             }
         } 
         
+		if( $override_width || $override_height ){
+			$slidedeck['options']['size'] = 'custom';
+			$slidedeck['options']['width'] = $override_width;
+			$slidedeck['options']['height'] = $override_height;
+		}
+		
         $frame_classes = apply_filters( "{$this->namespace}_frame_classes", $frame_classes, $slidedeck );
         
 		// Uniquify classes for the frame 
 		$frame_classes = array_unique( $frame_classes );
 		
-        $override_width = isset( $styles['width'] ) ? $styles['width'] : false;
-        $override_height = isset( $styles['height'] ) ? $styles['height'] : false;
         $slidedeck_dimensions = $this->get_dimensions( $slidedeck, $override_width, $override_height );
         extract( $slidedeck_dimensions );
         
@@ -2052,28 +2088,11 @@ class SlideDeck {
         
         $html = '<div id="' . $slidedeck_unique_id . '-frame" class="' . implode( " ", $frame_classes ) . '" style="' . $frame_styles_str . '">';
         
-        $html.= apply_filters( "{$this->namespace}_render_slidedeck_before", "", $slidedeck );
+        $html .= apply_filters( "{$this->namespace}_render_slidedeck_before", "", $slidedeck );
         
-        $html.= '<dl id="' . $slidedeck_unique_id . '" class="' . implode( " ", $slidedeck_classes ) . '" style="' . $slidedeck_styles_str . '">';
+        $html .= '<dl id="' . $slidedeck_unique_id . '" class="' . implode( " ", $slidedeck_classes ) . '" style="' . $slidedeck_styles_str . '">';
         
-        // Hook in for any SlideDeck type to control the slide output
-        $slides = apply_filters( "{$this->namespace}_get_slides", array(), $slidedeck );
-        
-        if( $slidedeck['options']['randomize'] == true ) {
-            shuffle( $slides );
-        } else {
-        	/**
-			 * Only sort the SlideDeck by time if this is not a Custom SlideDeck
-			 * Also, if there's more than one source, we have to sort it by time. If there's
-			 * only one source, then we should do no sorting.
-			 */
-        	if( !in_array( "custom", $slidedeck['source'] ) && ( count( $slidedeck['source'] ) > 1 ) ) {
-	            usort( $slides, array( &$this, '_sort_by_time' ) );
-        	}
-        }
-        
-        // Truncate the slides down to the limit the user specified
-        $slides = array_slice( $slides, 0, $slidedeck['options']['total_slides'] );
+		$slides = $this->fetch_and_sort_slides( $slidedeck );
 		
 		$preview_scale_ratio = $outer_width / 650;
 		$preview_font_size = intval( min( $preview_scale_ratio * 1000, 1139 ) ) / 1000;
@@ -2095,56 +2114,8 @@ class SlideDeck {
 		if( $process_as_vertical )
 			$slides = array( array( 'vertical_slides' => $slides ) );
 		
-        foreach( $slides as $slide ) {
-            $slide_model = array(
-                'title' => "",
-                'styles' => "",
-                'classes' => array(),
-                'vertical_slides' => array(),
-                'thumbnail' => "",
-                'type' => "textonly"
-            );
-            $slide = array_merge( $slide_model, $slide );
-            
-            // Only add type and source classes to the horizontal slide if it isn't supposed to be vertical
-            if( empty( $slide['vertical_slides'] ) ) {
-                $slide['classes'][] = "slide-type-{$slide['type']}";
-                $slide['classes'][] = "slide-source-{$slide['source']}";
-            }
-            
-			$slide_title = apply_filters( "{$this->namespace}_horizontal_spine_title", $slide['title'], $slidedeck, $slide );
-			$spine_classes = (array) apply_filters( "{$this->namespace}_horizontal_spine_classes", array(), $slidedeck, $slide );
-            $spine_styles = apply_filters( "{$this->namespace}_horizontal_spine_styles", '', $slidedeck, $slide );
-			
-            $html .= "<dt". ( (!empty( $spine_classes ) ) ? ' class="'. implode( " ", $spine_classes ) . '"' :'') . ( (!empty( $spine_styles ) ) ? ' style="'. $spine_styles . '"' :'') .">{$slide_title}</dt>";
-            $html .= '<dd style="' . $slide['styles'] . '" class="' . implode( " ", $slide['classes'] ) . '" data-thumbnail-src="' . $slide['thumbnail'] . '">';
-			
-            // Vertical Slides
-            if( !empty( $slide['vertical_slides'] ) ) {
-                $html .= '<dl class="slidesVertical">';
-                foreach( $slide['vertical_slides'] as $vertical_slide ) {
-                    $vertical_slide = array_merge( $slide_model, $vertical_slide );
-                    $vertical_slide['classes'][] = "slide-type-{$vertical_slide['type']}";
-                    $vertical_slide['classes'][] = "slide-source-{$vertical_slide['source']}";
-            
-                    $html .= "<dt>{$vertical_slide['title']}</dt>";
-                    $html .= '<dd style="' . $vertical_slide['styles'] . '" class="' . implode( " ", $vertical_slide['classes'] ) . '" data-thumbnail-src="' . $vertical_slide['thumbnail'] . '">' . $vertical_slide['content'] . '</dd>';                    
-                    if( $vertical_slide['type'] == "video" ) {
-                    	$this->load_video_scripts();
-                    }
-                }
-                $html .= '</dl>';
-            }
-            // Horizontal Slides
-            else {
-                $html .= $slide['content'];
-            }
-            $html .= "</dd>";
-            
-            if( $slide['type'] == "video" ) {
-            	$this->load_video_scripts();
-            }
-        }
+        // Render the actual inner emelents of the <dl>
+		$html .= $this->render_dt_and_dd_elements( $slidedeck, $slides );
         
         $html.= '</dl>';
         
@@ -2211,8 +2182,14 @@ class SlideDeck {
                 $javascript_options['index'] = true;
         }
         
+		/**
+		 * Maybe override the start slide
+		 */
+		if( $start !== false ) {
+			$javascript_options['start'] = $start;
+		}
+		
         /**
-         * Added on 2012-05-14 by Jamie
          * This will set the startVertical option for a vertical deck
          */
         if( $process_as_vertical ) {
@@ -2222,7 +2199,7 @@ class SlideDeck {
 		
 		// Multiple autoPlayInterval by 1000 since it is stored as seconds and the JavaScript library expects milliseconds
 		$javascript_options['autoPlayInterval'] = $javascript_options['autoPlayInterval'] * 1000;
-        
+		
         // Add the JavaScript commands to render the SlideDeck to the footer_scripts variable for rendering in the footer of the page
         $SlideDeckPlugin->footer_scripts .= '<script type="text/javascript">jQuery("#' . $slidedeck_unique_id . '").slidedeck( ' . json_encode( $javascript_options ) . ' )' . $vertical_scripts . ';</script>';
         
@@ -2245,13 +2222,92 @@ class SlideDeck {
             $lens_css_tags = $SlideDeckPlugin->Lens->get_css( $lens );
             $html = $lens_css_tags . $html;
             
+			// We try to echo the JS when asked to...
+			if( $echo_js ) {
+				preg_match( '#slidedeck.*lens.js#', $lens['script_url'], $matches );
+				if( !empty( $matches ) ){
+					$partial_path = reset( $matches );
+				}
+				$lens_path = WP_PLUGIN_DIR . '/' . $partial_path;
+				$found_lens_path = file_exists( $lens_path );
+			}
+			
             if ( isset( $lens['script_url'] ) && !empty( $lens['script_url'] ) ) {
-                $SlideDeckPlugin->footer_scripts .= '<script type="text/javascript" src="' . $lens['script_url'] .'"></script>';
+            	if( $found_lens_path ) {
+					// if we found the file path of the JavaScript file we were looking for...
+            		$SlideDeckPlugin->footer_scripts .= '<script type="text/javascript">' . file_get_contents( $lens_path ) . '</script>';
+            	}else{
+	                $SlideDeckPlugin->footer_scripts .= '<script type="text/javascript" src="' . $lens['script_url'] .'"></script>';
+            	}
             }
         }
         
         return $html;
     }
+	
+	/**
+	 * Renders the contents of the SlideDeck <dl>
+	 */
+	function render_dt_and_dd_elements( $slidedeck, $slides ) {
+		$output = '';
+		
+        foreach( $slides as $slide ) {
+            $slide_model = array(
+                'title' => "",
+                'styles' => "",
+                'classes' => array(),
+                'vertical_slides' => array(),
+                'thumbnail' => "",
+                'type' => "textonly"
+            );
+            $slide = array_merge( $slide_model, $slide );
+            
+            // Only add type and source classes to the horizontal slide if it isn't supposed to be vertical
+            if( empty( $slide['vertical_slides'] ) ) {
+                if( isset( $slide['type'] ) )
+                	$slide['classes'][] = "slide-type-{$slide['type']}";
+				
+				if( isset( $slide['source'] ) )
+                	$slide['classes'][] = "slide-source-{$slide['source']}";
+            }
+            
+			$slide_title = apply_filters( "{$this->namespace}_horizontal_spine_title", $slide['title'], $slidedeck, $slide );
+			$spine_classes = (array) apply_filters( "{$this->namespace}_horizontal_spine_classes", array(), $slidedeck, $slide );
+            $spine_styles = apply_filters( "{$this->namespace}_horizontal_spine_styles", '', $slidedeck, $slide );
+			
+            $output .= "<dt". ( (!empty( $spine_classes ) ) ? ' class="'. implode( " ", $spine_classes ) . '"' :'') . ( (!empty( $spine_styles ) ) ? ' style="'. $spine_styles . '"' :'') .">{$slide_title}</dt>";
+            $output .= '<dd style="' . $slide['styles'] . '" class="' . implode( " ", $slide['classes'] ) . '" data-thumbnail-src="' . $slide['thumbnail'] . '">';
+			
+            // Vertical Slides
+            if( !empty( $slide['vertical_slides'] ) ) {
+                $output .= '<dl class="slidesVertical">';
+                foreach( $slide['vertical_slides'] as $vertical_slide ) {
+                    $vertical_slide = array_merge( $slide_model, $vertical_slide );
+                    $vertical_slide['classes'][] = "slide-type-{$vertical_slide['type']}";
+                    $vertical_slide['classes'][] = "slide-source-{$vertical_slide['source']}";
+            
+                    $output .= "<dt>{$vertical_slide['title']}</dt>";
+                    $output .= '<dd style="' . $vertical_slide['styles'] . '" class="' . implode( " ", $vertical_slide['classes'] ) . '" data-thumbnail-src="' . $vertical_slide['thumbnail'] . '">' . $vertical_slide['content'] . '</dd>';
+                    
+                    if( $vertical_slide['type'] == "video" ) {
+                    	$this->load_video_scripts();
+                    }
+                }
+                $output .= '</dl>';
+            }
+            // Horizontal Slides
+            else {
+            	if( isset( $slide['content'] ) )
+                	$output .= $slide['content'];
+            }
+            $output .= "</dd>";
+            
+            if( $slide['type'] == "video" ) {
+            	$this->load_video_scripts();
+            }
+        }
+		return $output;
+	}
 
     /**
      * Generate Overlay HTML

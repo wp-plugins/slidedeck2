@@ -13,7 +13,7 @@
  Plugin Name: SlideDeck 2 Lite
  Plugin URI: http://www.slidedeck.com/wordpress
  Description: Create SlideDecks on your WordPress blogging platform and insert them into templates and posts. Get started creating SlideDecks from the new SlideDeck menu in the left hand navigation.
- Version: 2.1.20120823
+ Version: 2.1.20120827
  Author: digital-telepathy
  Author URI: http://www.dtelepathy.com
  License: GPL3
@@ -232,25 +232,74 @@ class SlideDeckLitePlugin {
      *
      * @return string
      */
-    private function _render_iframe( $id, $width = null, $height = null, $nocovers = false ) {
+    private function _render_iframe( $id, $width = null, $height = null, $nocovers = false, $ress = false, $proportional = true ) {
         global $wp_scripts;
 
         // Load the SlideDeck itself
         $slidedeck = $this->SlideDeck->get( $id );
 
+        // Generate a unique HTML ID
+        $slidedeck_unique_id = $this->namespace . '_' . $slidedeck['id'] . '_' . uniqid();
+		
         // Get the inner and outer dimensions for the SlideDeck
         $dimensions = $this->get_dimensions( $slidedeck );
+		$ratio = $dimensions['height'] / $dimensions['width'];
 
         // Get the IFRAME source URL
         $iframe_url = $this->get_iframe_url( $id );
+		$iframe_url .= "&slidedeck_unique_id=" . $slidedeck_unique_id;
+		$iframe_url .= "&start=";
 
         if( $nocovers )
             $iframe_url .= "&nocovers=1";
 
-        // Generate a unique HTML ID
-        $slidedeck_unique_id = $this->SlideDeck->get_unique_id( $id );
-
-        $html = '<iframe class="slidedeck-iframe-embed" id="' . $slidedeck_unique_id . '" frameborder="0" allowtransparency="yes"  src="' . $iframe_url . '" style="width:' . $dimensions['outer_width'] . 'px;height:' . $dimensions['outer_height'] . 'px;"></iframe>';
+		if( !$ress ) {
+			/**
+			 * Regular iFrame embed
+			 */
+	        $html = '<div id="' . $slidedeck_unique_id . '-wrapper"><iframe class="slidedeck-iframe-embed" id="' . $slidedeck_unique_id . '" frameborder="0" allowtransparency="yes"  src="' . $iframe_url . '" style="width:' . $dimensions['outer_width'] . 'px;height:' . $dimensions['outer_height'] . 'px;"></iframe></div>';
+		} else {
+			/**
+			 * Setup the RESS Scripts
+			 */
+			$style = ' style="';
+			
+			
+			if( $proportional !== true ) {
+				$style .= "height:{$dimensions['outer_height']}px;";
+			}else{
+				$style .= "height:auto;";
+			}
+			
+			
+			$style .= '"';
+	        $html = '<div id="' . $slidedeck_unique_id . '-wrapper" class="sd2-ress-wrapper"' . $style . '>';
+			$html .= '<dl class="sd2-alternate-hidden-content" style="height:0;overflow:hidden;visibility:hidden;">';
+			
+			$slides = $this->SlideDeck->fetch_and_sort_slides( $slidedeck );
+			$html .= $this->SlideDeck->render_dt_and_dd_elements( $slidedeck, $slides );
+			
+			$html .= '</dl>';
+			$html .= '</div>';
+			
+			$this->footer_styles .= '.sd2-alternate-hidden-content{display:none!important;}';
+			
+			// Setup the RESS properties for this deck
+			$ress_properties = array(
+				'id' => $slidedeck_unique_id,
+				'src' => '',
+				'domain' => $_SERVER['HTTP_HOST'],
+				'element' => $slidedeck_unique_id . '-wrapper',
+				'style' => ''
+			);
+			
+			// Append a footer script for each deck
+            ob_start( );
+            include( SLIDEDECK2_DIRNAME . '/views/elements/_ress-js-footer-part.php' );
+            $this->footer_scripts .= ob_get_contents( );
+            ob_end_clean( );
+			
+		}
 
         return $html;
     }
@@ -273,7 +322,7 @@ class SlideDeckLitePlugin {
 
         $dimensions = $this->get_dimensions( $preview );
 
-        $iframe_url = $this->get_iframe_url( $preview['id'], $dimensions['width'], $dimensions['height'], $dimensions['outer_width'], $dimensions['outer_height'], true );
+        $iframe_url = $this->get_iframe_url( $preview['id'], $dimensions['outer_width'], $dimensions['outer_height'], $dimensions['outer_width'], $dimensions['outer_height'], true );
 
         $response = $dimensions;
         $response['preview_id'] = $preview['id'];
@@ -1398,13 +1447,44 @@ class SlideDeckLitePlugin {
         global $wp_scripts, $wp_styles;
         
         $slidedeck_id = $_GET['slidedeck'];
-        // $width = $_GET['width'];
-        // $height = $_GET['height'];
+        if( isset( $_GET['width'] ) && is_numeric( $_GET['width'] ) )
+            $width = $_GET['width'];
+        if( isset( $_GET['height'] ) && is_numeric( $_GET['height'] ) )
+            $height = $_GET['height'];
         if( isset( $_GET['outer_width'] ) && is_numeric( $_GET['outer_width'] ) )
             $outer_width = $_GET['outer_width'];
-        // $outer_height = $_GET['outer_height'];
-
+        if( isset( $_GET['outer_height'] ) && is_numeric( $_GET['outer_height'] ) )
+            $outer_height = $_GET['outer_height'];
+		
+		$start_slide = false;
+        if( isset( $_GET['start'] ) && is_numeric( $_GET['start'] ) )
+            $start_slide = (int) $_GET['start'];
+		
         $slidedeck = $this->SlideDeck->get( $slidedeck_id );
+		
+		/**
+		 * If there's no width or height specified, we should infer the 
+		 * width and height based on the outer width or outer height.
+		 */
+		if( empty( $width ) || empty( $height ) ) {
+			$slidedeck_dimensions = $this->SlideDeck->get_dimensions( $slidedeck );
+			// $width_diff = $slidedeck_dimensions['outer_width'] - $slidedeck_dimensions['width'];
+			// $height_diff = $slidedeck_dimensions['outer_height'] - $slidedeck_dimensions['height'];
+			
+			if( empty( $width ) ) {
+				$width = $outer_width;
+			}
+				
+			if( empty( $height ) ) {
+				$height = $outer_height;
+			}
+			
+			$slidedeck['options']['size'] = 'custom';
+			$slidedeck['options']['width'] = $width;
+			$slidedeck['options']['height'] = $height;
+			
+		}
+		
 
         $lens = $this->Lens->get( $slidedeck['lens'] );
         
@@ -1413,6 +1493,14 @@ class SlideDeckLitePlugin {
         if( isset( $_GET['preview'] ) ) {
             if( (int) $_GET['preview'] === 1 ) {
                 $preview = true;
+            }
+        }
+        
+        // Is this a RESS shortcode embed?
+        $ress = false;
+        if( isset( $_GET['slidedeck_unique_id'] ) ) {
+            if( !empty( $_GET['slidedeck_unique_id'] ) ) {
+                $ress = true;
             }
         }
         
@@ -2502,7 +2590,7 @@ class SlideDeckLitePlugin {
         $dimensions = $this->get_dimensions( $slidedeck );
 
         // Iframe URL for preview
-        $iframe_url = $this->get_iframe_url( $slidedeck['id'], $dimensions['width'], $dimensions['height'], $dimensions['outer_width'], $dimensions['outer_height'], true );
+        $iframe_url = $this->get_iframe_url( $slidedeck['id'], $dimensions['outer_width'], $dimensions['outer_height'], $dimensions['outer_width'], $dimensions['outer_height'], true );
 
         $options_model = $this->get_options_model( $slidedeck );
 
@@ -3196,13 +3284,13 @@ class SlideDeckLitePlugin {
      * When did they install Lite?
 	 */
 	static function get_installation_date() {
-	    $floor_date = strtotime( "Aug 23, 2012" );
-	    $installed = get_option( self::$namespace . '2_lite_installed', $floor_date );
+        $floor_date = strtotime( "Aug 23, 2012" );
+        $installed = get_option( self::$namespace . '2_lite_installed', $floor_date );
         $installed = max( $installed, $floor_date );
-	    $current_time = time();
-	    $discount_timetable = array( $installed, $current_time );
-	    
-	    return $discount_timetable;
+        $current_time = time();
+        $discount_timetable = array( $installed, $current_time );
+        
+        return $discount_timetable;
 	}
 
     /**
@@ -3222,17 +3310,30 @@ class SlideDeckLitePlugin {
 		if( isset( $atts['id'] ) && !empty( $atts['id'] ) )
     		$default_deck_link_text = get_the_title( $atts['id'] ) . ' <small>[' . __( "see the SlideDeck", $this->namespace ) . ']</small>';
     	
-        extract( shortcode_atts( array( 'id' => false, 'width' => null, 'height' => null, 'include_lens_files' => (boolean)true, 'iframe' => false, 'feed_link_text' => $default_deck_link_text, 'nocovers' => (boolean)false, 'preview' => (boolean)false ), $atts ) );
+        extract( shortcode_atts( array(
+	        'id' => (boolean) false,
+	        'width' => null,
+	        'height' => null,
+	        'include_lens_files' => (boolean) true,
+	        'iframe' => (boolean) false,
+	        'ress' => (boolean) false,
+	        'proportional' => (boolean) true,
+	        'feed_link_text' => $default_deck_link_text,
+	        'nocovers' => (boolean) false,
+	        'preview' => (boolean) false,
+	        'echo_js' => (boolean) false,
+	        'start' => false
+		), $atts ) );
 		
         if( $id !== false ) {
 			// If this is a feed, just render a link
 			if( $this->is_feed() )
 				return '<div class="slidedeck-link"><a href="' . get_permalink( $post->ID ) . '#SlideDeck-' . $id . '">' . $feed_link_text . '</a></div>';
 		
-            if( $iframe !== false ) {
-                return $this->_render_iframe( $id, $width, $height, $nocovers );
+            if( ( $iframe !== false ) || ( $ress !== false ) ) {
+                return $this->_render_iframe( $id, $width, $height, $nocovers, $ress, $proportional );
             } else {
-                return $this->SlideDeck->render( $id, array( 'width' => $width, 'height' => $height ), $include_lens_files, $preview );
+                return $this->SlideDeck->render( $id, array( 'width' => $width, 'height' => $height ), $include_lens_files, $preview, $echo_js, $start );
             }
         } else {
             return "";

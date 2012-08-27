@@ -70,11 +70,15 @@ class SlideDeck2Widget extends WP_Widget {
         
         $instance = wp_parse_args( (array) $instance, array(
             'slidedeck_id' => "",
-            $this->namespace . '_deploy_as_iframe' => false
+            $this->namespace . '_deploy_as_iframe' => false,
+            $this->namespace . '_use_ress' => false,
+            $this->namespace . '_proportional' => true
         ) );
         
         $slidedeck_id = strip_tags( $instance['slidedeck_id'] );
         $deploy_as_iframe = $instance[$this->namespace . '_deploy_as_iframe'];
+        $use_ress = $instance[$this->namespace . '_use_ress'];
+        $proportional = $instance[$this->namespace . '_proportional'];
         
         $namespace = $this->namespace;
         $slidedecks = $SlideDeckPlugin->SlideDeck->get( null, 'post_title', 'ASC', 'publish' );
@@ -95,6 +99,8 @@ class SlideDeck2Widget extends WP_Widget {
         
         $instance['slidedeck_id'] = $new_instance['slidedeck_id'];
         $instance[$this->namespace . '_deploy_as_iframe'] = isset( $new_instance[$this->namespace . '_deploy_as_iframe'] );
+        $instance[$this->namespace . '_use_ress'] = isset( $new_instance[$this->namespace . '_use_ress'] );
+        $instance[$this->namespace . '_proportional'] = isset( $new_instance[$this->namespace . '_proportional'] );
         
         return $instance;
     }
@@ -119,6 +125,16 @@ class SlideDeck2Widget extends WP_Widget {
         
         $shortcode = "[SlideDeck2 id={$instance['slidedeck_id']}";
         if( $instance[$this->namespace . '_deploy_as_iframe'] ) $shortcode.= " iframe=1";
+        if( $instance[$this->namespace . '_use_ress'] ) $shortcode.= " ress=1";
+        
+		/**
+		 * The proportional option is negative only. Proportional
+		 * is default, and this option being false only overrides it.
+		 */
+        if( !$instance[$this->namespace . '_proportional'] ) {
+        	$shortcode.= " proportional=false";
+        }
+        
         $shortcode.= "]";
         
         echo do_shortcode( $shortcode );

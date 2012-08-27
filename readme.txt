@@ -66,6 +66,14 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 
 
 == Changelog ==
+= 2.1.20120827 =
+* Adding RESS (REsponsive Server-Side) options to the shortcode ress=1 and proportional=no
+* Adding RESS (REsponsive Server-Side) options to the widget options
+* Shortcode now accepts start=# where # is the starting slide (needed for RESS)
+* Adding a fix that prevents a JavaScript lockup if the O-Town lens has thumbnails and is less than 110px tall
+* Adding an optimization (speedup) to the iFrame rendering methods (echo scripts instead of linking them)
+* Adding a check to some of the sources that may prevent some warnings from being shown.
+
 = 2.1.20120823 =
 * SlideDeck will now intelligently only load assets for SlideDecks for non-iframe embedded SlideDecks.
 * Added an option that will turn off loading of SlideDeck base assets (common JavaScript/CSS files) on every page. When this option is turned on, SlideDeck will always load the base assets even if it doesn't detect a SlideDeck being loaded in the posts on the page (useful for template embedded SlideDecks). When this option is turned off SlideDeck will intelligently load assets only when it detects a SlideDeck embedded in a post on the page.

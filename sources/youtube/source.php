@@ -303,7 +303,9 @@ class SlideDeckSource_Youtube extends SlideDeck {
         }
         
         // How many decks are on the page as of now.
-        $deck_iteration = $SlideDeckPlugin->SlideDeck->rendered_slidedecks[ $slidedeck['id'] ];
+        $deck_iteration = 0;
+        if( isset( $SlideDeckPlugin->SlideDeck->rendered_slidedecks[ $slidedeck['id'] ] ) )
+        	$deck_iteration = $SlideDeckPlugin->SlideDeck->rendered_slidedecks[ $slidedeck['id'] ];
         
         // Slides associated with this SlideDeck
         $slides_nodes = $this->get_slides_nodes( $slidedeck );

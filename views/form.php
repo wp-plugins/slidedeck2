@@ -79,7 +79,7 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
                 
                 <div class="inner <?php if( !empty( $the_stage_background ) ) echo 'texture-' . $the_stage_background; ?>">
                 
-                    <iframe id="slidedeck-preview" frameborder="0" allowtransparency="yes"  src="<?php echo $iframe_url; ?>" style="width:<?php echo $dimensions['outer_width'] + 2; ?>px;height:<?php echo $dimensions['outer_height'] + 2; ?>px;"></iframe>
+                    <iframe id="slidedeck-preview" frameborder="0" allowtransparency="yes"  src="<?php echo $iframe_url; ?>" style="width:<?php echo $dimensions['outer_width']; ?>px;height:<?php echo $dimensions['outer_height']; ?>px;"></iframe>
                     
                     <div id="slidedeck-slide-dimensions" class="slidedeck-resizing getting-dimensions"><?php _e( "Slide Area Dimensions Will Be", $namespace ); ?>: <span class="width">700x</span><span class="height">500</span><span class="calculating">Calculating...</span></div>
                     

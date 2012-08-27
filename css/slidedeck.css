@@ -2024,3 +2024,7 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
     visibility: hidden !important;
     opacity: 0 !important; 
 }
+
+div.sd2-ress-wrapper {
+	overflow: hidden;
+}

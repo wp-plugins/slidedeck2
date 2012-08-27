@@ -41,6 +41,7 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
             var SlideDeckLens={};
             var slideDeck2Version = '<?php echo SLIDEDECK2_VERSION; ?>';
             var slideDeck2Distribution = '<?php echo strtolower( SLIDEDECK2_LICENSE ); ?>';
+            var slideDeck2CurrentSlide = null;
         </script>
         
         <?php
@@ -54,7 +55,20 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
                     $src.= "?noping";
                 }
                 
-                echo '<script type="text/javascript" src="' . $src . ( strpos( $src, "?" ) !== false ? "&" : "?" ) . "v=" . $wp_scripts->registered[$script]->ver . '"></script>';
+				/**
+				 * This is an effort to reduce the number of requests that this iFrame needs to make.
+				 */
+				if( preg_match( '#/slidedeck([^/]+/js/)#', $wp_scripts->registered[$script]->src ) ){
+					// If the script is in our JS folder, echo it instead of adding a script tag with a src.
+					$parts = explode( '/js/', $wp_scripts->registered[$script]->src );
+					echo "\n" . '<script type="text/javascript">' . "\n";
+					echo "// {$wp_scripts->registered[$script]->src}" . "\n";
+					include( SLIDEDECK2_DIRNAME . '/js/' . end( $parts ) );
+					echo "\n" . '</script>' . "\n";
+				}else{
+					// If the script is not in our plugin folder, then include it regularly.
+	                echo '<script type="text/javascript" src="' . $src . ( strpos( $src, "?" ) !== false ? "&" : "?" ) . "v=" . $wp_scripts->registered[$script]->ver . '"></script>';
+				}
             }
         ?>
         
@@ -245,9 +259,21 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
 	        	<div class="mask-loading-copy"><?php _e( "We&rsquo;re decking out your content!", $namespace ); ?></div>
         	</div>
         </div>
-        <?php echo do_shortcode( "[SlideDeck2 id={$slidedeck['id']}" . ( $preview ? ' preview=1' : '' ) . "]" ); ?>
-        
-        <?php
+        <?php 
+        	$shortcode = "[SlideDeck2 id={$slidedeck['id']} echo_js=1";
+        	if( isset( $width ) )
+				$shortcode .= " width={$width}";
+				
+        	if( isset( $height ) )
+				$shortcode .= " height={$height}";
+			
+			if( $start_slide !== false )
+				$shortcode .= " start={$start_slide}";
+			
+        	$shortcode .= ( $preview ? ' preview=1' : '' ) . "]";
+        	echo do_shortcode( $shortcode );
+        ?>
+        <?php 
             if( slidedeck2_load_video_scripts() ) {
                 foreach( array( 'froogaloop', 'youtube-api', 'dailymotion-api' ) as $script ) {
                     $src = $wp_scripts->registered[$script]->src;
@@ -261,6 +287,54 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
         ?>
         
         <?php $this->print_footer_scripts(); ?>
+
+        
+        <?php if( $ress ): ?>
+	        <!-- child iFrame code -->
+			<script type="text/javascript">
+				(function($){
+					var deckWrapper = $('#SlideDeck-<?php echo $slidedeck['id']; ?>-frame');
+					var deck = deckWrapper.find('.slidedeck').slidedeck();
+					
+					/**
+					 * Check for the old before/complete in a 
+					 * document ready so there's time for others to 
+					 * bind to it first.
+					 */
+					$(document).ready(function(){
+						var oldBefore = deck.options.before;
+						slideDeck2CurrentSlide = deck.current;
+				        deck.options.before = function(deck){
+				            // If the old before option was a function, run it
+				            if(typeof(oldBefore) == 'function') oldBefore(deck);
+				            
+				            // Make this iFrame's current slide accessible within this window.
+				            slideDeck2CurrentSlide = deck.current;
+				        };
+					});
+					
+					var messageParent = function(deckWrapper){
+						// SlideDeck Unique ID plus the height plus currentSlide
+						message = "<?php echo $_REQUEST['slidedeck_unique_id']; ?>__" + parseInt( deckWrapper.outerHeight(true) ) + "__" + slideDeck2CurrentSlide;
+						
+						if(top.postMessage){
+							// If the browser we're in is non-crappy enough to post a message... DO IT!
+							top.postMessage( message , '*');
+						} else {
+							// If the browser is likely crapp-a-crap-tastic IE, then try hash-ifying the URL...
+							window.location.hash = 'message'+message;
+						}
+					}
+					
+					messageParent(deckWrapper);
+					window.onresize = function() {
+						messageParent(deckWrapper);
+					}
+	            })(jQuery);
+			</script>
+		    <!-- end child iFrame code -->
+    	<?php endif; ?>
+
         
         <?php if( $preview ): ?>
             <script type="text/javascript">

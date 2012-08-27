@@ -66,7 +66,6 @@ var SlideDeckPrefix = "sd2-";
             this.elems.slideDimensions.addClass('getting-dimensions');
             this.elems.iframeBody.find('#mask').addClass('visible');
             
-            //this.elems.iframeBody.find('#mask').addClass('visible');
             $.ajax({
                 url: ajaxurl + "?action=slidedeck_preview_iframe_update",
                 type: "GET",
@@ -91,8 +90,8 @@ var SlideDeckPrefix = "sd2-";
                             previewInner.height('');
                         }
                         self.elems.iframe.animate({
-                            width: parseInt(data.outer_width, 10) + 2,
-                            height: parseInt(data.outer_height, 10) + 2
+                            width: parseInt(data.outer_width, 10),
+                            height: parseInt(data.outer_height, 10)
                         }, 500, function(){
                             self.elems.iframe[0].src = data.url;
                             self.elems.slideDimensions
