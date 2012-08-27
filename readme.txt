@@ -1,19 +1,19 @@
 === SlideDeck 2 Lite Content Slider ===
 Contributors: dtelepathy, kynatro, jamie3d, dtrenkner, oriontimbers, nielsfogt, bkenyon, barefootceo, dtlabs
 Donate link: http://www.slidedeck.com/
-Tags: dynamic, image gallery, iPad, jquery, media, photo, pictures, plugin, posts, Search Engine Optimized, seo, skinnable, slide, slide show, slider, slideshow, theme, touch support, video, widget, Flickr, Instagram, 500px, RSS, Pinterest, Google+, Twitter, YouTube, Vimeo, Dailymotion, Picasa, Dribbble
+Tags: dynamic, responsive, image gallery, dtelepathy, digital telepathy, digital-telepathy, iPad, jquery, media, photo, pictures, plugin, posts, Search Engine Optimized, seo, skinnable, slide, slide show, slider, slideshow, theme, touch support, video, widget, Flickr, Instagram, 500px, RSS, Pinterest, Google+, Twitter, YouTube, Vimeo, Dailymotion, Picasa, Dribbble
 Requires at least: 3.3
 Tested up to: 3.4.1
 Stable tag: trunk
 License: GPLv3
 
-Create SlideDecks on your WordPress blogging platform. Manage SlideDeck content and insert them into templates and posts.
+Create responsive content sliders on your WordPress blogging platform. Manage SlideDeck content and insert them into templates and posts.
 
 == Description ==
 
-= Content Slider by SlideDeck 2 =
-= Easily create content sliders for your WordPress site without code. Use images & text, plus YouTube, Flickr, Pinterest & more =
-SlideDeck 2 for WordPress is a slider plugin that lets you easily create content sliders out of almost any content. Connect to a variety of Content Sources like YouTube, Flickr, Twitter, WordPress posts and Pinterest to create gorgeous, dynamic sliders in a few clicks - no coding is required.
+= Responsive Content Slider by SlideDeck 2 =
+= Easily create responsive content sliders for your WordPress site without code. Use images & text, plus YouTube, Flickr, Pinterest & more =
+SlideDeck 2 for WordPress is a responsive slider plugin that lets you easily create content sliders out of almost any content. Connect to a variety of Content Sources like YouTube, Flickr, Twitter, WordPress posts and Pinterest to create gorgeous, dynamic sliders in a few clicks - no coding is required.
 
 **Requirements:** WordPress 3.3+, PHP5 and higher
 
