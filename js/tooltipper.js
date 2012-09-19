@@ -1,4 +1,4 @@
-/**
+/*!
  * jQuery ToolTipper Plugin
  * 
  * Quick tooltip plugin for jQuery
@@ -6,8 +6,7 @@
  * @author dtelepathy
  * @version 1.0.1
  */
-
-/*
+/*!
 Copyright 2012 digital-telepathy  (email : support@digital-telepathy.com)
 
 This file is part of SlideDeck.
@@ -25,4 +24,4 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
 */
-var ToolTipper;(function($){ToolTipper=function(b,c){var d=$(b),self=this;this.options={namespace:"",speed:"fast",delay:250,offsetX:0,offsetY:0,maxWidth:350};this.options=$.extend(this.options,c);this.prep(d);$('body').delegate('.tooltip, .tooltipper','mouseenter',function(a){self.show(this)}).delegate('.tooltip, .tooltipper','mouseleave',function(a){self.hide(this)})};ToolTipper.prototype.build=function(a){var b=$(a),message=$.data(a,'tooltipper-message');$('body').append('<span class="tooltipper '+this.options.namespace+'" style="display:none;">'+message+'</span>');$tooltipper=$('body').find('.tooltipper:last');$.data(a,'tooltipper-tip',$tooltipper);$.data(a,'tooltipper-elem',b);$.data($tooltipper[0],'tooltipper-tip',$tooltipper);$.data($tooltipper[0],'tooltipper-elem',b);return $tooltipper};ToolTipper.prototype.prep=function(c){var d=this;c.each(function(a){var b=c.eq(a);$.data(this,'tooltipper-message',this.title);b.removeAttr('title');$.data(this,'tooltipper-elem',b)})};ToolTipper.prototype.show=function(a){var b=$.data(a,'tooltipper-tip');if(!b)b=this.build(a);var c=$.data(a,'tooltipper-elem');clearTimeout(c[0].timer);var d=c.offset();b.css('max-width',this.options.maxWidth);b.css({top:d.top+this.options.offsetY-b.outerHeight(),left:d.left+this.options.offsetX,opacity:0,display:'block'}).stop().animate({top:d.top+this.options.offsetY-b.outerHeight(),opacity:1},this.options.speed)};ToolTipper.prototype.hide=function(b){var c=this,$elem=$.data(b,'tooltipper-elem'),tip=$.data(b,'tooltipper-tip');$elem[0].timer=setTimeout(function(){var a=tip.offset();tip.animate({top:a.top-5,opacity:0},c.options.speed,function(){tip.css({display:'none'})})},c.options.delay)};jQuery.fn.tooltipper=function(a){var b=$.data(this,'ToolTipper');if(!b)b=$.data(this,'ToolTipper',new ToolTipper(this,a));return this}})(jQuery);
+var ToolTipper;(function(a){ToolTipper=function(c,d){var e=a(c),b=this;this.options={namespace:"",speed:"fast",delay:250,offsetX:0,offsetY:0,maxWidth:350};this.options=a.extend(this.options,d);this.prep(e);a("body").delegate(".tooltip, .tooltipper","mouseenter",function(f){b.show(this)}).delegate(".tooltip, .tooltipper","mouseleave",function(f){b.hide(this)})};ToolTipper.prototype.build=function(d){var b=a(d),c=a.data(d,"tooltipper-message");a("body").append('<span class="tooltipper '+this.options.namespace+'" style="display:none;">'+c+"</span>");$tooltipper=a("body").find(".tooltipper:last");a.data(d,"tooltipper-tip",$tooltipper);a.data(d,"tooltipper-elem",b);a.data($tooltipper[0],"tooltipper-tip",$tooltipper);a.data($tooltipper[0],"tooltipper-elem",b);return $tooltipper};ToolTipper.prototype.prep=function(c){var b=this;c.each(function(e){var d=c.eq(e);a.data(this,"tooltipper-message",this.title);d.removeAttr("title");a.data(this,"tooltipper-elem",d)})};ToolTipper.prototype.show=function(c){var d=a.data(c,"tooltipper-tip");if(!d){d=this.build(c)}var b=a.data(c,"tooltipper-elem");clearTimeout(b[0].timer);var e=b.offset();d.css("max-width",this.options.maxWidth);d.css({top:e.top+this.options.offsetY-d.outerHeight(),left:e.left+this.options.offsetX,opacity:0,display:"block"}).stop().animate({top:e.top+this.options.offsetY-d.outerHeight(),opacity:1},this.options.speed)};ToolTipper.prototype.hide=function(d){var c=this,b=a.data(d,"tooltipper-elem"),e=a.data(d,"tooltipper-tip");b[0].timer=setTimeout(function(){var f=e.offset();e.animate({top:f.top-5,opacity:0},c.options.speed,function(){e.css({display:"none"})})},c.options.delay)};jQuery.fn.tooltipper=function(b){var c=a.data(this,"ToolTipper");if(!c){c=a.data(this,"ToolTipper",new ToolTipper(this,b))}return this}})(jQuery);

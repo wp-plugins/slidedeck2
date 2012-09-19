@@ -1,4 +1,4 @@
-/**
+/*!
  * SlideDeck 2 Lite for WordPress Lite Admin JavaScript
  * 
  * More information on this project:
@@ -12,7 +12,7 @@
  * @author dtelepathy
  */
 
-/*
+/*!
 Copyright 2012 digital-telepathy  (email : support@digital-telepathy.com)
 
 This file is part of SlideDeck.

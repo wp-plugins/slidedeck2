@@ -1,4 +1,4 @@
-/**
+/*!
  * jQuery Simple Modal plugin
  * 
  * A simple modal library
@@ -7,7 +7,7 @@
  * @version 1.0.1
  */
 
-/*
+/*!
 Copyright 2012 digital-telepathy  (email : support@digital-telepathy.com)
 
 This file is part of SlideDeck.

@@ -1,4 +1,4 @@
-/**
+/*!
  * jQuery ToolTipper Plugin
  * 
  * Quick tooltip plugin for jQuery
@@ -7,7 +7,7 @@
  * @version 1.0.1
  */
 
-/*
+/*!
 Copyright 2012 digital-telepathy  (email : support@digital-telepathy.com)
 
 This file is part of SlideDeck.

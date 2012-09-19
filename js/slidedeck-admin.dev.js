@@ -1,4 +1,4 @@
-/**
+/*!
  * SlideDeck 2 Pro for WordPress Admin JavaScript
  * 
  * More information on this project:
@@ -12,7 +12,7 @@
  * @author dtelepathy
  */
 
-/*
+/*!
 Copyright 2012 digital-telepathy  (email : support@digital-telepathy.com)
 
 This file is part of SlideDeck.
@@ -1728,8 +1728,8 @@ var tb_position = updateTBSize;
                 $iframe = $.data(this, '$iframe'),
                 $td = $.data(this, '$td'),
                 iframeSrc = this.href,
-                outer_width = parseInt(this.href.match(/\&outer_width=(\d+)/)[1], 10);
-                outer_height = parseInt(this.href.match(/\&outer_height=(\d+)/)[1], 10);
+                width = parseInt(this.href.match(/\&width=(\d+)/)[1], 10);
+                height = parseInt(this.href.match(/\&height=(\d+)/)[1], 10);
             
             // Load and cache $(this)
             if(!$this){
@@ -1760,8 +1760,8 @@ var tb_position = updateTBSize;
                     $this.removeClass('animating');
                 });
             } else {
-                $iframe.css('width', outer_width).animate({
-                    height: outer_height,
+                $iframe.css('width', width).animate({
+                    height: height,
                     marginTop: 20,
                     marginBottom: 20
                 }, 500, function(){

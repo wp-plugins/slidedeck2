@@ -13,7 +13,7 @@
  Plugin Name: SlideDeck 2 Lite
  Plugin URI: http://www.slidedeck.com/wordpress
  Description: Create SlideDecks on your WordPress blogging platform and insert them into templates and posts. Get started creating SlideDecks from the new SlideDeck menu in the left hand navigation.
- Version: 2.1.20120827
+ Version: 2.1.20120919
  Author: digital-telepathy
  Author URI: http://www.dtelepathy.com
  License: GPL3
@@ -246,7 +246,7 @@ class SlideDeckLitePlugin {
 		$ratio = $dimensions['height'] / $dimensions['width'];
 
         // Get the IFRAME source URL
-        $iframe_url = $this->get_iframe_url( $id );
+        $iframe_url = $this->get_iframe_url( $id, $dimensions['outer_width'], $dimensions['outer_height'] );
 		$iframe_url .= "&slidedeck_unique_id=" . $slidedeck_unique_id;
 		$iframe_url .= "&start=";
 
@@ -815,7 +815,7 @@ class SlideDeckLitePlugin {
         wp_enqueue_script( 'quicktags' );
         wp_enqueue_script( 'fancy-form' );
         wp_enqueue_script( 'tooltipper' );
-        wp_enqueue_script( 'simplemodal' );
+        wp_enqueue_script( "{$this->namespace}-simplemodal" );
         wp_enqueue_script( 'jquery-minicolors' );
         wp_enqueue_script( 'wp-pointer' );
         wp_enqueue_script( 'zeroclipboard' );
@@ -2033,7 +2033,11 @@ class SlideDeckLitePlugin {
 
         $dimensions = array( 'width' => $width, 'height' => $height, 'outer_width' => $outer_width, 'outer_height' => $outer_height );
         
-        $url = admin_url( "admin-ajax.php?action={$this->namespace}_preview_iframe&uniqueid=" . $uniqueid . "&slidedeck={$id}&" . http_build_query( $dimensions ) );
+        /**
+         * The problem we were having was that the http_build_query() was encoding the & characters to the HTML entity equivelant and causing RESS and Iframe/preview decks to break in dimensions
+         * Afer some reading we discovered that passing in the separator fixed the issue: http://php.net/manual/en/function.http-build-query.php
+         */
+        $url = admin_url( "admin-ajax.php?action={$this->namespace}_preview_iframe&uniqueid=" . $uniqueid . "&slidedeck={$id}&" . http_build_query( $dimensions, '', '&' ) );
         
         if( $preview ) $url .= "&preview=1";
         
@@ -2412,13 +2416,13 @@ class SlideDeckLitePlugin {
             
             if ( $days_left > 86400 ) {
                 $days_left = ceil( $days_left/86400 );
-                $message .= '<p><strong>Upgrade to SlideDeck 2 Personal in the next ' . $days_left . ' days and get 50% off -</strong> Like what you\'ve seen with SlideDeck 2 Lite so far?. ';
+                $message .= '<p><strong>Upgrade to SlideDeck 2 in the next ' . $days_left . ' days and get 25% off -</strong> Like what you\'ve seen with SlideDeck 2 Lite so far?. ';
             } else {
                 $days_left = 0;
-                $message .= '<p><strong>Last day to save 50% to upgrade to SlideDeck 2 Personal! -</strong> Like what you\'ve seen with SlideDeck 2 Lite so far?. ';
+                $message .= '<p><strong>Last day to save 25% to upgrade to SlideDeck 2! -</strong> Like what you\'ve seen with SlideDeck 2 Lite so far?. ';
             }
             
-            $message .= '<a href="' . $this->action( '/upgrades' ) . '">Upgrade to SlideDeck 2 Personal Now</a>';
+            $message .= '<a href="' . $this->action( '/upgrades' ) . '">Upgrade to SlideDeck 2 Now</a>';
             $message .= '</p></div>';
             
             echo $message;
@@ -3810,7 +3814,7 @@ class SlideDeckLitePlugin {
      */
     function wp_register_scripts( ) {
         // Admin JavaScript
-        wp_register_script( "{$this->namespace}-admin", SLIDEDECK2_URLPATH . "/js/{$this->namespace}-admin" . (SLIDEDECK2_ENVIRONMENT == 'development' ? '.dev' : '') . ".js", array( 'jquery', 'media-upload', 'fancy-form', 'simplemodal' ), SLIDEDECK2_VERSION, true );
+        wp_register_script( "{$this->namespace}-admin", SLIDEDECK2_URLPATH . "/js/{$this->namespace}-admin" . (SLIDEDECK2_ENVIRONMENT == 'development' ? '.dev' : '') . ".js", array( 'jquery', 'media-upload', 'fancy-form', $this->namespace . '-simplemodal' ), SLIDEDECK2_VERSION, true );
         // Lite Admin JavaScript
         wp_register_script( "{$this->namespace}-admin-lite", SLIDEDECK2_URLPATH . "/js/{$this->namespace}-admin-lite" . (SLIDEDECK2_ENVIRONMENT == 'development' ? '.dev' : '') . ".js", array( 'slidedeck-admin' ), SLIDEDECK2_VERSION, true );
         // SlideDeck JavaScript Core
@@ -3830,7 +3834,7 @@ class SlideDeckLitePlugin {
         // SlideDeck Preview Updater
         wp_register_script( "{$this->namespace}-preview", SLIDEDECK2_URLPATH . '/js/slidedeck-preview' . (SLIDEDECK2_ENVIRONMENT == 'development' ? '.dev' : '') . '.js', array( 'jquery' ), SLIDEDECK2_VERSION );
         // Simple Modal Library
-        wp_register_script( "simplemodal", SLIDEDECK2_URLPATH . '/js/simplemodal' . (SLIDEDECK2_ENVIRONMENT == 'development' ? '.dev' : '') . '.js', array( 'jquery' ), '1.0.1' );
+        wp_register_script( "{$this->namespace}-simplemodal", SLIDEDECK2_URLPATH . '/js/simplemodal' . (SLIDEDECK2_ENVIRONMENT == 'development' ? '.dev' : '') . '.js', array( 'jquery' ), '1.0.1' );
         // Zero Clipboard
         wp_register_script( "zeroclipboard", SLIDEDECK2_URLPATH . '/js/zeroclipboard/ZeroClipboard.js', array( 'jquery' ), '1.0.7' );
         // Twitter Intent API

@@ -1,4 +1,4 @@
-/**
+/*!
  * SlideDeck 1.3.9 Pro - 2012-07-18
  * 
  * More information on this project:
@@ -14,7 +14,7 @@
  * @param {Object} opts      An object to pass custom override options to
  */
 
-/*
+/*!
 Copyright 2012 digital-telepathy  (email : support@digital-telepathy.com)
 
 This file is part of SlideDeck.

@@ -1,4 +1,4 @@
-/**
+/*!
  * jQuery Fancy Form plugin
  * 
  * Spice up your form with unique, intuitive form interactions
@@ -8,7 +8,7 @@
  */
 
 
-/*
+/*!
 Copyright 2012 digital-telepathy  (email : support@digital-telepathy.com)
 
 This file is part of SlideDeck.

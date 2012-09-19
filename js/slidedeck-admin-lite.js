@@ -1,4 +1,4 @@
-/**
+/*!
  * SlideDeck 2 Lite for WordPress Lite Admin JavaScript
  * 
  * More information on this project:
@@ -11,8 +11,7 @@
  * 
  * @author dtelepathy
  */
-
-/*
+/*!
 Copyright 2012 digital-telepathy  (email : support@digital-telepathy.com)
 
 This file is part of SlideDeck.
@@ -30,4 +29,4 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
 */
-(function($){$(document).ready(function(){$('body').bind('slidedeck:lens-change-update-choices',function(){if($('#options-total_slides').length){$('#options-total_slides').attr('readonly',true);$('#options-total_slides').parent().append('<em><a class="upgrade-modal" href="'+slideDeck2AddonsURL+'" rel="slidecount">Upgrade</a> to get more slides per deck.</em>')}if($('#slidedeck-covers').length){$('#slidedeck-covers').append('<span class="lite-disabled-mask"><em><a class="upgrade-modal" href="'+slideDeck2AddonsURL+'" rel="covers">Upgrade</a> to get access to covers.</em></span>')}});$('body').trigger('slidedeck:lens-change-update-choices');if($('.upgrade-modal').length){var context='upsell';SlideDeckPlugin.UpgradeModal={addForClass:function(theClass){$('#slidedeck-'+context+'-simplemodal')[0].className=$('#slidedeck-'+context+'-simplemodal')[0].className.replace(/for\-[a-z]+\s?/,'');$('#slidedeck-'+context+'-simplemodal').addClass('for-'+theClass)},open:function(data){var self=this;if(!this.modal){this.modal=new SimpleModal({context:context})}this.modal.open(data)}};$('#slidedeck_form').delegate('.upgrade-modal','click',function(event){event.preventDefault();var slug=$(this).attr('rel');$.get(ajaxurl+"?action=slidedeck_upsell_modal_content&feature="+slug,function(data){SlideDeckPlugin.UpgradeModal.open(data);SlideDeckPlugin.UpgradeModal.addForClass(slug);$('#slidedeck-upsell-simplemodal a.lens.placeholder').bind('click',function(event){event.preventDefault()})})})}})})(jQuery);
+(function(a){a(document).ready(function(){a("body").bind("slidedeck:lens-change-update-choices",function(){if(a("#options-total_slides").length){a("#options-total_slides").attr("readonly",true);a("#options-total_slides").parent().append('<em><a class="upgrade-modal" href="'+slideDeck2AddonsURL+'" rel="slidecount">Upgrade</a> to get more slides per deck.</em>')}if(a("#slidedeck-covers").length){a("#slidedeck-covers").append('<span class="lite-disabled-mask"><em><a class="upgrade-modal" href="'+slideDeck2AddonsURL+'" rel="covers">Upgrade</a> to get access to covers.</em></span>')}});a("body").trigger("slidedeck:lens-change-update-choices");if(a(".upgrade-modal").length){var b="upsell";SlideDeckPlugin.UpgradeModal={addForClass:function(c){a("#slidedeck-"+b+"-simplemodal")[0].className=a("#slidedeck-"+b+"-simplemodal")[0].className.replace(/for\-[a-z]+\s?/,"");a("#slidedeck-"+b+"-simplemodal").addClass("for-"+c)},open:function(d){var c=this;if(!this.modal){this.modal=new SimpleModal({context:b})}this.modal.open(d)}};a("#slidedeck_form").delegate(".upgrade-modal","click",function(d){d.preventDefault();var c=a(this).attr("rel");a.get(ajaxurl+"?action=slidedeck_upsell_modal_content&feature="+c,function(e){SlideDeckPlugin.UpgradeModal.open(e);SlideDeckPlugin.UpgradeModal.addForClass(c);a("#slidedeck-upsell-simplemodal a.lens.placeholder").bind("click",function(f){f.preventDefault()})})})}})})(jQuery);

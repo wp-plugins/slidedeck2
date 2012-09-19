@@ -1,4 +1,4 @@
-/**
+/*!
  * SlideDeck Preview Updater
  * 
  * @author dtelepathy
@@ -6,7 +6,7 @@
  * @since 2.0.0
  */
 
-/*
+/*!
 Copyright 2012 digital-telepathy  (email : support@digital-telepathy.com)
 
 This file is part of SlideDeck.

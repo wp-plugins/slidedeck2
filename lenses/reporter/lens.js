@@ -229,7 +229,7 @@
 					}
 				}
 				
-				navDeck = $('dl.nav-slidedeck').slidedeck({
+				navDeck = slidedeckFrame.find('dl.nav-slidedeck').slidedeck({
 					keys: false,
 					scroll: false,
 					cycle: slidedeck.slidedeck().options.cycle
@@ -361,6 +361,16 @@
 			}
 		}
 		
+		/**
+		 * Prevents a click on the a tag of the video thumb from opening the 
+		 * video in a new window.
+		 */
+		this.hijackClickOnVideoThumb = function(){
+		    slidedeckFrame.find('.slide-type-video a.sd2-image-link').click(function(event){
+		        event.preventDefault();
+		    });
+		}
+		
 		// Get the old complete option
 		var oldComplete = deck.options.complete;
 		
@@ -401,8 +411,9 @@
     	    }
     	    
     	    self.syncButtonNavigation();
-    	})
+    	});
     	
+		this.hijackClickOnVideoThumb();		
 		this.positionPlayButtons();		
        	this.dotNavigation();
        	this.buttonNavigation();

@@ -1,9 +1,9 @@
 === SlideDeck 2 Lite Responsive Content Slider ===
 Contributors: dtelepathy, kynatro, jamie3d, dtrenkner, oriontimbers, nielsfogt, bkenyon, barefootceo, dtlabs
 Donate link: http://www.slidedeck.com/
-Tags: dynamic, responsive, image gallery, dtelepathy, digital telepathy, digital-telepathy, iPad, jquery, media, photo, pictures, plugin, posts, Search Engine Optimized, seo, skinnable, slide, slide show, slider, slideshow, theme, touch support, video, widget, Flickr, Instagram, 500px, RSS, Pinterest, Google+, Twitter, YouTube, Vimeo, Dailymotion, Picasa, Dribbble
+Tags: Slider, dynamic, responsive, image gallery, dtelepathy, digital telepathy, digital-telepathy, iPad, jquery, media, photo, pictures, plugin, posts, Search Engine Optimized, seo, skinnable, slide, slide show, slider, slideshow, theme, touch support, video, widget, Flickr, Instagram, 500px, RSS, Pinterest, Google+, Twitter, YouTube, Vimeo, Dailymotion, Picasa, Dribbble
 Requires at least: 3.3
-Tested up to: 3.4.1
+Tested up to: 3.4.2
 Stable tag: trunk
 License: GPLv3
 
@@ -68,6 +68,18 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 
 
 == Changelog ==
+= 2.1.20120919 =
+* Updated the http_build_query() method that outputs the dimensions for iframe and RESS decks, added the ampersand as the separator. Some users were having the html encoded '&amp;' being output which was breaking the deck dimensions.
+* Namespaced the SlideDeck SimpleModal JavaScript library further to avoid namespace conflicts with plugins like Shortcode Exec PHP and Ajax Event Calendar
+* Fixed bug with IE 8 background image processing that was preventing images beyond the first slide from working in vertical SlideDecks.
+* Fixed a display issue where the SlideDeck previews on the manage page where sometimes rendered at the wrong height.
+* Fixed an issue where SlideDecks using the iframe=1 shortcode option had a larger than necessary height.
+* Reporter Lens: Including multiple Reporter decks on the page no longer creates JavaScript errors and broken decks.
+* Reporter Lens: Fixed an issue where the video thumbnail was erroneously linking to the video permalink when this was not expected.
+* Updated language files to include phrases used in lens templates such as "Read More".
+* Fixed an issue where the video cover was not always hidden when automatically advnacing to the next slide.
+* Updated language files to include phrases used in lens templates such as "Read More".
+
 = 2.1.20120827 =
 * Adding RESS (REsponsive Server-Side) options to the shortcode ress=1 and proportional=no
 * Adding RESS (REsponsive Server-Side) options to the widget options
@@ -143,6 +155,9 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 * Fixed an issue where jQuery Masonry was not being enqueued
 
 == Upgrade Notice ==
+= 2.1.20120919 =
+Bug fixes for IE, some lenses, RESS responsive and IFRAME conflicts, cross-plugin conflicts
+
 = 2.1.20120724 =
 A few bug fixes and the new 'Reporter' lens
 

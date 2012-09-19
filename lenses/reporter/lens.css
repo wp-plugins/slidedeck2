@@ -276,6 +276,9 @@
 .lens-reporter dl.slidedeck .slide-type-video .image .play-video-alternative:active .play-icon {
 	top: 1px;
 }
+.lens-reporter dl.slidedeck .slide-type-video a.sd2-image-link {
+    cursor: default;
+}
 
 
 /* End video stuff */

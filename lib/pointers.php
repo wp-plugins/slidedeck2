@@ -86,12 +86,12 @@ class SlideDeckPointers {
             )
         );
         
-        $content = '<h3 class="' . $this->namespace . '">' . esc_js( __( "7 days, 50% discount on SlideDeck 2 Personal", $this->namespace ) ) . '</h3>';
+        $content = '<h3 class="' . $this->namespace . '">' . esc_js( __( "7 days, 25% discount on SlideDeck 2", $this->namespace ) ) . '</h3>';
         $content.= '<div class="more-info">';
         $content.= '<strong>' . esc_js( __( "Welcome, thanks for choosing SlideDeck Lite!", $this->namespace ) ) . '</strong>';
-        $content.= '<p>' . esc_js( __( "You are free to use this plugin for life and as a token of our appreciation we would like to offer you a 50% discount for the Personal version of SlideDeck 2. ", $this->namespace ) );
+        $content.= '<p>' . esc_js( __( "You are free to use this plugin for life and as a token of our appreciation we would like to offer you a 25% discount for all versions of SlideDeck 2. ", $this->namespace ) );
         $content.= '<strong>' . esc_js( __( "This offer expires in 7 days.", $this->namespace ) ) . '</strong></p>';
-        $content.= '<span class="the-offer no-margin">50% Off<span>&nbsp;</span></span><span class="the-offer">7 Days<span>&nbsp;</span></span>';
+        $content.= '<span class="the-offer no-margin">25% Off<span>&nbsp;</span></span><span class="the-offer">7 Days<span>&nbsp;</span></span>';
         $content.= '<a href="' . $SlideDeckPlugin->action( '/upgrades' ) . '" class="button slidedeck-noisy-button"><span>Learn More</span></a></div>';
         
         

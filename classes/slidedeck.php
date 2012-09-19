@@ -259,7 +259,7 @@ class SlideDeck {
                 'data' => 'boolean',
                 'label' => "Link Entire Slide",
                 'value' => false,
-                'description' => "Make the entire slide a link area so clicking on anything in the SlideDeck (except navigation elements) goes to the slide title's link destination",
+                'description' => "Make the entire slide a link area so clicking on anything in the SlideDeck (except navigation elements) goes to the slide title's link destination. (does not affect video slides)",
                 'weight' => -1
             ),
             'date-format' => array(
