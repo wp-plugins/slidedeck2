@@ -567,6 +567,10 @@ Tags: images, posts, feeds, pages, slidedeck
     -moz-hyphens: auto;
     hyphens: auto;
 }
+/* Turn off excerpt if the excerpt is the only thing visible and we are on an excerpt-less slide */
+.lens-tool-kit.sd2-show-excerpt dd.no-excerpt .sd-node-title-box { display: none; }
+
+/* Turn on the excerpt if  */
 .lens-tool-kit.sd2-show-title .sd-node-title-box,
 .lens-tool-kit.sd2-show-title .sd-node-title-box .slide-title,
 .lens-tool-kit.sd2-show-author .sd-node-title-box,
@@ -576,6 +580,17 @@ Tags: images, posts, feeds, pages, slidedeck
 .lens-tool-kit.date-format-human-readable-abbreviated .sd-node-title-box,
 .lens-tool-kit.date-format-human-readable-raw .sd-node-title-box,
 .lens-tool-kit.date-format-human-readable-raw-eu .sd-node-title-box,
+
+.lens-tool-kit.sd2-show-title dd.no-excerpt .sd-node-title-box,
+.lens-tool-kit.sd2-show-title dd.no-excerpt .sd-node-title-box .slide-title,
+.lens-tool-kit.sd2-show-author dd.no-excerpt .sd-node-title-box,
+.lens-tool-kit.sd2-show-author-avatar dd.no-excerpt .sd-node-title-box,
+.lens-tool-kit.date-format-timeago dd.no-excerpt .sd-node-title-box,
+.lens-tool-kit.date-format-human-readable dd.no-excerpt .sd-node-title-box,
+.lens-tool-kit.date-format-human-readable-abbreviated dd.no-excerpt .sd-node-title-box,
+.lens-tool-kit.date-format-human-readable-raw dd.no-excerpt .sd-node-title-box,
+.lens-tool-kit.date-format-human-readable-raw-eu dd.no-excerpt .sd-node-title-box,
+
 .lens-tool-kit.sd2-show-excerpt .sd-node-title-box,
 .lens-tool-kit.sd2-show-excerpt .sd-node-title-box .slide-text { display: block; }
 

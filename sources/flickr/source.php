@@ -127,10 +127,9 @@ class SlideDeckSource_Flickr extends SlideDeck {
      * Deletes slides associated with the deleted SlideDeck
      * 
      * @param integer $slidedeck_id The ID of the SlideDeck that was deleted
-     * @deprecated @param string $deprecated The type of SlideDeck being deleted
      * @param string $source The source of the SlideDeck
      */
-    function slidedeck_after_delete( $slidedeck_id, $deprecated, $source ) {
+    function slidedeck_after_delete( $slidedeck_id, $source ) {
         // Only delete other slides if the SlideDeck belongs to this Deck type
         if( $this->is_valid( $source ) ) {
             return false;

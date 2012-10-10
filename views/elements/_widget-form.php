@@ -31,7 +31,7 @@ You should have received a copy of the GNU General Public License
 along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
 */
 ?>
-<p><?php _e( "Display a SlideDeck in a widget area. <em><strong>NOTE:</strong> since most widget areas are narrow sidebars, your SlideDeck may not appear correctly. We only recommend placing SlideDecks in wider widget areas like headers and footers.</em>", $namespace ); ?></p>
+<p><?php _e( "Display a SlideDeck in a widget area.", $namespace ); ?></p>
 <p><label><strong><?php _e( "Choose a SlideDeck", $namespace ); ?>:</strong><br />
 <select name="<?php echo $this->get_field_name( 'slidedeck_id' ); ?>" id="<?php echo $this->get_field_id( 'slidedeck_id' ); ?>" class="widefat">
     <?php foreach( (array) $slidedecks as $slidedeck ): ?>
@@ -39,6 +39,21 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
     <?php endforeach; ?>
 </select>
 </label></p>
+
+<p>
+    <label><?php _e('Title:'); ?></label> <input class="widefat" id="<?php echo $this->get_field_id( $namespace . '_title'); ?>" name="<?php echo $this->get_field_name( $namespace . '_title'); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" />
+</p>
+
+<p>
+    <label><?php _e('Intro text:'); ?></label>
+    <textarea class="widefat" id="<?php echo $this->get_field_id( $namespace . '_before_deck'); ?>" name="<?php echo $this->get_field_name( $namespace . '_before_deck'); ?>"><?php echo esc_attr( $before_deck ); ?></textarea>
+</p>
+
+<p>
+    <label><?php _e('Footer text:'); ?></label>
+    <textarea class="widefat" id="<?php echo $this->get_field_id( $namespace . '_after_deck'); ?>" name="<?php echo $this->get_field_name( $namespace . '_after_deck'); ?>"><?php echo esc_attr( $after_deck ); ?></textarea>
+</p>
+
 <p>
     <label>
         <input type="checkbox" value="1" name="<?php echo $this->get_field_name( $namespace . '_deploy_as_iframe' ); ?>" id="<?php echo $this->get_field_id( $namespace . '_deploy_as_iframe'); ?>"<?php if( $deploy_as_iframe ) echo ' checked="checked"'; ?> />

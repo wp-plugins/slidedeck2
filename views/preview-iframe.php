@@ -335,7 +335,6 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
 		    <!-- end child iFrame code -->
     	<?php endif; ?>
 
-        
         <?php if( $preview ): ?>
             <script type="text/javascript">
                 // Force all links to be target _blank in preview
@@ -346,6 +345,20 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
                 })(jQuery);
             </script>
         <?php endif; ?>
+        
+            <script type="text/javascript">
+                /**
+                 * If a link is NOT set to open in a new window, then 
+                 * make sure it tries to open in the top frame.
+                 * 
+                 * This only applies for the caption area.
+                 */
+                (function($){
+                    $(document).ready(function(){
+                        $('.slidedeck-frame dl dd .sd2-node-caption a[target!="_blank"]').attr('target', '_top');
+                    });
+                })(jQuery);
+            </script>
         
         <?php do_action( "{$namespace}_iframe_footer", $slidedeck, $preview ); ?>
     </body>

@@ -84,7 +84,8 @@ if( SlideDeckLitePlugin::$slidedeck_addons_installing ) {
 	
 	if( !class_exists( 'SlideDeckPluginInstallSkin' ) ) {
 	    class SlideDeckPluginInstallSkin extends Plugin_Installer_Skin {
-    		var $install_error = false;
+            var $install_error = false;
+            var $activated = false;
 	    
 	        function header() {
 	            if ( $this->done_header )
@@ -94,7 +95,7 @@ if( SlideDeckLitePlugin::$slidedeck_addons_installing ) {
 	        }
 	        
 	        function footer() {
-	        	if( $this->install_error == false ){
+	        	if( ( $this->install_error == false ) && $this->activated ){
 					echo '<script type="text/javascript">document.location.href = "' . str_replace( '-lite', '', slidedeck2_action() ) . '";</script>';
 					exit;
 	        	}
@@ -126,6 +127,7 @@ if( SlideDeckLitePlugin::$slidedeck_addons_installing ) {
 				$result = activate_plugin( $full_path_to_plugin );
 				if( !is_wp_error( $result ) ) {
 					show_message( __('Plugin Activated Successfully!'), SlideDeckLitePlugin::$namespace );
+                    $this->activated = true;
 				}else{
 					$this->install_error = true;
 					show_message( __('Could not activate the plugin.'), SlideDeckLitePlugin::$namespace );

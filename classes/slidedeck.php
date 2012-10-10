@@ -1134,7 +1134,7 @@ class SlideDeck {
                     // Process as an option containing sub-options
                     else {
                         foreach( $val as $sub_key => $sub_val ) {
-                        	if( isset( $sub_val ) && !empty( $sub_val ) )
+                        	if( isset( $sub_val ) && !empty( $sub_val ) && is_array( $sub_val ) )
                             	$default_options[$key][$sub_key] = $sub_val['value'];
                         }
                     }
@@ -2216,6 +2216,7 @@ class SlideDeck {
         $SlideDeckPlugin->footer_styles .= apply_filters( "{$this->namespace}_footer_styles", "", $slidedeck );
         
         // Process the SlideDeck's lens assets 
+        $found_lens_path = false;
         if( !isset( $SlideDeckPlugin->lenses_included[$lens['slug']] ) && $include_lens_files === true ) {
             $SlideDeckPlugin->lenses_included[$lens['slug']] = true;
 

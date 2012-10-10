@@ -79,6 +79,10 @@ class SlideDeck2Widget extends WP_Widget {
         $deploy_as_iframe = $instance[$this->namespace . '_deploy_as_iframe'];
         $use_ress = $instance[$this->namespace . '_use_ress'];
         $proportional = $instance[$this->namespace . '_proportional'];
+        $title = strip_tags( $instance[ $this->namespace . '_title'] );
+        $before_deck = $instance[ $this->namespace . '_before_deck'];
+        $after_deck = $instance[ $this->namespace . '_after_deck'];
+        
         
         $namespace = $this->namespace;
         $slidedecks = $SlideDeckPlugin->SlideDeck->get( null, 'post_title', 'ASC', 'publish' );
@@ -101,6 +105,9 @@ class SlideDeck2Widget extends WP_Widget {
         $instance[$this->namespace . '_deploy_as_iframe'] = isset( $new_instance[$this->namespace . '_deploy_as_iframe'] );
         $instance[$this->namespace . '_use_ress'] = isset( $new_instance[$this->namespace . '_use_ress'] );
         $instance[$this->namespace . '_proportional'] = isset( $new_instance[$this->namespace . '_proportional'] );
+        $instance[$this->namespace . '_title'] = $new_instance[ $this->namespace . '_title'];
+        $instance[$this->namespace . '_before_deck'] = $new_instance[ $this->namespace . '_before_deck'];
+        $instance[$this->namespace . '_after_deck'] = $new_instance[ $this->namespace . '_after_deck'];
         
         return $instance;
     }
@@ -120,8 +127,14 @@ class SlideDeck2Widget extends WP_Widget {
         global $slidedeck_footer_scripts;
         
         extract( $args, EXTR_SKIP );
+        $title = $instance[$this->namespace . '_title'];
+        $before_deck = $instance[$this->namespace . '_before_deck'];
+        $after_deck = $instance[$this->namespace . '_after_deck'];
         
         echo $before_widget;
+        if ( $title )
+            echo $before_title . $title . $after_title;
+
         
         $shortcode = "[SlideDeck2 id={$instance['slidedeck_id']}";
         if( $instance[$this->namespace . '_deploy_as_iframe'] ) $shortcode.= " iframe=1";
@@ -137,8 +150,14 @@ class SlideDeck2Widget extends WP_Widget {
         
         $shortcode.= "]";
         
+        if ( $before_deck )
+            echo '<div class="sd2-before">' . $before_deck . '</div>';
+
         echo do_shortcode( $shortcode );
         
+        if ( $after_deck )
+            echo '<div class="sd2-after">' . $after_deck . '</div>';
+
         echo $after_widget;
     }
 }

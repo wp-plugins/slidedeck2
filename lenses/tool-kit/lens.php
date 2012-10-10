@@ -208,7 +208,7 @@ class SlideDeckLens_ToolKit extends SlideDeckLens_Scaffold {
         return $slidedeck_classes;
     }
     
-    function slidedeck_dimensions( $width, $height, $outer_width, $outer_height, $slidedeck ) {
+    function slidedeck_dimensions( &$width, &$height, &$outer_width, &$outer_height, &$slidedeck ) {
     	global $SlideDeckPlugin;
     	if( $this->is_valid( $slidedeck['lens'] ) ) {
     			

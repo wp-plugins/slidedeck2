@@ -68,6 +68,14 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 
 
 == Changelog ==
+= 2.1.20121010 =
+* Fixed an error where upgrading from Lite would show an error page if FTP crendentials were requested
+* Fixed an issue where a warning was being thrown due to a lack of a `$found_lens_path`
+* Updated URL pathing constant to use plugins_url() for better WordPress Network compatibility
+* Updating the slidedeck_dimensions() filter for PHP 5.4 compatibility
+* Added Title, Before, and After text to the SlideDeck WordPress Widget
+* Tool Kit Lens: Fixed an issue where the excerpt block could show up even if there was no excerpt.
+
 = 2.1.20120919 =
 * Updated the http_build_query() method that outputs the dimensions for iframe and RESS decks, added the ampersand as the separator. Some users were having the html encoded '&amp;' being output which was breaking the deck dimensions.
 * Namespaced the SlideDeck SimpleModal JavaScript library further to avoid namespace conflicts with plugins like Shortcode Exec PHP and Ajax Event Calendar
@@ -155,6 +163,9 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 * Fixed an issue where jQuery Masonry was not being enqueued
 
 == Upgrade Notice ==
+= 2.1.20121010 =
+Various bug fixes
+
 = 2.1.20120919 =
 Bug fixes for IE, some lenses, RESS responsive and IFRAME conflicts, cross-plugin conflicts
 

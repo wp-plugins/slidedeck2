@@ -26,7 +26,7 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 // The current version of this plugin
-if( !defined( 'SLIDEDECK2_VERSION' ) ) define( 'SLIDEDECK2_VERSION', '2.1.20120919' );
+if( !defined( 'SLIDEDECK2_VERSION' ) ) define( 'SLIDEDECK2_VERSION', '2.1.20121010' );
 
 // Environment - change to "development" to load .dev.js JavaScript files (DON'T FORGET TO TURN IT BACK BEFORE USING IN PRODUCTION)
 if( !defined( 'SLIDEDECK2_ENVIRONMENT' ) ) define( 'SLIDEDECK2_ENVIRONMENT', 'production' );
@@ -39,7 +39,7 @@ if( !defined( 'SLIDEDECK_TOTAL_SLIDES_LITE' ) ) define( 'SLIDEDECK_TOTAL_SLIDES_
 if( !defined( 'SLIDEDECK2_DIRNAME' ) ) define( 'SLIDEDECK2_DIRNAME', dirname( dirname( __FILE__ ) ) );
 
 // The URL path of this plugin
-if( !defined( 'SLIDEDECK2_URLPATH' ) ) define( 'SLIDEDECK2_URLPATH', ( is_ssl() ? str_replace( "http://", "https://", WP_PLUGIN_URL ) : WP_PLUGIN_URL ) . "/" . basename( SLIDEDECK2_DIRNAME ) );
+if( !defined( 'SLIDEDECK2_URLPATH' ) ) define( 'SLIDEDECK2_URLPATH', trailingslashit( plugins_url() ) . basename( SLIDEDECK2_DIRNAME ) );
 
 define( 'SLIDEDECK2_POST_TYPE',                      'slidedeck2' );
 define( 'SLIDEDECK2_SLIDE_POST_TYPE',                'slidedeck_slide' );
