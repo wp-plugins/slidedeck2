@@ -159,6 +159,8 @@ function onYouTubePlayerAPIReady() {
                     case 1:
                         // Add the video playing class to the deck if a YouTube video is playing.
                         jQuery(deckElement[0]).parents('.slidedeck-frame').addClass("sd2-video-playing");
+                        // Pause Autoplay on the SlideDeck when the video API says it's playing.
+                        jQuery(deckElement[0]).slidedeck().pauseAutoPlay = true;
                     break;
                 }
                 iFrameYouTubePlayer.youTubePlayerState = video.data;
@@ -211,6 +213,8 @@ window.dmAsyncInit = function(){
             // Add the video playing class to the deck if a Dailymotion video is playing.
             dailymotionPlayer.addEventListener("playing", function(e){
                 jQuery(deckElement[0]).parents('.slidedeck-frame').addClass("sd2-video-playing");
+                // Pause Autoplay on the SlideDeck when the video API says it's playing.
+                jQuery(deckElement[0]).slidedeck().pauseAutoPlay = true;
             });
             
             // Push the players into their global space.                
@@ -320,6 +324,7 @@ function briBriFlex(elem, max){
         
         var ie = navigator.userAgent.toLowerCase().indexOf('msie') > -1;
         var ie9 = navigator.userAgent.toLowerCase().indexOf('msie 9') > -1;
+        var ie10 = navigator.userAgent.toLowerCase().indexOf('msie 10') > -1;
 
         // Sets the height of the iframe
         function setHeight( message ) {
@@ -370,7 +375,7 @@ function briBriFlex(elem, max){
             xdomain = options.domain || '*';
             element = options.element || 'iframe-embed';
             container = document.getElementById(element);
-            el = ( !ie || ie9 ) ? 'iframe' : '<iframe name="' + element + '" allowTransparency="true"></iframe>';
+            el = ( !ie || ie9 || ie10 ) ? 'iframe' : '<iframe name="' + element + '" allowTransparency="true"></iframe>';
             iframe = document.createElement(el);
             setProps(options);
         }
@@ -618,6 +623,8 @@ function briBriFlex(elem, max){
                     // Add the video playing class to the deck if a Vimeo video is playing.
                     froogaloop.addEvent('play', function(data) {
                         jQuery(thedeck.deck[0]).parents('.slidedeck-frame').addClass("sd2-video-playing");
+                        // Pause Autoplay on the SlideDeck when the video API says it's playing.
+                        jQuery(deckElement[0]).slidedeck().pauseAutoPlay = true;
                     });
                 });
                 vimeoPlayer.playerType = 'vimeo';

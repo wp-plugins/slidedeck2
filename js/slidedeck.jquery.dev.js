@@ -1,5 +1,5 @@
 /*!
- * SlideDeck 1.3.9 Pro - 2012-07-18
+ * SlideDeck 1.4.0 Pro - 2012-10-12
  * 
  * More information on this project:
  * http://www.slidedeck.com/
@@ -32,6 +32,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 var SlideDeck;
 var SlideDeckSkin = {};
 var SlideDeckLens = {};
@@ -44,14 +45,14 @@ var SlideDeckLens = {};
             distribution = 'pro';
         
         if( typeof(window.slideDeck2Version) != 'undefined' ){
-        	versionPrefix  = 'sd2-' + window.slideDeck2Version + '-';
+            versionPrefix  = 'sd2-' + window.slideDeck2Version + '-';
         }
         
         if( typeof(window.slideDeck2Distribution) != 'undefined' ){
-        	distribution  = window.slideDeck2Distribution;
+            distribution  = window.slideDeck2Distribution;
         }
         
-        var VERSION = versionPrefix + "1.3.8";
+        var VERSION = versionPrefix + "1.4.0";
         
         this.options = {
             speed: 500,
@@ -99,6 +100,8 @@ var SlideDeckLens = {};
         var UA = navigator.userAgent.toLowerCase();
         this.browser = {
             chrome: UA.match(/chrome/) ? true : false,
+            chromeFrame: (UA.match(/msie/) && UA.match(/chrome/)) ? true : false,
+            chromeiOS: UA.match(/crios/) ? true : false, // CriOS (Chrome for iOS)
             firefox: UA.match(/firefox/) ? true : false,
             firefox2: UA.match(/firefox\/2/) ? true : false,
             firefox30: UA.match(/firefox\/3\.0/) ? true : false,
@@ -107,10 +110,11 @@ var SlideDeckLens = {};
             msie7: UA.match(/msie 7/) ? true : false,
             msie8: UA.match(/msie 8/) ? true : false,
             msie9: UA.match(/msie 9/) ? true : false,
-            chromeFrame: (UA.match(/msie/) && UA.match(/chrome/)) ? true : false,
+            msie10: UA.match(/msie 10/) ? true : false,
             opera: UA.match(/opera/) ? true : false,
-            safari: (UA.match(/safari/) && !UA.match(/chrome/)) ? true : false
+            safari: (UA.match(/safari/) && !UA.match(/chrome|crios/)) ? true : false // Matches Safari and not "CriOS" (chrome for iOS)
         };
+        
         for(var b in this.browser){
             if(this.browser[b] === true){
                 this.browser._this = b;
@@ -128,10 +132,13 @@ var SlideDeckLens = {};
         if(this.browser.opera === true) {
             this.browser.version = UA.match(/version\/([0-9\.]+)/)[1];
         }
-        if(this.browser.safari === true) {
+        if(this.browser.safari === true && !this.browser.chromeiOS) {
             this.browser.version = UA.match(/version\/([0-9\.]+)/)[1];
         }
-        
+        if(this.browser.chromeiOS === true) {
+            this.browser.version = UA.match(/crios\/([0-9\.]+)/)[1];
+        }
+
         var width;
         var height;
 
@@ -162,7 +169,7 @@ var SlideDeckLens = {};
         }
         
         var FixIEAA = function(spine){
-            if(self.browser.msie && !self.browser.msie9){
+            if(self.browser.msie && ( !self.browser.msie9 && !self.browser.msie10 )){
                 var bgColor = spine.css('background-color');
                 var sBgColor = bgColor;
                 if(sBgColor == "transparent"){
@@ -548,7 +555,7 @@ var SlideDeckLens = {};
                         textAlign: 'right'
                     };
                     
-                    if( !self.browser.msie9 ){
+                    if( !self.browser.msie9 && !self.browser.msie10 ){
                         spineStyles.top = (self.browser.msie) ? 0 : (height - spine_half_width) + "px";
                         spineStyles.marginLeft = ((self.browser.msie) ? 0 : (0 - spine_half_width)) + "px";
                         
@@ -563,7 +570,7 @@ var SlideDeckLens = {};
 
                     spine.css( spineStyles ).addClass(self.classes.spine).addClass(self.classes.spine + "_" + (i + 1));
                     
-                    if(self.browser.msie9){
+                    if(self.browser.msie9 || self.browser.msie10){
                         spine[0].style.msTransform = 'rotate(270deg)';
                         spine[0].style.msTransformOrigin = Math.round(parseInt(el[0].style.height, 10) / 2) + 'px ' + Math.round(parseInt(el[0].style.height, 10) / 2) + 'px';
                     }
@@ -632,7 +639,7 @@ var SlideDeckLens = {};
                         '-o-transform-origin': spine_half_width + 'px 0px'
                     });
                     
-                    if(self.browser.msie9){
+                    if(self.browser.msie9 || self.browser.msie10){
                         spine.find('.' + self.classes.index)[0].style.msTransform = 'rotate(90deg)';
                     }
 
@@ -1255,7 +1262,8 @@ var SlideDeckLens = {};
                                     case "msie7":
                                     case "msie8":
                                     case "msie9":
-                                        switch(val){
+                                    case "msie10":
+                                      switch(val){
                                             case "flip":
                                             case "flipHorizontal":
                                                 val = "fade";
@@ -1461,7 +1469,7 @@ var SlideDeckLens = {};
                 if(!parentSlide.find('.' + self.classes.navContainer).length){
                     
                     // If not less than or equal to IE8, or is Chrome Frame, or is IE9
-                    var spineOffset = (( (deck.browser.msie !== true) || deck.browser.msie9 ) ? $(deck.spines[0]).outerHeight() : $(deck.spines[0]).outerWidth());
+                    var spineOffset = (( (deck.browser.msie !== true) || deck.browser.msie9 || deck.browser.msie10 ) ? $(deck.spines[0]).outerHeight() : $(deck.spines[0]).outerWidth());
                     if(deck.options.hideSpines === true){
                         spineOffset = 0;
                     }
@@ -1637,7 +1645,8 @@ var SlideDeckLens = {};
                 case "msie7":
                 case "msie8":
                 case "msie9":
-                    switch(self.options.slideTransition){
+                case "msie10":
+                   switch(self.options.slideTransition){
                         case "flip":
                         case "flipHorizontal":
                             self.options.slideTransition = "fade";

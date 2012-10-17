@@ -13,7 +13,7 @@
  Plugin Name: SlideDeck 2 Lite
  Plugin URI: http://www.slidedeck.com/wordpress
  Description: Create SlideDecks on your WordPress blogging platform and insert them into templates and posts. Get started creating SlideDecks from the new SlideDeck menu in the left hand navigation.
- Version: 2.1.20121010
+ Version: 2.1.20121017
  Author: digital-telepathy
  Author URI: http://www.dtelepathy.com
  License: GPL3
@@ -182,10 +182,13 @@ class SlideDeckLitePlugin {
         // Load all the custom Lens types
         foreach( (array) $lens_files as $filename ) {
             if( is_readable( $filename ) ) {
-                include_once ($filename);
-
                 $classname = slidedeck2_get_classname_from_filename( dirname( $filename ) );
                 $prefix_classname = "SlideDeckLens_{$classname}";
+                
+                if( !class_exists( $prefix_classname ) ) {
+                    include_once ($filename);
+                }
+
                 if( class_exists( $prefix_classname ) ) {
                     $this->lenses[$classname] = new $prefix_classname;
                 }

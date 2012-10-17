@@ -1537,7 +1537,7 @@ class SlideDeck {
      * 
      * @return array
      */
-    function get_source_file( $filename ) {
+    function get_source_file( $filename = "" ) {
         if( empty( $this->basedir ) ) {
             $this->basedir = apply_filters( "{$this->namespace}_get_source_file_basedir", "", $this->name );
         }

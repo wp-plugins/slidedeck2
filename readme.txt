@@ -68,6 +68,13 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 
 
 == Changelog ==
+= 2.1.20121017 =
+* Fixed an issue where the responsive SlideDecks would fail in IE10
+* Fixed an issue where the classic lens would not render correctly in IE 10
+* SlideDeck now renders correctly in Chrome for iOS
+* Loading of SlideDeck lenses no longer triggers a fatal error if the lens class was not unique
+* Fixed an issue where playing a video slide (on mobile) woud not pause the SlideDeck autoPlay setting
+
 = 2.1.20121010 =
 * Fixed an error where upgrading from Lite would show an error page if FTP crendentials were requested
 * Fixed an issue where a warning was being thrown due to a lack of a `$found_lens_path`
@@ -163,6 +170,9 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 * Fixed an issue where jQuery Masonry was not being enqueued
 
 == Upgrade Notice ==
+= 2.1.20121017 =
+Bug fixes, IE10 issued resolved, Chrome iOS issues resolved
+
 = 2.1.20121010 =
 Various bug fixes
 
