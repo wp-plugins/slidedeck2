@@ -1,4 +1,4 @@
-<div id="slidedeck-social-buttons" class="right-column-module">
+<div id="slidedeck-social-buttons" class="right-column-module"<?php echo( !SlideDeckLitePlugin::get_partner_data() )? '':' style="border-top:0;"' ?>>
     <strong>Share with friends</strong>
     <div class="tweeet-button social-button">
         <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://demo.slidedeck.com/wp-login.php" data-text="I just made a WordPress content slider in minutes! Try the free @SlideDeck 2 demo. Please RT">Tweet</a>
