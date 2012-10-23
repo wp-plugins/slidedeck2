@@ -43,6 +43,7 @@ class SlideDeckLitePlugin {
     static $friendly_name = "SlideDeck 2";
 	static $cohort_name = 'ecf8915';
 	static $cohort_variation = '';
+    static $partner = false;
 
 	// Generally, we are not installing addons. If we are, this gets set to true.
 	static $slidedeck_addons_installing = false;
@@ -413,6 +414,9 @@ class SlideDeckLitePlugin {
 			
 			// Setup the cohorts data
 			self::set_cohort_data();
+            
+            // Setup the partner data
+            self::set_partner_data();
         }
 
         if( $installed_version && version_compare( SLIDEDECK2_VERSION, $installed_version, '>' ) ) {
@@ -2407,7 +2411,9 @@ class SlideDeckLitePlugin {
         $license_key = $this->get_license_key();
         
         if ( $days_left > 0 && empty( $license_key ) ) {
-            add_action( 'admin_notices', array( &$this, 'discount_available_message' ) );
+            if( !$this->get_partner_data() ){
+                add_action( 'admin_notices', array( &$this, 'discount_available_message' ) );
+            }
         }
     }
     
@@ -2651,7 +2657,9 @@ class SlideDeckLitePlugin {
 
         // Initiate pointers on this page
         //$this->Pointers->pointer_lens_management();
-        $this->Pointers->pointer_installation_discount();
+        if( !$this->get_partner_data() ){
+            $this->Pointers->pointer_installation_discount();
+        }
 
         $default_view = get_user_option( "{$this->namespace}_default_manage_view" );
         if( !$default_view )
@@ -2992,9 +3000,9 @@ class SlideDeckLitePlugin {
     function print_javascript_constants( ) {
         if( !isset( $this->constants_printed ) ) {
             echo '<script type="text/javascript">' . "\n";
-            echo 'var slideDeck2URLPath = "' . SLIDEDECK2_URLPATH . '"' . "\n";
-            echo 'var slideDeck2AddonsURL = "' . slidedeck2_action( "/upgrades" ) . '"' . "\n";
-            echo 'var slideDeck2iframeByDefault = ' . var_export( $this->get_option( 'iframe_by_default' ), true ) . '; ' . "\n";
+            echo 'var slideDeck2URLPath = "' . SLIDEDECK2_URLPATH . '";' . "\n";
+            echo 'var slideDeck2AddonsURL = "' . slidedeck2_action( "/upgrades" ) . '";' . "\n";
+            echo 'var slideDeck2iframeByDefault = ' . var_export( $this->get_option( 'iframe_by_default' ), true ) . ';' . "\n";
             echo '</script>' . "\n";
             
             $this->constants_printed = true;
@@ -3010,8 +3018,8 @@ class SlideDeckLitePlugin {
     function print_header_javascript_constants( ) {
         if( !isset( $this->header_constants_printed ) ) {
             echo '<script type="text/javascript">' . "\n";
-            echo 'window.slideDeck2Version = "' . SLIDEDECK2_VERSION . '"' . "\n";
-            echo 'window.slideDeck2Distribution = "' . strtolower( SLIDEDECK2_LICENSE ) . '"' . "\n";
+            echo 'window.slideDeck2Version = "' . SLIDEDECK2_VERSION . '";' . "\n";
+            echo 'window.slideDeck2Distribution = "' . strtolower( SLIDEDECK2_LICENSE ) . '";' . "\n";
             echo '</script>' . "\n";
             
             $this->header_constants_printed = true;
@@ -3239,35 +3247,59 @@ class SlideDeckLitePlugin {
         exit ;
     }
 
-	/**
-	 * Sets up the user's cohort data
-	 * 
-	 * @uses get_option()
-	 * @uses add_option()
-	 */
-	static function set_cohort_data() {
-		$data = array(
-			'name' => self::$cohort_name,
-			'variation' => self::$cohort_variation,
-			'year' => date("Y"),
-			'month' => date("m")
-		);
-		
-		// Only set the cohort if it does not exist. 
-		if( get_option( self::$namespace . '_cohort', false ) === false ) {
-			add_option( self::$namespace . '_cohort', $data );
-		}
-	}
-	
-	/**
-	 * Sets up the user's cohort data
-	 * 
-	 * @uses get_option()
-	 * @uses add_option()
-	 */
-	static function get_cohort_data() {
-		return get_option( self::$namespace . '_cohort', false );
-	}
+    /**
+     * Sets up the user's partner data
+     * 
+     * @uses get_option()
+     * @uses add_option()
+     */
+    static function set_partner_data() {
+        $data = self::$partner;
+        
+        // Only set the partner data if it does not exist. 
+        if( get_option( self::$namespace . '_partner', false ) === false ) {
+            add_option( self::$namespace . '_partner', $data );
+        }
+    }
+    
+    /**
+     * Gets the user's partner data
+     * 
+     * @uses get_option()
+     * @uses add_option()
+     */
+    static function get_partner_data() {
+        return get_option( self::$namespace . '_partner', false );
+    }
+    /**
+     * Sets up the user's cohort data
+     * 
+     * @uses get_option()
+     * @uses add_option()
+     */
+    static function set_cohort_data() {
+        $data = array(
+            'name' => self::$cohort_name,
+            'variation' => self::$cohort_variation,
+            'year' => date("Y"),
+            'month' => date("m")
+        );
+        
+        // Only set the cohort if it does not exist. 
+        if( get_option( self::$namespace . '_cohort', false ) === false ) {
+            add_option( self::$namespace . '_cohort', $data );
+        }
+    }
+    
+    /**
+     * Sets up the user's cohort data
+     * 
+     * @uses get_option()
+     * @uses add_option()
+     */
+    static function get_cohort_data() {
+        return get_option( self::$namespace . '_cohort', false );
+    }
 
 	/**
 	 * Outputs the cohort info as a query string
