@@ -42,11 +42,11 @@ Where 1644 is the SlideDeck's ID. You can also see this code snippet when you sa
 == Screenshots ==
 
 1. The SlideDeck manage view.
-2. The choose source modal. This is where you can select a source to create your dynamic SlideDeck.
-3. The editing interface showing the O-Town lens and digital-telepathy's Pinterest items.
-4. The editing interface showing the current deck and the top of the lens selection area. 
-5. One of the many settings page aviable to you. You can tweak dozens of settings for each SlideDeck.
-6. The playback tab controls the slide transition, the animation easing, the start slide and more.
+2. The editing interface showing the current deck and the top of the lens selection area.
+3. One of the many settings page aviable to you. You can tweak dozens of settings for each SlideDeck.
+4. Example - Flickr images from ViewsOfIreland.com using the Tool Kit Lens
+5. Example - Pinterest images from dwellmedia using the O-Town lens
+6. Example - YouTube videos from NativeInstruments using the Reporter Lens
 
 == Frequently Asked Questions ==
 

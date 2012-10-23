@@ -2128,7 +2128,11 @@ class SlideDeck {
         $html .= '<a class="deck-navigation vertical next" href="#next-vertical"><span>Next</span></a>';
         
         $html.= apply_filters( "{$this->namespace}_render_slidedeck_after", "", $slidedeck );
-        $html.= '<a href="http://www.slidedeck.com/?utm_campaign=sd2_lite&utm_medium=chiclet&utm_source=' . urlencode( $_SERVER['HTTP_HOST'] ) . '&utm_content=sd2_lite_chiclet" rel="external" class="slidedeck-2-bug">SlideDeck 2</a>';
+        
+        if( !SlideDeckLitePlugin::get_partner_data() ){
+            $html.= '<a href="http://www.slidedeck.com/?utm_campaign=sd2_lite&utm_medium=chiclet&utm_source=' . urlencode( $_SERVER['HTTP_HOST'] ) . '&utm_content=sd2_lite_chiclet" rel="external" class="slidedeck-2-bug">SlideDeck 2</a>';
+        }
+        
         $html.= '</div>';
         
         // Additional JavaScript for rendering vertical slides
