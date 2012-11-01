@@ -42,6 +42,7 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
         <?php endif; ?>
         
     	<div id="slidedeck-types">
+    	    <?php echo $this->upgrade_button('manage'); ?>
         	<h1><?php _e( "Manage SlideDeck 2", $namespace ); ?></h1>
         	<?php
         	   $create_dynamic_slidedeck_block_html = apply_filters( "{$namespace}_create_dynamic_slidedeck_block", "" );

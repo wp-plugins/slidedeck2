@@ -68,6 +68,12 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 
 
 == Changelog ==
+= 2.1.20121101 =
+* Optimized the way that scripts and styles are loaded when using RESS.
+* Moved RESS scripts into their own file, echoing them instead of including them.
+* Added an IE8 compatible background-color definition for the main navigation arrows
+* Fixed a PHP warning in the widget.php file
+
 = 2.1.20121017 =
 * Fixed an issue where the responsive SlideDecks would fail in IE10
 * Fixed an issue where the classic lens would not render correctly in IE 10
@@ -170,6 +176,9 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 * Fixed an issue where jQuery Masonry was not being enqueued
 
 == Upgrade Notice ==
+= 2.1.20121101 =
+Bug fixes for IE8. Asset loading optimizations
+
 = 2.1.20121017 =
 Bug fixes, IE10 issued resolved, Chrome iOS issues resolved
 

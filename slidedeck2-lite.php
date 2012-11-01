@@ -13,7 +13,7 @@
  Plugin Name: SlideDeck 2 Lite
  Plugin URI: http://www.slidedeck.com/wordpress
  Description: Create SlideDecks on your WordPress blogging platform and insert them into templates and posts. Get started creating SlideDecks from the new SlideDeck menu in the left hand navigation.
- Version: 2.1.20121017
+ Version: 2.1.20121101
  Author: digital-telepathy
  Author URI: http://www.dtelepathy.com
  License: GPL3
@@ -75,6 +75,12 @@ class SlideDeckLitePlugin {
 
     // Should SlideDeck assets be loaded?
     var $load_assets = false;
+    
+    // Are there only iFrame decks on the page?
+    var $only_has_iframe_decks = false;
+    
+    // Are there any RESS decks on the page?
+    var $page_has_ress_deck = false;
 
     // Boolean to determine if video JavaScript files need to be loaded
     var $load_video_scripts = false;
@@ -189,7 +195,7 @@ class SlideDeckLitePlugin {
                 if( !class_exists( $prefix_classname ) ) {
                     include_once ($filename);
                 }
-
+                
                 if( class_exists( $prefix_classname ) ) {
                     $this->lenses[$classname] = new $prefix_classname;
                 }
@@ -648,14 +654,15 @@ class SlideDeckLitePlugin {
         add_filter( "{$this->namespace}_create_custom_slidedeck_block", array( &$this, 'slidedeck_create_custom_slidedeck_block' ) );
         add_filter( "{$this->namespace}_create_dynamic_slidedeck_block", array( &$this, 'slidedeck_create_dynamic_slidedeck_block' ) );
         add_filter( "{$this->namespace}_get_slides", array( &$this, 'slidedeck_get_slides' ), 1000, 2 );
-		
+
 		add_filter( "{$this->namespace}_options_model", array( &$this, 'slidedeck_options_model_slide_count' ), 5, 2 );
 		add_filter( "{$this->namespace}_after_get", array( &$this, 'slidedeck_after_get' ) );
         add_action( "{$this->namespace}_manage_sidebar_bottom", array( &$this, 'slidedeck_manage_sidebar_bottom' ) );
         add_filter( "{$this->namespace}_sidebar_ad_url", array( &$this, 'slidedeck_sidebar_ad_url' ) );
-        add_filter( "{$this->namespace}_lens_selection_after_lenses", array( &$this, 'slidedeck_lens_selection_after_lenses' ) );
         add_filter( "{$this->namespace}_source_modal_after_sources", array( &$this, 'slidedeck_source_modal_after_sources' ) );
         
+        add_filter( "{$this->namespace}_lens_selection_after_lenses", array( &$this, 'slidedeck_lens_selection_after_lenses' ) );
+
         // Add shortcode to replace SlideDeck shortcodes in content with
         // SlideDeck contents
         add_shortcode( 'SlideDeck2', array( &$this, 'shortcode' ) );
@@ -791,8 +798,8 @@ class SlideDeckLitePlugin {
             $this->Pointers->render( );
         }
 
-        // Add target="_blank" to feedback navigation element
-        echo '<script type="text/javascript">var feedbacktab=jQuery("#toplevel_page_' . str_replace( ".php", "", SLIDEDECK2_BASENAME ) . '").find(".wp-submenu ul li a[href$=\'/feedback\']").attr("target", "_blank");jQuery(window).load(function(){jQuery("#slidedeck2-submit-ticket").addClass("visible")});</script>';
+        // Add target="_blank" to support navigation element
+        echo '<script type="text/javascript">var feedbacktab=jQuery("#toplevel_page_' . str_replace( ".php", "", SLIDEDECK2_BASENAME ) . '").find(".wp-submenu ul li a[href$=\'/support\']").attr("target", "_blank");</script>';
     }
 
     /**
@@ -901,7 +908,8 @@ class SlideDeckLitePlugin {
             $this->menu['manage'] = add_submenu_page( SLIDEDECK2_BASENAME, 'Manage SlideDecks', 'Manage', 'publish_posts', SLIDEDECK2_BASENAME, array( &$this, 'page_route' ) );
             $this->menu['lenses'] = add_submenu_page( SLIDEDECK2_BASENAME, 'SlideDeck Lenses', 'Lenses', 'manage_options', SLIDEDECK2_BASENAME . '/lenses', array( &$this, 'page_lenses_route' ) );
             $this->menu['options'] = add_submenu_page( SLIDEDECK2_BASENAME, 'SlideDeck Options', 'Advanced Options', 'manage_options', SLIDEDECK2_BASENAME . '/options', array( &$this, 'page_options' ) );
-            $this->menu['upgrades'] = add_submenu_page( SLIDEDECK2_BASENAME, 'SlideDeck Addons', 'SlideDeck Addons', 'manage_options', SLIDEDECK2_BASENAME . '/upgrades', array( &$this, 'page_upgrades' ) );
+            $this->menu['upgrades'] = add_submenu_page( SLIDEDECK2_BASENAME, 'Get More Features', 'Get More Features', 'manage_options', SLIDEDECK2_BASENAME . '/upgrades', array( &$this, 'page_upgrades' ) );
+            $this->menu['support'] = add_submenu_page( SLIDEDECK2_BASENAME, 'Need Support?', 'Need Support?', 'manage_options', SLIDEDECK2_BASENAME . '/need-support', array( &$this, 'page_route' ) );
 
             add_action( "load-{$this->menu['manage']}", array( &$this, "load_admin_page" ) );
             add_action( "load-{$this->menu['lenses']}", array( &$this, "load_admin_page" ) );
@@ -2282,6 +2290,19 @@ class SlideDeckLitePlugin {
     }
 
     /**
+     * Highest Installed Tier
+     * 
+     * Attempts to find the highest installed tier.
+     */
+    static function highest_installed_tier() {
+        $installed_addons = self::$addons_installed;
+        ksort( $installed_addons );
+        $tier = end( $installed_addons );
+        
+        return $tier;
+    }
+    
+    /**
      * Initialization function to hook into the WordPress init action
      *
      * Instantiates the class on a global variable and sets the class, actions
@@ -2982,6 +3003,16 @@ class SlideDeckLitePlugin {
      * slidedeck_process_template;
      */
     function print_footer_scripts( ) {
+        // If the page has at least one RESS deck, we MUST load the public JS.
+        if( $this->page_has_ress_deck ){
+            // Append a footer script for each deck
+            $ress_code = '<script type="text/javascript">' . "\n";
+            $ress_code .= file_get_contents( SLIDEDECK2_URLPATH . "/js/{$this->namespace}-ress" . (SLIDEDECK2_ENVIRONMENT == 'development' ? '.dev' : '') . ".js" ) . "\n";
+            $ress_code .= '</script>' . "\n";
+            
+            $this->footer_scripts = $ress_code . $this->footer_scripts;
+        }
+        
         echo $this->footer_scripts;
         
         if( !empty( $this->footer_styles ) ) {
@@ -3143,8 +3174,13 @@ class SlideDeckLitePlugin {
         if( $this->is_plugin( ) && isset( $_GET['msg_deleted'] ) )
             slidedeck2_set_flash( __( "SlideDeck successfully deleted!", $this->namespace ) );
 
-        if( preg_match( "/admin\.php\?.*page\=" . SLIDEDECK2_BASENAME . "\/feedback/", $uri ) ) {
+        if( preg_match( "/admin\.php\?.*page\=" . SLIDEDECK2_BASENAME . "\/support/", $uri ) ) {
             wp_redirect( "https://dtelepathy.zendesk.com/requests/new" );
+            exit ;
+        }
+
+        if( preg_match( "/admin\.php\?.*page\=" . SLIDEDECK2_BASENAME . "\/need-support/", $uri ) ) {
+            wp_redirect( $this->action('/upgrades') );
             exit ;
         }
 
@@ -3679,6 +3715,96 @@ class SlideDeckLitePlugin {
     }
 
     /**
+     * Upgrade Button
+     * 
+     * Outputs the green upgrade button that displays contextually.
+     * 
+     * @param string $message_text The button area subtitle
+     * 
+     * @param string $button_text The main button text CTA
+     *      */
+    function upgrade_button( $context = 'manage' ) {
+        $tier = self::highest_installed_tier();
+        if( $tier == 'tier_30' ) return '';
+        
+        // Here's the defaults
+        $defaults = array(
+            'cta_text' => 'Upgrade',
+            'message_text' => 'Get more from SlideDeck',
+            'cta_url' => slidedeck2_action( "/upgrades" )
+        );
+        
+        $array_data = array(
+            'tier_5' => array(
+                'manage' => array(
+                    'message_text' => 'Get more lenses!',
+                ),
+                'edit' => array(
+                    'message_text' => 'Get more sources!',
+                ),
+                'lenses' => array(
+                    'message_text' => 'Copy and edit lenses!',
+                )
+            ),
+            'tier_10' => array(
+                'manage' => array(
+                    'message_text' => 'Get more custom slides',
+                ),
+                'edit' => array(
+                    'message_text' => 'Get the Classic lens',
+                ),
+                'lenses' => array(
+                    'message_text' => 'Copy and edit lenses!',
+                ),
+            ),
+            'tier_20' => array(
+                'manage' => array(
+                    'message_text' => 'Get more custom slides',
+                ),
+                'edit' => array(
+                    'message_text' => 'Use SlideDeck on more sites',
+                ),
+                'lenses' => array(
+                    'message_text' => 'Copy and edit lenses!',
+                )
+            )
+        );
+        
+        // Fetch the data (using cache!)
+        $url = SLIDEDECK2_UPDATE_SITE . '/upgrade-buttons.json?v=' . SLIDEDECK2_VERSION;
+        $response = slidedeck2_cache_read( $url );
+        
+        if( !$response ) {
+            $response = wp_remote_get( $url, array( 'sslverify' => false ) );
+            if( !is_wp_error( $response ) ) {
+                slidedeck2_cache_write( $url, $response, ( 60 * 60 * 24 ) );
+            }else{
+                slidedeck2_cache_write( $url, '', ( 60 * 60 * 24 ) );
+            }
+        }
+        
+        // Decode the data
+        $array_data = json_decode( $response['body'], true );
+        
+        /**
+         * Use the default values if all else fails.
+         * If the found data isn't empty, replace the defaults.
+         */
+        $values = $defaults;
+        if( isset( $array_data[$tier][$context] ) && !empty( $array_data[$tier][$context] ) ){
+            $values = array_merge( $defaults, $array_data[$tier][$context] );
+        }
+        
+        // Render the button!
+        ob_start( );
+        include (SLIDEDECK2_DIRNAME . '/views/elements/_upgrade_button.php');
+        $html = ob_get_contents( );
+        ob_end_clean( );
+
+        return $html;
+    }
+
+    /**
      * Hook into wp_fullscreen_buttons filter
      *
      * Adds insert SlideDeck button to fullscreen TinyMCE editor
@@ -3724,8 +3850,15 @@ class SlideDeckLitePlugin {
                                 // for loading
                                 $slidedeck_ids[] = intval( str_replace( "'", '', $attrs[1] ) );
                                 
-                                if( preg_match( "/iframe=('|\")?1('|\")?/", $str ) ) {
+                                // Check for iframe or ress = 1, yes, true
+                                if( preg_match( "/(iframe|ress)=('|\")?(1|yes|true)('|\")?/", $str, $matches ) ) {
                                     $iframe_slidedecks[] = $attrs[1];
+
+                                    // If at least one deck has RESS, we must force the public JavaScript to load.
+                                    if( $matches[1] == 'ress' ) {
+                                        // If we process at least one RESS deck, set this to true.
+                                        $this->page_has_ress_deck = true;
+                                    }
                                 }
                             }
                         }
@@ -3736,7 +3869,13 @@ class SlideDeckLitePlugin {
             if( !empty( $slidedeck_ids ) ) {
                 // Check if there are actually SlideDecks that need even need their assets loaded
                 if( count( $slidedeck_ids ) > count( $iframe_slidedecks ) ) {
+                    // If there are more regular SlideDecks than iFrame SlideDecks, load the assets.
                     $this->load_assets = true;
+                } else {
+                    // If there are the same amount of regular and iFrame SlideDecks, don't load the assets.
+                    $this->load_assets = false;
+                    // Also, make a note of that...
+                    $this->only_has_iframe_decks = true;
                 }
                 
                 // Load SlideDecks used on this URL passing the array of IDs
@@ -3778,7 +3917,7 @@ class SlideDeckLitePlugin {
     function wp_print_scripts( ) {
         $load_assets = ( $this->load_assets === true || $this->get_option( 'always_load_assets' ) || is_admin() );
         
-        if( $load_assets ) {
+        if( $load_assets === true && !$this->only_has_iframe_decks ) {
             wp_enqueue_script( 'jquery' );
     
             if( $this->get_option( 'dont_enqueue_scrollwheel_library' ) != true ) {
@@ -3832,7 +3971,7 @@ class SlideDeckLitePlugin {
     function wp_print_styles( ) {
         $load_assets = ( $this->load_assets === true || $this->get_option( 'always_load_assets' ) || is_admin() );
         
-        if( $load_assets === true ) {
+        if( $load_assets === true && !$this->only_has_iframe_decks ) {
             foreach( (array) $this->lenses_included as $lens_slug => $val ) {
                 $lens = $this->Lens->get( $lens_slug );
                 echo $this->Lens->get_css( $lens );

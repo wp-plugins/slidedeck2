@@ -32,13 +32,15 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
 */
 ?>
 <div class="wrap" id="slidedeck_lens_management">
+    
+    <?php echo $this->upgrade_button('lenses'); ?>
+    
     <div class="slidedeck-header">
         <h1>SlideDeck Lenses</h1>
         
         <a class="button<?php if( $is_writable->valid !== true ) echo ' disabled' ?>" href="<?php echo slidedeck2_action( '/lenses&action=add' ); ?>">Upload Lens</a>
         <?php do_action( "{$namespace}_lens_management_header", $is_writable ); ?>
     </div>
-    
     
     <div id="slidedeck-lenses-wrapper">
         

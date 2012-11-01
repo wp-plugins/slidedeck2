@@ -37,15 +37,18 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
     
     <?php slidedeck2_flash(); ?>
     
+    
     <p><a href="<?php echo slidedeck2_action(); ?>" id="back-to-manage"><?php _e( "Back to Manage Screen", $namespace ); ?></a></p>
     
     <form action="" method="post" id="slidedeck-update-form" class="slidedeck-form">
     	
-        <div id="titlediv">
+        <div id="titlediv" class="clearfix">
         	<div id="titlewrap"<?php if( $form_action == 'create' ) echo ' class="editing"'; ?>>
 	            <input type="text" name="title" size="30" value="<?php echo $slidedeck['title']; ?>" id="title" class="input-large<?php if( $form_action == 'create' ) echo ' auto-replace empty'; ?>" />
 	            <span id="title-display"><span class="title"><?php echo $slidedeck['title']; ?></span> <a href="#edit" class="edit-link">Edit</a></span>
         	</div>
+        	
+            <?php echo $this->upgrade_button('edit'); ?>
         </div>
         
         <fieldset id="slidedeck-section-header" class="slidedeck-form-section slidedeck-header">

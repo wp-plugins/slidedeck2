@@ -659,10 +659,13 @@ form#overview_options_form div.save-wrapper input[type="submit"] {
 #slidedeck-form-body {
     position: relative;
     z-index: 10;
-    max-width: 1280px;
     background: #f5f6f9;
     border: 1px solid #ccd3de;
     border-top: none;
+}
+#titlediv,
+#slidedeck-form-body {
+    max-width: 1280px;
 }
 
 #slidedeck-form-body fieldset.slidedeck-form-section {
@@ -973,6 +976,7 @@ fieldset.slidedeck-form-section#slidedeck-section-preview {
 
 #slidedeck-section-header {
 	z-index: 20;
+	clear: both;
 	position: relative;
 	overflow: visible;
 	max-width: 1248px;
@@ -1078,6 +1082,13 @@ fieldset.slidedeck-form-section#slidedeck-section-preview {
     display: block;
     height: 35px;
     line-height: 35px;
+    width: 50%;
+    float: left;
+}
+#slidedeck-update-form .upgrade-button-cta {
+    width: 49%;
+    float: right;
+    text-align: right;
 }
 #slidedeck-update-form #titlewrap #title {
     position: absolute;
@@ -1963,6 +1974,7 @@ input#save-slidedeck-button {
 }
 #slidedeck-types div.create-slidedeck div.slidedeck-inner {
     position: relative;
+    z-index: 2;
     overflow: hidden;
     height: 130px;
     padding: 20px 20px 20px 235px;
@@ -2050,18 +2062,52 @@ input#save-slidedeck-button {
 
 #slidedeck-types div#create-custom-slidedeck { float: right; }
 #slidedeck-types div#create-dynamic-slidedeck { float: left; }
-#slidedeck-types div#create-custom-slidedeck div.slidedeck-inner {
-    background: url('../images/choose-custom-content.png') 20px 13px no-repeat;
-}
-#slidedeck-types div#create-custom-slidedeck.professional div.slidedeck-inner {
-    background: url('../images/choose-custom-content-pro.png') 20px 13px no-repeat;
-}
-#slidedeck-types div#create-custom-slidedeck.developer div.slidedeck-inner {
-    background: url('../images/choose-custom-content-dev.png') 20px 13px no-repeat;
-}
 #slidedeck-types div#create-dynamic-slidedeck div.slidedeck-inner {
     background: url('../images/choose-dynamic-decks.png') 20px 13px no-repeat;
 }
+#slidedeck-types #create-custom-slidedeck .custom-content {
+    position: absolute;
+    z-index: 5;
+    top: 13px;
+    left: 20px;
+    width: 199px;
+    height: 152px;
+}
+#slidedeck-types #create-custom-slidedeck .custom-content .slide-type {
+    display: block;
+    position: relative;
+    width: 92px;
+    height: 69px;
+    background: red;
+    float: left;
+    margin: 0 7px 6px 0;
+    opacity: 0.5;
+    -webkit-transition: opacity 0.25s;
+       -moz-transition: opacity 0.25s;
+            transition: opacity 0.25s;
+
+    background: url('../images/custom-slide-type-sprite.png') no-repeat 0 0;
+}
+#slidedeck-types #create-custom-slidedeck .custom-content a.slide-type:after {
+    content: '';
+    position: absolute;
+    z-index: 12;
+    top: -1px;
+    right: 11px;
+    width: 25px;
+    height: 38px;
+    background: url('../images/upgrade-ribbon.png');
+}
+#slidedeck-types #create-custom-slidedeck .custom-content div.slide-type {
+    opacity: 1.0;
+}
+#slidedeck-types #create-custom-slidedeck .custom-content .slide-type:hover {
+    opacity: 1.0;
+}
+#slidedeck-types #create-custom-slidedeck .custom-content .slide-type.image { background-position: 0 0; }
+#slidedeck-types #create-custom-slidedeck .custom-content .slide-type.text { background-position: 0 -69px; }
+#slidedeck-types #create-custom-slidedeck .custom-content .slide-type.video { background-position: 0 -138px; }
+#slidedeck-types #create-custom-slidedeck .custom-content .slide-type.html { background-position: 0 -207px; }
 
 #slidedeck-table,
 #slidedeck-manage-footer,
@@ -3421,8 +3467,11 @@ textarea#back_title {
 }
 
 @media only screen and (max-width: 1068px) {
-    #slidedeck-types div.create-slidedeck div.slidedeck-inner {
+    #slidedeck-types div#create-dynamic-slidedeck div.slidedeck-inner {
         padding-left: 190px;
+    }
+    #slidedeck-types div#create-custom-slidedeck div.slidedeck-inner p {
+        font-size: 11px;
     }
     #slidedeck-types div.create-slidedeck div.slidedeck-inner p {
         font-size: 13px;
@@ -3789,3 +3838,427 @@ form.slidedeck-form .slidedeck2-slider-wrapper input[type="text"]:hover {
     -moz-opacity: 1;
     opacity: 1;
 }
+
+/*** Upsell Modals For Professional ***/
+#slidedeck-professional-upsell-simplemodal,
+#slidedeck-upsell-simplemodal.for-slide-types-image,
+#slidedeck-upsell-simplemodal.for-slide-types-video,
+#slidedeck-upsell-simplemodal.for-slide-types-textonly,
+#slidedeck-upsell-simplemodal.for-slide-types-html {
+    background: none;
+    border: none;
+    width: 665px;
+    margin-left: -332px;
+}
+#slidedeck-professional-upsell-simplemodal.for-lenses {
+    width: 664px;
+    margin-left: -332px;
+}
+#slidedeck-professional-upsell-simplemodal img#covers-modal-upsell{
+    display: block;
+    margin-left: -25px;
+    margin-bottom: 20px;
+}
+#slidedeck-professional-upsell-simplemodal .slidedeck-header h1 {
+    background: none;
+    padding: 0;
+    text-align: center;
+}
+#slidedeck-professional-upsell-simplemodal .background {
+    overflow: hidden;
+    background: #f2f2f2;
+    border: solid 1px #d1d1d1;
+    padding: 24px 16px 36px;
+    margin: 0 1px;
+    -webkit-border-bottom-right-radius: 5px;
+    -webkit-border-bottom-left-radius: 5px;
+    -moz-border-radius-bottomright: 5px;
+    -moz-border-radius-bottomleft: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+#slidedeck-professional-upsell-simplemodal .background .inner,
+#slidedeck-upsell-simplemodal .background .inner{
+    background: #fff;
+    border: solid 1px #d0d0d0;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    padding: 25px 0;
+}
+#slidedeck-professional-upsell-simplemodal .background .inner .copyblock,
+#slidedeck-upsell-simplemodal .background .inner .copyblock{
+    padding: 0 25px;
+    overflow: hidden;
+}
+#slidedeck-professional-upsell-simplemodal .background .inner .copyblock h3,
+#slidedeck-upsell-simplemodal .background .inner .copyblock h3{
+    margin-top: 0;
+    font-size: 17px;
+}
+#slidedeck-professional-upsell-simplemodal .background .inner .copyblock h4,
+#slidedeck-upsell-simplemodal .background .inner .copyblock h4 {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 19px;
+    font-family: 'Open Sans', sans-serif;
+}
+#slidedeck-professional-upsell-simplemodal .background .inner .copyblock p{ font-size: 14px; }
+#slidedeck-professional-upsell-simplemodal .background .inner .copyblock p.align-center,
+#slidedeck-upsell-simplemodal .background .inner .copyblock p.align-center { text-align: center; }
+#slidedeck-professional-upsell-simplemodal .background .inner .copyblock img { margin-bottom: 40px; }
+#slidedeck-professional-upsell-simplemodal .background .cta {
+    text-align: center;
+}
+#slidedeck-professional-upsell-simplemodal .background .cta .features-link {
+}
+#slidedeck-professional-upsell-simplemodal .background .cta .slidedeck-noisy-button {
+    text-decoration: none;
+    display: block;
+    width: 240px;
+    margin: 0 auto 10px;
+    line-height: 46px;
+    font-size: 17px;
+}
+#slidedeck-professional-upsell-simplemodal .background .cta .slidedeck-noisy-button span {
+    box-shadow: 0 -6px 0px -2px rgba(0,0,0,0.3) inset;
+}
+#slidedeck-professional-upsell-simplemodal .background .cta .slidedeck-noisy-button:active span {
+    box-shadow: 0 -5px 0px -2px rgba(0,0,0,0.3) inset;
+}
+#slidedeck-professional-upsell-simplemodal .background .cta .slidedeck-noisy-button,
+#slidedeck-professional-upsell-simplemodal .background .cta .slidedeck-noisy-button span {
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+/*** End of Upsell Modals For Professional ***/
+
+/*** Lenses modal for Personal ***/
+#slidedeck-upsell-simplemodal #personal-upsell-content-classic-lens .background .inner .copyblock {
+    margin-bottom: 0;
+}
+#personal-upsell-content-classic-lens .lens.placeholder .title,
+#personal-upsell-content-classic-lens .lens.placeholder .subtitle {
+    display: none;
+}
+#personal-upsell-content-classic-lens .copyblock .left {
+    float: left;
+    width: 26%;
+}
+#personal-upsell-content-classic-lens .copyblock .right {
+    padding-top: 2em;
+    float: right;
+    width: 72%;
+}
+
+/*** Upsell Modals ***/
+#slidedeck-upsell-simplemodal {
+    background: none;
+    border: none;
+    width: 524px;
+    margin-left: -262px;
+}
+#slidedeck-upsell-simplemodal.for-lenses {
+    width: 664px;
+    margin-left: -332px;
+}
+#slidedeck-upsell-simplemodal img#covers-modal-upsell{
+    display: block;
+    margin-left: -25px;
+    margin-bottom: 20px;
+}
+#slidedeck-upsell-simplemodal .slidedeck-header h1 {
+    background: none;
+    padding: 0;
+    text-align: center;
+}
+#slidedeck-upsell-simplemodal .background {
+    overflow: hidden;
+    background: #f2f2f2;
+    border: solid 1px #d1d1d1;
+    padding: 24px 16px 36px;
+    margin: 0 1px;
+    -webkit-border-bottom-right-radius: 5px;
+    -webkit-border-bottom-left-radius: 5px;
+    -moz-border-radius-bottomright: 5px;
+    -moz-border-radius-bottomleft: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+#slidedeck-upsell-simplemodal .background .inner{
+    background: #fff;
+    border: solid 1px #d0d0d0;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    padding: 25px 0;
+}
+#slidedeck-upsell-simplemodal .background .inner .copyblock{
+    padding: 0 25px;
+    overflow: hidden;
+}
+#slidedeck-upsell-simplemodal .background .inner .copyblock h3{
+    margin-top: 0;
+    font-size: 1.28em;
+}
+#slidedeck-upsell-simplemodal .background .inner .copyblock p{
+    font-size: 14px;
+}
+#slidedeck-upsell-simplemodal .background .cta {
+    text-align: center;
+}
+#slidedeck-upsell-simplemodal .background .cta .features-link {
+}
+#slidedeck-upsell-simplemodal .background .cta .slidedeck-noisy-button {
+    text-decoration: none;
+    display: block;
+    width: 240px;
+    margin: 0 auto 10px;
+    line-height: 46px;
+}
+#slidedeck-upsell-simplemodal .background .cta .slidedeck-noisy-button span {
+    box-shadow: 0 -6px 0px -2px rgba(0,0,0,0.3) inset;
+}
+#slidedeck-upsell-simplemodal .background .cta .slidedeck-noisy-button:active span {
+    box-shadow: 0 -5px 0px -2px rgba(0,0,0,0.3) inset;
+}
+#slidedeck-upsell-simplemodal .background .cta .slidedeck-noisy-button,
+#slidedeck-upsell-simplemodal .background .cta .slidedeck-noisy-button span {
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+/*** End of Upsell Modals ***/
+
+/*** Additional Lenses ***/
+#slidedeck-section-lenses .lens.placeholder {
+    cursor: pointer;
+    text-decoration: none;
+    position: relative;
+    z-index: 2;
+    zoom: 1; /* Triggers has layout? */
+}
+#slidedeck-section-lenses .lens.placeholder:after {
+    content: '';
+    position: absolute;
+    z-index: 12;
+    top: 6px;
+    right: 19px;
+    width: 25px;
+    height: 38px;
+    background: url('../images/upgrade-ribbon.png');
+}
+#slidedeck-section-lenses .lens.placeholder .thumbnail {
+    border: 1px solid #AEB8C6;
+}
+/* Additional lenses in modal */
+#slidedeck-upsell-simplemodal.for-lenses .background .inner .copyblock{
+    margin-bottom: 40px;
+}
+#slidedeck-upsell-simplemodal .lens {
+    cursor: default;
+    text-decoration: none;
+    position: relative;
+    display: block;
+    float: left;
+    width: 112px;
+    min-height: 112px;
+    overflow: hidden;
+    padding: 8px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -o-border-radius: 5px;
+    border-radius: 5px;
+    border: 1px solid #FFFFFF;
+    margin-right: 14px;
+    margin-bottom: 0px;
+}
+#slidedeck-upsell-simplemodal .lens:first-child { margin-left: 0; }
+#slidedeck-upsell-simplemodal .lens .thumbnail {
+    position: relative;
+    display: block;
+    width: 104px;
+    height: 77px;
+    padding: 3px;
+    margin: 0 auto;
+    border: 1px solid #aeb8c6;
+    background: #FFFFFF;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -o-border-radius: 5px;
+    border-radius: 5px;
+    z-index: 2;
+}
+#slidedeck-upsell-simplemodal .lens .thumbnail img {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -o-border-radius: 3px;
+    border-radius: 3px;
+    max-width: 104px;
+    max-height: 78px;
+}
+#slidedeck-upsell-simplemodal .lens span.shadow {
+    display: block;
+    position: absolute;
+    top: 122px;
+    left: 50%;
+    margin-left: -87px;
+    width: 170px;
+    height: 10px;
+    background: url('../images/lens-thumbnail-shadow.png') center center no-repeat;
+    z-index: 1;
+}
+#slidedeck-upsell-simplemodal .lens .title {
+    display: block;
+    margin: 0;
+    text-align: center;
+    font: bold 14px/22px sans-serif;
+    color: #5a5d67;
+    padding-top: 6px;
+}
+#slidedeck-table .right #slidedeck-social-buttons {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+#slidedeck-section-lenses .lens.placeholder .has-subtitle.title,
+#slidedeck-upsell-simplemodal .lens.placeholder .has-subtitle.title {
+    margin-top: -0.5em;
+}
+#slidedeck-section-lenses .lens .subtitle {
+    color: #000;
+}
+
+.lens.placeholder .subtitle,
+#slidedeck-upsell-simplemodal .lens .subtitle {
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+    line-height: 13px;
+    text-align: center;
+    font-style: italic;
+    display: block;
+    margin-top: -3px;
+}
+/*** End of Additional Lenses ***/
+
+/*** Start of Upgrade button area styles ***/
+#slidedeck_lens_management div.upgrade-button-cta {
+    max-width: 980px;
+    text-align: right;
+    margin-bottom: 12px;
+}
+div.upgrade-button-cta span.message {
+    color: #797f94;
+    font-size: 13px;
+    font-family: sans-serif;
+    font-style: italic;
+    padding-right: 1em;
+}
+#slidedeck-types div.upgrade-button-cta {
+    position: absolute;
+    top: 27px;
+    right: 19px;
+    height: 60px;
+    width: 212px;
+}
+#slidedeck-types div.upgrade-button-cta span.message {
+    color: #797f94;
+    padding: 0;
+    display: block;
+    text-align: right;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
+#slidedeck-types div.upgrade-button-cta .upgrade-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+div.upgrade-button-cta .upgrade-button {
+    font-size: 14px;
+    color: #fff;
+    font-weight: bold;
+    text-shadow: 0px 1px rgba(0,0,0,0.29);
+    text-decoration: none;
+    font-family: sans-serif;
+    display: inline-block;
+    border-radius: 3px;
+    border: solid 1px #236220;
+    -webkit-box-shadow: inset 0 1px 0px 0px rgba(255, 255, 255, 0.75);
+       -moz-box-shadow: inset 0 1px 0px 0px rgba(255, 255, 255, 0.75);
+            box-shadow: inset 0 1px 0px 0px rgba(255, 255, 255, 0.75);
+}
+div.upgrade-button-cta .upgrade-button:hover {
+    text-decoration: none;
+}
+
+div.upgrade-button-cta .upgrade-button.green {
+    /* http://www.colorzilla.com/gradient-editor/#55bc60+0,316c37+100;Custom */
+    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzU1YmM2MCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMzMTZjMzciIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+    background: #55bc60; /* Old browsers */
+    background: -moz-linear-gradient(top,  #55bc60 0%, #316c37 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#55bc60), color-stop(100%,#316c37)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #55bc60 0%,#316c37 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #55bc60 0%,#316c37 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #55bc60 0%,#316c37 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #55bc60 0%,#316c37 100%); /* W3C */
+}
+div.upgrade-button-cta .upgrade-button.green:hover {
+    /* http://www.colorzilla.com/gradient-editor/#6fc778+0,419149+100;Custom */
+    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzZmYzc3OCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM0MTkxNDkiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+    background: #6fc778; /* Old browsers */
+    background: -moz-linear-gradient(top,  #6fc778 0%, #419149 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#6fc778), color-stop(100%,#419149)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #6fc778 0%,#419149 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #6fc778 0%,#419149 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #6fc778 0%,#419149 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #6fc778 0%,#419149 100%); /* W3C */
+
+}
+div.upgrade-button-cta .upgrade-button.green:active {
+    /* http://www.colorzilla.com/gradient-editor/#3d8744+0,5fc169+100;Custom */
+    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzNkODc0NCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM1ZmMxNjkiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+    background: #3d8744; /* Old browsers */
+    background: -moz-linear-gradient(top,  #3d8744 0%, #5fc169 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#3d8744), color-stop(100%,#5fc169)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #3d8744 0%,#5fc169 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #3d8744 0%,#5fc169 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #3d8744 0%,#5fc169 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  #3d8744 0%,#5fc169 100%); /* W3C */
+}
+
+div.upgrade-button-cta .upgrade-button .button-noise {
+    position: relative;
+    display: block;
+    padding: 0.58em 1.4em;
+    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MzI4OUU3QTUxNDFBMTFFMkFDM0RFOTI1ODYzRjE2N0QiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MzI4OUU3QTYxNDFBMTFFMkFDM0RFOTI1ODYzRjE2N0QiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo3QzBBMzUwNjE0MTkxMUUyQUMzREU5MjU4NjNGMTY3RCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDozMjg5RTdBNDE0MUExMUUyQUMzREU5MjU4NjNGMTY3RCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Php+iMwAAAKXSURBVHjafFM9SKpRGD7k93v8/k6N5VqLOAhqkmQRRFSSi2vQKgiK4ODP6tCQSNEiNBQIBRFUtIjQUFsR0RBBuIQuioEg3OF6ve97OG63+8Hh+b73/32e85G7uztD1/WZ09PT6YWFBZUQou3t7cmA1srKigYoj8dj0u120UcfHx91QJVS6gbUydraGo1Go+Tl5cVBBya8v79jAS0YDLrT6bS8s7ODdtXv99udTgfjTDiTeOK+urpigDYme71eNCqFQoFiUCqVwo7YTV5eXtZFMi8AEypkc3MTjc719TV7eHjAd+v5+ZmJJOyinZyc8FXgUfjYsAoco9VqSTgBhUrY3RAJiMrW1pb18fHBstksfuNK6v7+Pr5PwxpmIpFAbtBOFOig9Ho99eDggC0tLbHj42M1FAoZ6+vrfBLHcWg4HKazs7P2aDRiZ2dn5sbGhhyJRHAiYt7e3lrYxefzMTEFFTiDKEmSHQgEZFhRA9VUMSVfl7hcLkzSk8mkcXl5SYVDhk4GcGFpmmYL0pSLiwvkRYvH4+rb25v8+vrqJvV6nWuPBzTGnThRwAEWo3A/LOFXBLoFJ7RWq5lTX19fimmaf8AggWRTi4uLvECz2XQB/h4Oh78ARzc3N9w+Pz8/BYg+ZXd3lxAYSwPicCcGyRQIw5FZLBYzgW33ZDq8J5lMhnMG5OK31Wg0KMFriqdUKtlwPWURPCHKKZfLhhjfyuVyyJfRbrf5qh6Ph8vIA76/v7nx8PCQd+33+1gEE9hPMvNGR0dHztzcnLO6uupAICZYlUpF2t7elgeDAZf1PzLbJJ/Ps/PzcwZ3X/v8/DSr1aoFiXyFYrE4kfWfMvMC4Ji+v783RVXcXwfm+e8s5JJ/kvnp6cn4K8AAYJvgdeSIWZYAAAAASUVORK5CYII=');
+}
+div.upgrade-button-cta .upgrade-button .button-noise span {
+    position: relative;
+    top: 1px;
+    padding-left: 28px;
+}
+div.upgrade-button-cta .upgrade-button .button-noise span:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    margin-top: -12px;
+    left: -4px;
+    display: block;
+    width: 23px;
+    height: 23px;
+    background: url('../images/star-icon-white.png');
+}
+
+
+
+
+
+

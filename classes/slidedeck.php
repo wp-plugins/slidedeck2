@@ -1904,10 +1904,12 @@ class SlideDeck {
 	 */
 	function load_video_scripts() {
 		global $SlideDeckPlugin;
-		
-        wp_enqueue_script( 'froogaloop' );
-        wp_enqueue_script( 'youtube-api' );
-        wp_enqueue_script( 'dailymotion-api' );
+        
+        if( !$SlideDeckPlugin->only_has_iframe_decks ) {
+            wp_enqueue_script( 'froogaloop' );
+            wp_enqueue_script( 'youtube-api' );
+            wp_enqueue_script( 'dailymotion-api' );
+        }
 		
         $SlideDeckPlugin->load_video_scripts = true;
 	}

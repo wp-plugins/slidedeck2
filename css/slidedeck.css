@@ -1649,6 +1649,7 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
 
 .default-nav-styles a.deck-navigation.vertical,
 .default-nav-styles a.deck-navigation.horizontal {
+    background-color: rgb(0, 0, 0);
     background-color: rgba(0, 0, 0, .5);
     -webkit-box-shadow: 0px 1px 0px 0px rgba(255, 255, 255, .5), inset 0px 2px 1px 1px rgba(0, 0, 0, .5);
     -moz-box-shadow: 0px 1px 0px 0px rgba(255, 255, 255, .5), inset 0px 2px 1px 1px rgba(0, 0, 0, .5);
@@ -1658,6 +1659,7 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
 .default-nav-styles a.deck-navigation.horizontal:hover { background-color: rgba(0, 0, 0, .8); }
 .default-nav-styles a.deck-navigation.vertical:active,
 .default-nav-styles a.deck-navigation.horizontal:active {
+    background-color: rgb(0, 0, 0);
     background-color: rgba(0, 0, 0, 1);
     -webkit-box-shadow: 0px 1px 0px 0px rgba(255, 255, 255, .5), inset 0px 2px 1px 1px rgba(0, 0, 0, .5);
     -moz-box-shadow: 0px 1px 0px 0px rgba(255, 255, 255, .5), inset 0px 2px 1px 1px rgba(0, 0, 0, .5);

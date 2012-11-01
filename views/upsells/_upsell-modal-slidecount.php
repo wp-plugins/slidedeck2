@@ -1,6 +1,6 @@
 <div class="upsell-modal">
 	<div class="slidedeck-header">
-	    <h1><?php _e( "Need more slides in your decks?", $this->namespace ); ?></h1>
+	    <h1><?php _e( "Need More Slides in Your Decks?", $this->namespace ); ?></h1>
 	</div>
 	<div class="background">
 		<div class="inner">

@@ -46,49 +46,7 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
 				$('#slidedeck-covers').append('<span class="lite-disabled-mask"><em><a class="upgrade-modal" href="' + slideDeck2AddonsURL + '" rel="covers">Upgrade</a> to get access to covers.</em></span>');
 			}
 		});
-		
 		$('body').trigger( 'slidedeck:lens-change-update-choices' );
 		
-		// Modals for the upsells
-		if( $('.upgrade-modal').length ){
-			var context = 'upsell';
-			
-			
-			// Generic Upgrade modal.
-			SlideDeckPlugin.UpgradeModal = {
-				addForClass: function( theClass ){
-					// Remove the previous pattern
-					$('#slidedeck-' + context + '-simplemodal')[0].className = $('#slidedeck-' + context + '-simplemodal')[0].className.replace(/for\-[a-z]+\s?/, '');
-					// Add the new class
-					$('#slidedeck-' + context + '-simplemodal').addClass( 'for-' + theClass );
-				},
-				
-		        open: function(data){
-		            var self = this;
-		            
-		            if(!this.modal){
-		                this.modal = new SimpleModal({
-		                    context: context
-		                });
-		            }
-					this.modal.open(data);
-				}
-			};
-			
-			$('#slidedeck_form').delegate( '.upgrade-modal', 'click', function(event){
-				event.preventDefault();
-				var slug = $(this).attr('rel');
-				 
-	            $.get(ajaxurl + "?action=slidedeck_upsell_modal_content&feature=" + slug , function(data){
-					SlideDeckPlugin.UpgradeModal.open(data);
-					SlideDeckPlugin.UpgradeModal.addForClass( slug );
-					
-					// Make sure the <a> tags do nothing in the lenses upgrade modal
-					 $('#slidedeck-upsell-simplemodal a.lens.placeholder').bind( 'click', function(event){
-					 	event.preventDefault();
-					 });
-	            });
-			});
-		}
 	});
 })(jQuery);

@@ -2041,7 +2041,8 @@ var tb_position = updateTBSize;
         }).bind('keydown keyup', function(event){
             if(event.keyCode != 13 && event.keyCode != 27){
                 var titleWidth = $('#title-display').find('.title').text(this.value).width();
-                $('#title').css('min-width', titleWidth + 50);
+                var newTitleWidth = Math.min( (titleWidth + 50), 640 ); 
+                $('#title').css('min-width', newTitleWidth );
             } else {
                 $(this).blur();
             }
@@ -2326,7 +2327,51 @@ var tb_position = updateTBSize;
                 }
             });
         });
-    });
+        
+        // Bind the "Need Support?" Link
+        $('.wp-submenu a[href$="slidedeck2-lite.php/need-support"]').addClass('upgrade-modal').attr('rel', 'need-support');
+        
+        // Modals for the upsells
+        if( $('.upgrade-modal').length ){
+            var context = 'upsell';
+            
+            // Generic Upgrade modal.
+            SlideDeckPlugin.UpgradeModal = {
+                addForClass: function( theClass ){
+                    // Remove the previous pattern
+                    $('#slidedeck-' + context + '-simplemodal')[0].className = $('#slidedeck-' + context + '-simplemodal')[0].className.replace(/for\-[a-z]+\s?/, '');
+                    // Add the new class
+                    $('#slidedeck-' + context + '-simplemodal').addClass( 'for-' + theClass );
+                },
+                
+                open: function(data){
+                    var self = this;
+                    
+                    if(!this.modal){
+                        this.modal = new SimpleModal({
+                            context: context
+                        });
+                    }
+                    this.modal.open(data);
+                }
+            };
+            
+            $('#wpwrap').delegate( '.upgrade-modal', 'click', function(event){
+                event.preventDefault();
+                var slug = $(this).attr('rel');
+                 
+                $.get(ajaxurl + "?action=slidedeck_upsell_modal_content&feature=" + slug , function(data){
+                    SlideDeckPlugin.UpgradeModal.open(data);
+                    SlideDeckPlugin.UpgradeModal.addForClass( slug );
+                    
+                    // Make sure the <a> tags do nothing in the lenses upgrade modal
+                     $('#slidedeck-upsell-simplemodal a.lens.placeholder').bind( 'click', function(event){
+                        event.preventDefault();
+                     });
+                });
+            });
+        }
+    }); // End of DOM Ready
     
     
     // thickbox settings

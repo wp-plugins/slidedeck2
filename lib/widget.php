@@ -124,12 +124,13 @@ class SlideDeck2Widget extends WP_Widget {
      * @uses slidedeck()
      */
     function widget( $args, $instance ) {
+        global $SlideDeckPlugin;
         global $slidedeck_footer_scripts;
         
         extract( $args, EXTR_SKIP );
-        $title = $instance[$this->namespace . '_title'];
-        $before_deck = $instance[$this->namespace . '_before_deck'];
-        $after_deck = $instance[$this->namespace . '_after_deck'];
+        $title = isset( $instance[$this->namespace . '_title'] ) ? $instance[$this->namespace . '_title'] : '';
+        $before_deck = isset( $instance[$this->namespace . '_before_deck'] ) ? $instance[$this->namespace . '_before_deck'] : '';
+        $after_deck = isset( $instance[$this->namespace . '_after_deck'] ) ? $instance[$this->namespace . '_after_deck'] : '';
         
         echo $before_widget;
         if ( $title )
@@ -138,7 +139,12 @@ class SlideDeck2Widget extends WP_Widget {
         
         $shortcode = "[SlideDeck2 id={$instance['slidedeck_id']}";
         if( $instance[$this->namespace . '_deploy_as_iframe'] ) $shortcode.= " iframe=1";
-        if( $instance[$this->namespace . '_use_ress'] ) $shortcode.= " ress=1";
+        if( $instance[$this->namespace . '_use_ress'] ) {
+            $shortcode.= " ress=1";
+            
+            // If this widget makes this page have a RESS deck...
+            $SlideDeckPlugin->page_has_ress_deck = true;
+        }
         
 		/**
 		 * The proportional option is negative only. Proportional

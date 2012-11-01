@@ -1,6 +1,6 @@
 <div class="upsell-modal">
 	<div class="slidedeck-header">
-	    <h1><?php _e( "Upgrade to get Covers", $this->namespace ); ?></h1>
+	    <h1><?php _e( "Upgrade to Get Covers", $this->namespace ); ?></h1>
 	</div>
 	<div class="background">
 		<div class="inner">
