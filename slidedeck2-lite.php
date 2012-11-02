@@ -13,7 +13,7 @@
  Plugin Name: SlideDeck 2 Lite
  Plugin URI: http://www.slidedeck.com/wordpress
  Description: Create SlideDecks on your WordPress blogging platform and insert them into templates and posts. Get started creating SlideDecks from the new SlideDeck menu in the left hand navigation.
- Version: 2.1.20121101
+ Version: 2.1.20121102
  Author: digital-telepathy
  Author URI: http://www.dtelepathy.com
  License: GPL3
@@ -75,6 +75,8 @@ class SlideDeckLitePlugin {
 
     // Should SlideDeck assets be loaded?
     var $load_assets = false;
+    
+    var $slidedeck_ids = array();
     
     // Are there only iFrame decks on the page?
     var $only_has_iframe_decks = false;
@@ -3400,6 +3402,11 @@ class SlideDeckLitePlugin {
 	        'start' => false
 		), $atts ) );
 		
+        // Make sure that the RESS flag is set so we load the necessary assets in the footer
+        if( $ress == true ) {
+            $this->page_has_ress_deck = true;
+        }
+        
         if( $id !== false ) {
 			// If this is a feed, just render a link
 			if( $this->is_feed() )
@@ -3830,7 +3837,7 @@ class SlideDeckLitePlugin {
         global $posts;
         
         if( isset( $posts ) && !empty( $posts ) ) {
-            $slidedeck_ids = array( );
+            $this->slidedeck_ids = array( );
             
             // SlideDecks being loaded with iframe=1
             $iframe_slidedecks = array();
@@ -3848,7 +3855,7 @@ class SlideDeckLitePlugin {
                             if( $attrs[0] == "id" ) {
                                 // Add the ID of this SlideDeck to the ID array
                                 // for loading
-                                $slidedeck_ids[] = intval( str_replace( "'", '', $attrs[1] ) );
+                                $this->slidedeck_ids[] = intval( str_replace( "'", '', $attrs[1] ) );
                                 
                                 // Check for iframe or ress = 1, yes, true
                                 if( preg_match( "/(iframe|ress)=('|\")?(1|yes|true)('|\")?/", $str, $matches ) ) {
@@ -3866,9 +3873,9 @@ class SlideDeckLitePlugin {
                 }
             }
             
-            if( !empty( $slidedeck_ids ) ) {
+            if( !empty( $this->slidedeck_ids ) ) {
                 // Check if there are actually SlideDecks that need even need their assets loaded
-                if( count( $slidedeck_ids ) > count( $iframe_slidedecks ) ) {
+                if( count( $this->slidedeck_ids ) > count( $iframe_slidedecks ) ) {
                     // If there are more regular SlideDecks than iFrame SlideDecks, load the assets.
                     $this->load_assets = true;
                 } else {
@@ -3879,7 +3886,7 @@ class SlideDeckLitePlugin {
                 }
                 
                 // Load SlideDecks used on this URL passing the array of IDs
-                $slidedecks = $this->SlideDeck->get( $slidedeck_ids );
+                $slidedecks = $this->SlideDeck->get( $this->slidedeck_ids );
                 
                 // Loop through SlideDecks used on this page and add their lenses
                 // to the $lenses_included array for later use
@@ -3915,10 +3922,21 @@ class SlideDeckLitePlugin {
      * @uses SlideDeckLens::get()
      */
     function wp_print_scripts( ) {
-        $load_assets = ( $this->load_assets === true || $this->get_option( 'always_load_assets' ) || is_admin() );
-        
-        if( $load_assets === true && !$this->only_has_iframe_decks ) {
+        if( !empty( $this->slidedeck_ids ) || $this->get_option( 'always_load_assets' ) ) {
             wp_enqueue_script( 'jquery' );
+        }
+
+        $load_assets = $this->load_assets;
+        
+        if( $this->only_has_iframe_decks ) {
+            $load_assets = false;
+        }
+        
+        if( $this->get_option( 'always_load_assets' ) || is_admin() ) {
+            $load_assets = true;
+        }
+        
+        if( $load_assets === true ) {
     
             if( $this->get_option( 'dont_enqueue_scrollwheel_library' ) != true ) {
                 wp_enqueue_script( 'scrolling-js' );
@@ -3969,9 +3987,17 @@ class SlideDeckLitePlugin {
      * @uses SlideDeckLens::get_css()
      */
     function wp_print_styles( ) {
-        $load_assets = ( $this->load_assets === true || $this->get_option( 'always_load_assets' ) || is_admin() );
+        $load_assets = $this->load_assets;
         
-        if( $load_assets === true && !$this->only_has_iframe_decks ) {
+        if( $this->only_has_iframe_decks ) {
+            $load_assets = false;
+        }
+        
+        if( $this->get_option( 'always_load_assets' ) || is_admin() ) {
+            $load_assets = true;
+        }
+        
+        if( $load_assets === true ) {
             foreach( (array) $this->lenses_included as $lens_slug => $val ) {
                 $lens = $this->Lens->get( $lens_slug );
                 echo $this->Lens->get_css( $lens );
