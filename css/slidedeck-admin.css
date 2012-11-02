@@ -3476,18 +3476,6 @@ textarea#back_title {
     #slidedeck-types div.create-slidedeck div.slidedeck-inner p {
         font-size: 13px;
     }
-    #slidedeck-types div#create-custom-slidedeck div.slidedeck-inner {
-        background: url('../images/choose-custom-content-sml.png') 20px 20px no-repeat;
-    }
-    #slidedeck-types div#create-custom-slidedeck.professional div.slidedeck-inner {
-        background: url('../images/choose-custom-content-pro-sml.png') 20px 20px no-repeat;
-    }
-    #slidedeck-types div#create-custom-slidedeck.developer div.slidedeck-inner {
-        background: url('../images/choose-custom-content-dev-sml.png') 20px 20px no-repeat;
-    }
-    #slidedeck-types div#create-dynamic-slidedeck div.slidedeck-inner {
-        background: url('../images/choose-dynamic-decks-sml.png') 20px 20px no-repeat;
-    }
 }
 
 /* SlideDeck Advanced Options Styles*/
