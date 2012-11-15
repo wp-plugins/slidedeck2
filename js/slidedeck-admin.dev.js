@@ -840,7 +840,12 @@ var tb_position = updateTBSize;
                             
                             var thumbnailsHTML = "";
                             for(var i in properties.values){
-                                thumbnailsHTML += '<span class="thumbnail' + (i == $elem.val() ? ' selected' : '') + '" data-value="' + i + '"><span style="background-image:url(' + slideDeck2URLPath + properties.values[i] + ');"></span></span>';
+                                var url = properties.values[i];
+                                if( !url.match( /^http(s)?\:\/\//) ) {
+                                    url = slideDeck2URLPath + properties.values[i];
+                                }
+                                
+                                thumbnailsHTML += '<span class="thumbnail' + (i == $elem.val() ? ' selected' : '') + '" data-value="' + i + '"><span style="background-image:url(' + url + ');"></span></span>';
                             }
                             
                             var $flyout = $('#slidedeck2-thumbnail-flyout-'+ id);
@@ -2041,8 +2046,7 @@ var tb_position = updateTBSize;
         }).bind('keydown keyup', function(event){
             if(event.keyCode != 13 && event.keyCode != 27){
                 var titleWidth = $('#title-display').find('.title').text(this.value).width();
-                var newTitleWidth = Math.min( (titleWidth + 50), 640 ); 
-                $('#title').css('min-width', newTitleWidth );
+                $('#title').css('min-width', titleWidth + 50);
             } else {
                 $(this).blur();
             }

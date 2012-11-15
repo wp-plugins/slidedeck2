@@ -14,6 +14,22 @@ class SlideDeckSource_Posts extends SlideDeck {
     
     var $options_model = array(
         'Setup' => array(
+            'preferredImageSize' => array(
+                'name' => "preferredImageSize",
+                'type' => "select",
+                'data' => "string",
+                'value' => 'auto',
+                'values' => array(
+                    'auto' => "Auto (120%)",
+                    'auto_100' => "Auto (100%)"
+                ),
+                'attr' => array(
+                    'class' => "fancy"
+                ),
+                'label' => "Preferred Image Size",
+                'description' => "Auto 100% and Auto 120% will automatically try to find an image that fits the deck. If you want to specify one of your own image sizes, set it here.",
+                'weight' => 70
+            ),
             'postsImageSource' => array(
                 'name' => "postsImageSource",
                 'type' => "select",
@@ -310,10 +326,24 @@ class SlideDeckSource_Posts extends SlideDeck {
          * some browsers (mostly Chrome) chug and is bad for the end user too.
          */
         $slidedeck_dimensions = $this->get_dimensions( $slidedeck );
-        $expansion_factor = 1.2; // 120%
+        
+        // Set the expansion factor based on the auto or auto_100 options
+        if( $slidedeck['options']['preferredImageSize'] == 'auto' ) {
+            $expansion_factor = 1.2; // 120%
+        } elseif ( $slidedeck['options']['preferredImageSize'] == 'auto_100' ) {
+            $expansion_factor = 1; // 100%
+        }
+        
         $expanded_width = $slidedeck_dimensions['outer_width'] * $expansion_factor;
         $expanded_height = $slidedeck_dimensions['outer_height'] * $expansion_factor;
         
+        // Determine image size to retrieve (closest size greater to SlideDeck size, or full of image scaling is off)
+        $image_size = array( $expanded_width, $expanded_height );
+        
+        if( ($slidedeck['options']['preferredImageSize'] != 'auto') && ($slidedeck['options']['preferredImageSize'] != 'auto_100') ) {
+            $image_size = $slidedeck['options']['preferredImageSize'];
+        }
+
         // Set default return value
         $image_src = false;
         
@@ -382,14 +412,6 @@ class SlideDeckSource_Posts extends SlideDeck {
                         
                         $first_image = reset( $attachments->posts );
                         
-                        // Determine image size to retrieve (closest size greater to SlideDeck size, or full of image scaling is off)
-                        $image_size = array( $expanded_width, $expanded_height );
-                        if( isset( $slidedeck['options']['image_scaling'] ) ) {
-                            if( $slidedeck['options']['image_scaling'] == "none" ) {
-                                $image_size = "full";
-                            }
-                        }
-                        
                         $thumbnail = wp_get_attachment_image_src( $first_image->ID, $image_size );
                         $image_src = $thumbnail[0];
                     }
@@ -401,8 +423,6 @@ class SlideDeckSource_Posts extends SlideDeck {
                     if( is_numeric( $slide['id'] ) ) {
                         $thumbnail_id = get_post_thumbnail_id( $slide['id'] );
                         if( $thumbnail_id ) {
-                            // Determine image size to retrieve (closest size greater to SlideDeck size, or full of image scaling is off)
-                            $image_size = array( $expanded_width, $expanded_height );
                             if( isset( $slidedeck['options']['image_scaling'] ) ) {
                                 if( $slidedeck['options']['image_scaling'] == "none" ) {
                                     $image_size = "full";
@@ -618,6 +638,47 @@ class SlideDeckSource_Posts extends SlideDeck {
         
         if( !current_theme_supports( 'post-thumbnails' ) )
             unset( $this->options_model['Setup']['postsImageSource']['values']['thumbnail'] );
+        
+        // Add the additional image sizes to the dropdown
+        $additional_image_sizes = get_intermediate_image_sizes();
+        foreach( $additional_image_sizes as $size ) {
+            
+            $sizes = array(
+                'size_w' => get_option("{$size}_size_w"),
+                'size_h' => get_option("{$size}_size_h"),
+                'crop' => ''
+            );
+            if( get_option("{$size}_crop") ) $sizes['crop'] = ' cropped';
+            
+            /**
+             * Add the sizes to the dropdown menu.
+             * The formatting is strange here, and we need to account for 
+             * the different variations in registered sizes.
+             */
+            if( !empty( $sizes['size_w'] ) && !empty( $sizes['size_h'] ) ) {
+                $this->options_model['Setup']['preferredImageSize']['values'][$size] = ucwords( $size ) . ' (' . $sizes['size_w'] . 'x' . $sizes['size_h'] . $sizes['crop'] . ')';
+            } elseif( !empty( $sizes['size_w'] ) && empty( $sizes['size_h'] ) ) {
+                $this->options_model['Setup']['preferredImageSize']['values'][$size] = ucwords( $size ) . ' (' . $sizes['size_w'] . $sizes['crop'] . ')';
+            } elseif( empty( $sizes['size_w'] ) && !empty( $sizes['size_h'] ) ) {
+                $this->options_model['Setup']['preferredImageSize']['values'][$size] = ucwords( $size ) . ' (' . $sizes['size_h'] . $sizes['crop'] . ')';
+            } else {
+                $this->options_model['Setup']['preferredImageSize']['values'][$size] = ucwords( $size );
+            }
+        }
+        // This is a fake size that should cause the function to return the original
+        $this->options_model['Setup']['preferredImageSize']['values']['sd2-full-size-image'] = __( "Original Image", $this->namespace );
+        
+        // Set a simple boolean flag to show/hide the image size dropdown
+        switch( $slidedeck['options']['postsImageSource'] ) {
+            case 'thumbnail':
+            case 'gallery':
+                $show_image_size = true;
+            break;
+            default:
+                $show_image_size = false;
+            break;
+        }
+
         
         $namespace = $this->namespace;
         

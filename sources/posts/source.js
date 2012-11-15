@@ -198,11 +198,29 @@
             this.elems.contentSource = this.elems.leftSide.closest('.slidedeck-content-source');
             this.elems.taxonomyLoading = self.elems.leftSide.find('.slidedeck-ajax-loading');
             this.elems.termsLoading = self.elems.rightSide.find('.slidedeck-ajax-loading');
-            
+            this.elems.preferredImageSizeRow = this.elems.form.find('#preferred-image-size-row');
+           
             this.slidedeck_id = $('#slidedeck_id').val();
             
             // Check off the popular terms initially...
             self.checkPopularTermList();
+            
+            /**
+             * Fired when the image source is changed.
+             */
+            this.elems.form.delegate('#options-postsImageSource', 'change', function(event){
+                var imageSource = $(this).val();
+                
+                switch( imageSource ) {
+                    case 'thumbnail':
+                    case 'gallery':
+                        self.elems.preferredImageSizeRow.slideDown();
+                    break;
+                    default:
+                        self.elems.preferredImageSizeRow.slideUp();
+                    break;
+                }
+            });
             
             /**
              * Fired when the post type is changed or the 
@@ -295,7 +313,8 @@
     
     var ajaxOptions = [
         "options[validateImages]",
-        "options[imageSource]",
+        "options[postsImageSource]",
+        "options[preferredImageSize]",
         "options[use-custom-post-excerpt]"
     ];
     for(var o in ajaxOptions){

@@ -1,5 +1,5 @@
 /*!
- * SlideDeck 1.4.0 Pro - 2012-10-12
+ * SlideDeck 1.4.1 Pro - 2012-10-24
  * 
  * More information on this project:
  * http://www.slidedeck.com/
@@ -52,7 +52,7 @@ var SlideDeckLens = {};
             distribution  = window.slideDeck2Distribution;
         }
         
-        var VERSION = versionPrefix + "1.4.0";
+        var VERSION = versionPrefix + "1.4.1";
         
         this.options = {
             speed: 500,
@@ -870,7 +870,7 @@ var SlideDeckLens = {};
                 $currentSlide.css({
                     display: 'block',
                     opacity: 0
-                }).stop().animate({
+                }).addClass(self.classes.active).stop().animate({
                     opacity: 1
                 }, self.options.speed, function(){
                     this.style.display = "block";
@@ -924,7 +924,7 @@ var SlideDeckLens = {};
                 if($currentMask.length){
                     $formerMask.remove();
                 }
-                $currentSlide.append('<div class="slidedeck-slide-mask mask-in"></div>');
+                $currentSlide.addClass(self.classes.active).append('<div class="slidedeck-slide-mask mask-in"></div>');
                 maskCSS.opacity = 1;
                 $currentMask = $currentSlide.find('.slidedeck-slide-mask').css(maskCSS);
                 

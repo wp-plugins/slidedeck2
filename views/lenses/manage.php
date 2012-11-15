@@ -60,6 +60,8 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
                 
                 <?php endforeach; ?>
                 
+                <?php do_action( "{$this->namespace}_manage_lenses_after_lenses", $lenses ); ?>
+                
             </div>
             
         <?php endif; ?>

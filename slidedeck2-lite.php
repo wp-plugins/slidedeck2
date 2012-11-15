@@ -13,7 +13,7 @@
  Plugin Name: SlideDeck 2 Lite
  Plugin URI: http://www.slidedeck.com/wordpress
  Description: Create SlideDecks on your WordPress blogging platform and insert them into templates and posts. Get started creating SlideDecks from the new SlideDeck menu in the left hand navigation.
- Version: 2.1.20121102
+ Version: 2.1.20121115
  Author: digital-telepathy
  Author URI: http://www.dtelepathy.com
  License: GPL3
@@ -55,6 +55,9 @@ class SlideDeckLitePlugin {
 
     // Available sources to SlideDeck 2
     var $sources = array( );
+
+    // Lenses available to SlideDeck 2
+    var $installed_lenses = array();
 
     // Default plugin options
     var $defaults = array(
@@ -193,9 +196,11 @@ class SlideDeckLitePlugin {
             if( is_readable( $filename ) ) {
                 $classname = slidedeck2_get_classname_from_filename( dirname( $filename ) );
                 $prefix_classname = "SlideDeckLens_{$classname}";
+                $slug = basename( dirname( $filename ) );
                 
                 if( !class_exists( $prefix_classname ) ) {
                     include_once ($filename);
+                    $this->installed_lenses[] = $slug;
                 }
                 
                 if( class_exists( $prefix_classname ) ) {
@@ -255,8 +260,8 @@ class SlideDeckLitePlugin {
 		
         // Get the inner and outer dimensions for the SlideDeck
         $dimensions = $this->get_dimensions( $slidedeck );
-		$ratio = $dimensions['height'] / $dimensions['width'];
-
+        $ratio = $dimensions['outer_height'] / $dimensions['outer_width'];
+        
         // Get the IFRAME source URL
         $iframe_url = $this->get_iframe_url( $id, $dimensions['outer_width'], $dimensions['outer_height'] );
 		$iframe_url .= "&slidedeck_unique_id=" . $slidedeck_unique_id;
@@ -663,7 +668,8 @@ class SlideDeckLitePlugin {
         add_filter( "{$this->namespace}_sidebar_ad_url", array( &$this, 'slidedeck_sidebar_ad_url' ) );
         add_filter( "{$this->namespace}_source_modal_after_sources", array( &$this, 'slidedeck_source_modal_after_sources' ) );
         
-        add_filter( "{$this->namespace}_lens_selection_after_lenses", array( &$this, 'slidedeck_lens_selection_after_lenses' ) );
+        add_filter( "{$this->namespace}_lens_selection_after_lenses", array( &$this, 'slidedeck_lens_selection_after_lenses' ), 10, 2 );
+        add_filter( "{$this->namespace}_manage_lenses_after_lenses", array( &$this, 'slidedeck_manage_lenses_after_lenses') );
 
         // Add shortcode to replace SlideDeck shortcodes in content with
         // SlideDeck contents
@@ -3009,7 +3015,7 @@ class SlideDeckLitePlugin {
         if( $this->page_has_ress_deck ){
             // Append a footer script for each deck
             $ress_code = '<script type="text/javascript">' . "\n";
-            $ress_code .= file_get_contents( SLIDEDECK2_URLPATH . "/js/{$this->namespace}-ress" . (SLIDEDECK2_ENVIRONMENT == 'development' ? '.dev' : '') . ".js" ) . "\n";
+            $ress_code .= file_get_contents( SLIDEDECK2_DIRNAME . "/js/{$this->namespace}-ress" . (SLIDEDECK2_ENVIRONMENT == 'development' ? '.dev' : '') . ".js" ) . "\n";
             $ress_code .= '</script>' . "\n";
             
             $this->footer_scripts = $ress_code . $this->footer_scripts;
@@ -3387,6 +3393,9 @@ class SlideDeckLitePlugin {
 		if( isset( $atts['id'] ) && !empty( $atts['id'] ) )
     		$default_deck_link_text = get_the_title( $atts['id'] ) . ' <small>[' . __( "see the SlideDeck", $this->namespace ) . ']</small>';
     	
+        // Filter the shortcode attributes
+        $atts = apply_filters( "{$this->namespace}_shortcode_atts", $atts );
+        
         extract( shortcode_atts( array(
 	        'id' => (boolean) false,
 	        'width' => null,
@@ -3603,8 +3612,25 @@ class SlideDeckLitePlugin {
 	 * Outputs additional information about the lenses on the lens list view
 	 * on the SlideDeck options pane, when editing a deck.
 	 */
-    function slidedeck_lens_selection_after_lenses( $slidedeck ) {
+    function slidedeck_lens_selection_after_lenses( $lenses, $slidedeck ) {
+        // Creating an array of slugs only for easier digestion on the lens selection screen
+        $lens_slugs = $this->installed_lenses;
+        
     	include( SLIDEDECK2_DIRNAME . '/views/upsells/_upsell-additional-lenses.php' );
+    }
+	
+	/**
+	 * Outputs additional information about the lenses on the lens management page
+	 */
+    function slidedeck_manage_lenses_after_lenses( $lenses ) {
+        
+        // Creating an array of slugs only for easier digestion on the lens selection screen
+        $lens_slugs = array();
+        foreach( $lenses as $lens ) {
+            array_push( $lens_slugs, $lens['slug']);
+        }
+        
+    	include( SLIDEDECK2_DIRNAME . '/views/upsells/_upsell-additional-lens-manage.php' );
     }
 	
 	/**
@@ -3785,13 +3811,12 @@ class SlideDeckLitePlugin {
             $response = wp_remote_get( $url, array( 'sslverify' => false ) );
             if( !is_wp_error( $response ) ) {
                 slidedeck2_cache_write( $url, $response, ( 60 * 60 * 24 ) );
+                // Decode the data
+                $array_data = json_decode( $response['body'], true );
             }else{
                 slidedeck2_cache_write( $url, '', ( 60 * 60 * 24 ) );
             }
         }
-        
-        // Decode the data
-        $array_data = json_decode( $response['body'], true );
         
         /**
          * Use the default values if all else fails.

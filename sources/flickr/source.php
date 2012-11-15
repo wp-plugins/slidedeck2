@@ -11,6 +11,10 @@ class SlideDeckSource_Flickr extends SlideDeck {
                 'value' => "recent",
                 'data' => 'string'
             ),
+            'flickr_user_or_group' => array(
+                'value' => "user",
+                'data' => 'string'
+            ),
             'flickr_userid' => array(
                 'value' => "76066843@N02",
                 'data' => 'string'
@@ -44,17 +48,27 @@ class SlideDeckSource_Flickr extends SlideDeck {
      * @return array An array of arrays containing the images and various meta.
      */
     function get_slides_nodes( $slidedeck ){
+        switch( $slidedeck['options']['flickr_user_or_group'] ){
+            case 'user':
+                $feed_url = 'http://api.flickr.com/services/feeds/photos_public.gne?id=';
+            break;
+            case 'group':
+                $feed_url = 'http://api.flickr.com/services/feeds/groups_pool.gne?id=';
+                $slidedeck['options']['flickr_recent_or_favorites'] = 'recent';
+            break;
+        }
+        
         switch( $slidedeck['options']['flickr_recent_or_favorites'] ){
             case 'recent':
-                $feed_url = 'http://api.flickr.com/services/feeds/photos_public.gne?id=' . $slidedeck['options']['flickr_userid'] . '&format=rss_200_enc';
+                $feed_url .= $slidedeck['options']['flickr_userid'] . '&format=rss_200_enc';
                 $tags_string = get_post_meta( $slidedeck['id'], "{$this->namespace}_flickr_tags", true );
                 if( !empty( $tags_string ) ){
                     switch( $slidedeck['options']['flickr_tags_mode'] ){
                         case 'any':
-                            $feed_url = 'http://api.flickr.com/services/feeds/photos_public.gne?id=' . $slidedeck['options']['flickr_userid'] . '&tagmode=any&tags=' . $tags_string . '&format=rss_200_enc';
+                            $feed_url .= '&tagmode=any&tags=' . $tags_string . '&format=rss_200_enc';
                         break;
                         case 'all':
-                            $feed_url = 'http://api.flickr.com/services/feeds/photos_public.gne?id=' . $slidedeck['options']['flickr_userid'] . '&tagmode=all&tags=' . $tags_string . '&format=rss_200_enc';
+                            $feed_url .= '&tagmode=all&tags=' . $tags_string . '&format=rss_200_enc';
                         break;
                     }
                 }

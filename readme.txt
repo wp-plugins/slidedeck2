@@ -68,6 +68,16 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 
 
 == Changelog ==
+= 2.1.20121115 =
+* Updated pathing for Ress js asset loading for better consitency across the board
+* Adding a filter for the shortcode attributes.
+* Adjusting the way that a proportional RESS raito is calculated (Should help with height on some RESS decks).
+* Fixing a typo in the 'Overlays Always Open' tooltip.
+* Adding Flickr Group support to the Flickr source (recent only, no tags)
+* Adding image size choice to the WordPress Posts source. You can now choose auto or a specific registered size.
+* Addressing an issue where the manage screen may fail and dislay this error: `Cannot use object of type WP_Error as array`
+* Added Georgia to the default list of fonts. 
+
 = 2.1.20121102 =
 * Fixed an issue where using the shortcode in your theme could cause SlideDeck to not render.
 
@@ -179,6 +189,9 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 * Fixed an issue where jQuery Masonry was not being enqueued
 
 == Upgrade Notice ==
+= 2.1.20121115 =
+Bug fixes, adds the ability to purchase lenses
+
 = 2.1.20121102 =
 Critical hotfix for decks that are inserted directly into the theme
 

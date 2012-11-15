@@ -13,6 +13,11 @@ $slidedeck_fonts = array(
         'stack' => 'Arial,Helvetica,sans-serif',
         'weight' => 'bold'
     ),
+    "georgia" => array(
+        'label' => "Georgia",
+        'stack' => 'Georgia,serif',
+        'weight' => 'normal'
+    ),
     "helvetica" => array(
         'label' => "Helvetica",
         'stack' => 'Helvetica,Arial,sans-serif',

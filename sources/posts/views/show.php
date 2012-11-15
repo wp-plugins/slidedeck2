@@ -37,9 +37,12 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
     <div class="inner">
         <div class="left">
             <ul class="content-source-fields">
-	            <li>
-					<?php slidedeck2_html_input( 'options[postsImageSource]', $slidedeck['options']['postsImageSource'], $this->options_model['Setup']['postsImageSource'] ); ?>
-	            </li>
+                <li>
+                    <?php slidedeck2_html_input( 'options[postsImageSource]', $slidedeck['options']['postsImageSource'], $this->options_model['Setup']['postsImageSource'] ); ?>
+                </li>
+                <li id="preferred-image-size-row" style="<?php echo $show_image_size ? '' : 'display:none;' ;?>">
+                    <?php slidedeck2_html_input( 'options[preferredImageSize]', $slidedeck['options']['preferredImageSize'], $this->options_model['Setup']['preferredImageSize'] ); ?>
+                </li>
                 <li>
                     <?php slidedeck2_html_input( 'options[post_type]', $slidedeck['options']['post_type'], array( 'type' => 'select', 'label' => __( "Post Type", $this->namespace ), 'attr' => array( 'class' => 'fancy' ), 'values' => $post_types ) ); ?>
                 </li>

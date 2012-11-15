@@ -1,29 +1,37 @@
-<a href="#lens-upgrade" class="lens placeholder upgrade-modal" rel="lenses">
-	<span class="thumbnail"><img src="https://s3.amazonaws.com/slidedeck-pro/lite_upsell_assets/images/lenses/fashion.jpg" /></span>
+<?php if( !in_array( 'fashion', $lens_slugs ) ) : ?>
+<a href="http://www.slidedeck.com/lenses-ae69de/?lens=fashion&utm_source=premium_lenses_tab&utm_medium=link&utm_content=SD2LENSFASHION&utm_campaign=sd2_lite<?php echo self::get_cohort_query_string('&'); ?>" target="_blank" class="lens placeholder" rel="lenses">
+	<span class="thumbnail"><img src="https://s3.amazonaws.com/slidedeck-pro/upsell_assets/images/lenses/fashion/thumbnail.jpg" /></span>
+	<span class="shadow">&nbsp;</span>
 	<span class="title">Fashion</span>
 </a>
-<a href="#lens-upgrade" class="lens placeholder upgrade-modal" rel="lenses">
-	<span class="thumbnail"><img src="https://s3.amazonaws.com/slidedeck-pro/lite_upsell_assets/images/lenses/block-title.jpg" /></span>
-	<span class="title">Block Title</span>
-</a>
-<a href="#lens-upgrade" class="lens placeholder upgrade-modal" rel="lenses">
-	<span class="thumbnail"><img src="https://s3.amazonaws.com/slidedeck-pro/lite_upsell_assets/images/lenses/half-moon.jpg" /></span>
+<?php endif; ?>
+
+<?php if( !in_array( 'half-moon', $lens_slugs ) ) : ?>
+<a href="http://www.slidedeck.com/lenses-ae69de/?lens=half-moon&utm_source=premium_lenses_tab&utm_medium=link&utm_content=SD2LENSFASHION&utm_campaign=sd2_lite<?php echo self::get_cohort_query_string('&'); ?>" target="_blank" class="lens placeholder" rel="lenses">
+	<span class="thumbnail"><img src="https://s3.amazonaws.com/slidedeck-pro/upsell_assets/images/lenses/half-moon/thumbnail.jpg" /></span>
+	<span class="shadow">&nbsp;</span>
 	<span class="title">Half Moon</span>
 </a>
-<a href="#lens-upgrade" class="lens placeholder upgrade-modal" rel="lenses">
-	<span class="thumbnail"><img src="https://s3.amazonaws.com/slidedeck-pro/lite_upsell_assets/images/lenses/proto.jpg" /></span>
-	<span class="title">Proto</span>
+<?php endif; ?>
+
+<?php if( !in_array( 'classic', $lens_slugs ) ) : ?>
+<a href="http://www.slidedeck.com/lenses-ae69de/?lens=classic&utm_source=premium_lenses_tab&utm_medium=link&utm_content=SD2LENSFASHION&utm_campaign=sd2_lite<?php echo self::get_cohort_query_string('&'); ?>" target="_blank" class="lens placeholder" rel="lenses">
+	<span class="thumbnail"><img src="https://s3.amazonaws.com/slidedeck-pro/upsell_assets/images/lenses/classic/thumbnail.jpg" /></span>
+	<span class="shadow">&nbsp;</span>
+	<span class="title">Classic</span>
 </a>
-<a href="#lens-upgrade" class="lens placeholder upgrade-modal" rel="lenses">
-	<span class="thumbnail"><img src="https://s3.amazonaws.com/slidedeck-pro/lite_upsell_assets/images/lenses/proto-video.jpg" /></span>
-	<span class="title">Proto Video</span>
-</a>
-<a href="#lens-upgrade" class="lens placeholder upgrade-modal" rel="lenses">
-	<span class="thumbnail"><img src="https://s3.amazonaws.com/slidedeck-pro/lite_upsell_assets/images/lenses/twitter.jpg" /></span>
-	<span class="title">Twitter</span>
-</a>
-<a href="#lens-upgrade" class="lens placeholder upgrade-modal" rel="lenses">
-	<span class="thumbnail"><img src="https://s3.amazonaws.com/slidedeck-pro/lite_upsell_assets/images/lenses/classic.jpg" /></span>
-	<span class="title has-subtitle">Classic</span>
-	<span class="subtitle">Professional tier &amp; higher</span>
-</a>
+<?php endif; ?>
+
+<div class="upgrade-license-lenses">
+    <span class="upgrade">
+        <img src="https://s3.amazonaws.com/slidedeck-pro/lite_upsell_assets/images/need-more-lenses.png" />
+        <div class="upgrade-button-cta">
+            <a href="<?php echo slidedeck2_action( "/upgrades" ); ?>" class="upgrade-button green">
+                <span class="button-noise">
+                    <span>Upgrade</span>
+                </span>
+            </a>
+        </div>
+    </span>
+    <span class="shadow">&nbsp;</span>
+</div>

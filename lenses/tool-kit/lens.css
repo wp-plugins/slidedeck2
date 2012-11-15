@@ -2577,3 +2577,14 @@ Tags: images, posts, feeds, pages, slidedeck
 .lens-tool-kit .slide-source-custom.slide-type-video .sd2-node-caption .play-video-alternative:hover {
     text-decoration: underline;
 }
+
+/*
+ * Video custom content sources
+ */
+.lens-tool-kit.sd2-light .slide-source-custom.slide-type-video .sd2-node-caption {
+    background: #fff;
+    background: rgba(255,255,255,0.75);
+}
+.lens-tool-kit.sd2-light .slide-source-custom.slide-type-video .sd2-node-caption .sd2-slide-text {
+    color: #000000;
+} 

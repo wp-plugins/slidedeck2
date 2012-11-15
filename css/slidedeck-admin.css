@@ -3476,6 +3476,18 @@ textarea#back_title {
     #slidedeck-types div.create-slidedeck div.slidedeck-inner p {
         font-size: 13px;
     }
+    #slidedeck-types div#create-custom-slidedeck div.slidedeck-inner {
+        background: url('../images/choose-custom-content-sml.png') 20px 20px no-repeat;
+    }
+    #slidedeck-types div#create-custom-slidedeck.professional div.slidedeck-inner {
+        background: url('../images/choose-custom-content-pro-sml.png') 20px 20px no-repeat;
+    }
+    #slidedeck-types div#create-custom-slidedeck.developer div.slidedeck-inner {
+        background: url('../images/choose-custom-content-dev-sml.png') 20px 20px no-repeat;
+    }
+    #slidedeck-types div#create-dynamic-slidedeck div.slidedeck-inner {
+        background: url('../images/choose-dynamic-decks-sml.png') 20px 20px no-repeat;
+    }
 }
 
 /* SlideDeck Advanced Options Styles*/
@@ -4245,7 +4257,27 @@ div.upgrade-button-cta .upgrade-button .button-noise span:after {
     background: url('../images/star-icon-white.png');
 }
 
+/* Add more lenses */
+#slidedeck-lenses div.lens.add-lens h4 {
+    font-size: 25px;
+    font-weight: bold;
+    color: #222;
+    padding: 10px 20px 5px;
+}
 
+#slidedeck-lenses div.lens.add-lens .inner > p {
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: bold;
+    color: #838383;
+    padding: 0 20px;
+    margin-bottom: 15px;
+}
+
+#slidedeck-lenses div.lens.add-lens div.upgrade-button-cta {
+    text-align: center;
+    margin-bottom: 0px;
+}
 
 
 

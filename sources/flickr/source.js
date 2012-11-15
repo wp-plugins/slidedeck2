@@ -58,6 +58,35 @@
                 }, 500 );
                 
             });
+            
+            // Flickr Tags Delete
+            self.elems.form.delegate('#flickr-tags-wrapper .delete', 'click', function(event){
+                event.preventDefault();
+                $(this).parents('span').remove();
+                
+                if (self.elems.form.timer)
+                    clearTimeout(self.elems.form.timer);
+                
+                // Set delay timer so a check isn't done on every single key stroke
+                self.elems.form.timer = setTimeout(function(){
+                    SlideDeckPreview.ajaxUpdate();
+                }, 500 );
+                
+            });
+            
+            self.elems.form.delegate('#options-flickr_user_or_group-user, #options-flickr_user_or_group-group', 'change', function(event){
+                switch( event.target.id ){
+                    case 'options-flickr_user_or_group-group':
+                        self.elems.form.find('li.add-button-li').hide();
+                        self.elems.form.find('li.favorites').hide();
+                    break;
+                    case 'options-flickr_user_or_group-user':
+                        self.elems.form.find('li.add-button-li').show();
+                        self.elems.form.find('li.favorites').show();
+                    break;
+                }
+            });
+
         }
     };
     

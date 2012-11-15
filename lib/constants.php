@@ -26,7 +26,7 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 // The current version of this plugin
-if( !defined( 'SLIDEDECK2_VERSION' ) ) define( 'SLIDEDECK2_VERSION', '2.1.20121102' );
+if( !defined( 'SLIDEDECK2_VERSION' ) ) define( 'SLIDEDECK2_VERSION', '2.1.20121115' );
 
 // Environment - change to "development" to load .dev.js JavaScript files (DON'T FORGET TO TURN IT BACK BEFORE USING IN PRODUCTION)
 if( !defined( 'SLIDEDECK2_ENVIRONMENT' ) ) define( 'SLIDEDECK2_ENVIRONMENT', 'production' );
@@ -42,7 +42,7 @@ if( !defined( 'SLIDEDECK2_DIRNAME' ) ) define( 'SLIDEDECK2_DIRNAME', dirname( di
 if( !defined( 'SLIDEDECK2_URLPATH' ) ) define( 'SLIDEDECK2_URLPATH', trailingslashit( plugins_url() ) . basename( SLIDEDECK2_DIRNAME ) );
 
 define( 'SLIDEDECK2_POST_TYPE',                      'slidedeck2' );
-define( 'SLIDEDECK2_SLIDE_POST_TYPE',                'slidedeck_slide' );
+define( 'SLIDEDECK2_SLIDE_POST_TYPE',                'sd2_custom_slide' );
 define( 'SLIDEDECK1_POST_TYPE',                      'slidedeck' );
 define( 'SLIDEDECK1_SLIDE_POST_TYPE',                'slidedeck_slide' );
 define( 'SLIDEDECK2_NEW_TITLE',                      'My SlideDeck' );

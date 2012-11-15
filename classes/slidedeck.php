@@ -130,7 +130,7 @@ class SlideDeck {
                 'data' => 'boolean',
                 'value' => false,
                 'label' => "Overlays Always Open",
-                'description' => "Sould overlays always be open when they are visible?"
+                'description' => "Should overlays always be open when they are visible?"
             ),
             'show-front-cover' => array(
                 'name' => 'show-front-cover',

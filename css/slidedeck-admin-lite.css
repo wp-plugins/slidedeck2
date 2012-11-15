@@ -270,3 +270,65 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
     padding: 4px;
     margin: 0 3px;
 }
+
+
+/*** Additional Lenses Upgrade to License ***/
+#slidedeck-section-lenses .upgrade-license-lenses {
+    text-decoration: none;
+    position: relative;
+    z-index: 2;
+    zoom: 1; /* Triggers has layout? */    
+    display: block;
+    float: left;
+    width: 160px;
+    height: 121px;
+    overflow: hidden;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid white;
+    margin-right: 30px;
+    margin-bottom: 26px;
+    
+}
+
+#slidedeck-section-lenses .upgrade-license-lenses .upgrade {
+    position: relative;
+    display: block;
+    width: 152px;
+    height: 109px;
+    padding: 10px 3px 0 3px;
+    margin: 0 auto;
+    border: 1px solid #AEB8C6;
+    background: white;
+    border-radius: 5px;
+    z-index: 2;
+    text-align: center;
+    
+    background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPHJhZGlhbEdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgY3g9IjUwJSIgY3k9IjUwJSIgcj0iNzUlIj4KICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM0ZTRlNGUiIHN0b3Atb3BhY2l0eT0iMSIvPgogICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMjQyNDI0IiBzdG9wLW9wYWNpdHk9IjEiLz4KICA8L3JhZGlhbEdyYWRpZW50PgogIDxyZWN0IHg9Ii01MCIgeT0iLTUwIiB3aWR0aD0iMTAxIiBoZWlnaHQ9IjEwMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+    background: #4e4e4e;
+    background: -moz-radial-gradient(center, ellipse cover, #4e4e4e 0%, #242424 100%);
+    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#4e4e4e), color-stop(100%,#242424));
+    background: -webkit-radial-gradient(center, ellipse cover, #4e4e4e 0%,#242424 100%);
+    background: -o-radial-gradient(center, ellipse cover, #4e4e4e 0%,#242424 100%);
+    background: -ms-radial-gradient(center, ellipse cover, #4e4e4e 0%,#242424 100%);
+    background: radial-gradient(ellipse at center, #4e4e4e 0%,#242424 100%);
+}
+
+#slidedeck-section-lenses .upgrade-license-lenses .upgrade div.upgrade-button-cta {
+    width: auto;
+    float: none;
+    text-align: center;
+    margin-top: 5px;
+}
+
+#slidedeck-section-lenses .upgrade-license-lenses span.shadow {
+    display: block;
+position: absolute;
+top: 122px;
+left: 50%;
+margin-left: -87px;
+width: 170px;
+height: 10px;
+background: url('../images/lens-thumbnail-shadow.png') center center no-repeat;
+z-index: 1;
+}

@@ -30,15 +30,25 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+$tags_hidden = ( $slidedeck['options']['flickr_user_or_group'] == 'group' ) ? ' style="display: none;"' : '';
+$favorties_hidden = ( $slidedeck['options']['flickr_user_or_group'] == 'group' ) ? ' style="display: none;"' : '';
+
 ?>
 <div id="content-source-flickr">
     <input type="hidden" name="source[]" value="<?php echo $this->name; ?>" />
     <div class="inner">
         <ul class="content-source-fields">
-            <li>
+            <li class="favorites"<?php echo $favorties_hidden; ?>>
                 <?php slidedeck2_html_input( 'options[flickr_recent_or_favorites]', $slidedeck['options']['flickr_recent_or_favorites'], array( 'type' => 'radio', 'attr' => array( 'class' => 'fancy' ), 'label' => __( 'Photos to get', $this->namespace ), 'values' => array(
                     'recent' => __( 'Recent', $this->namespace ),
                     'favorites' => __( 'Favorites', $this->namespace )
+                ) ) ); ?>
+            </li>
+            <li>
+                <?php slidedeck2_html_input( 'options[flickr_user_or_group]', $slidedeck['options']['flickr_user_or_group'], array( 'type' => 'radio', 'attr' => array( 'class' => 'fancy' ), 'label' => __( 'User or Group?', $this->namespace ), 'values' => array(
+                    'user' => __( 'User', $this->namespace ),
+                    'group' => __( 'Group', $this->namespace )
                 ) ) ); ?>
             </li>
             <li>
@@ -48,13 +58,13 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
                 ?>
                 <em><?php echo $tooltip; ?></em>
             </li>
-            <li>
+            <li<?php echo $tags_hidden; ?>>
                 <?php slidedeck2_html_input( 'options[flickr_tags_mode]', $slidedeck['options']['flickr_tags_mode'], array( 'type' => 'radio', 'attr' => array( 'class' => 'fancy' ), 'label' => __( 'Tag mode: ', $this->namespace ), 'values' => array(
                     'any' => __( 'Any of these', $this->namespace ),
                     'all' => __( 'All of these', $this->namespace )
                 ) ) ); ?>
             </li>
-            <li class="add-button-li">
+            <li class="add-button-li"<?php echo $tags_hidden; ?>>
                 <div class="add-button-wrapper flickr">
                     <?php 
                     $tooltip = __('Enter one or more tags separated by commas.') . "<br />" . __('Tags can only be used with recent photos.');
