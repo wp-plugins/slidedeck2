@@ -3,7 +3,7 @@ Contributors: dtelepathy, kynatro, jamie3d, dtrenkner, oriontimbers, nielsfogt, 
 Donate link: http://www.slidedeck.com/
 Tags: Slider, dynamic, responsive, image gallery, dtelepathy, digital telepathy, digital-telepathy, iPad, jquery, media, photo, pictures, plugin, posts, Search Engine Optimized, seo, skinnable, slide, slide show, slider, slideshow, theme, touch support, video, widget, Flickr, Instagram, 500px, RSS, Pinterest, Google+, Twitter, YouTube, Vimeo, Dailymotion, Picasa, Dribbble
 Requires at least: 3.3
-Tested up to: 3.4.2
+Tested up to: 3.5
 Stable tag: trunk
 License: GPLv3
 
@@ -68,6 +68,18 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 
 
 == Changelog ==
+= 2.1.20121212 =
+* Updated references in activation routine to fix free to paid upgrade identification if free plugin was still activated
+* Help us make SlideDeck 2 better! Added optional anonymous usage statistics opt-in.
+* Improved the asset load order of SlideDecks
+* Fixed an issue with video IDs containing double underscores and how they were handled
+* Fixed an issue in the core JavaScript library that affected transparent decks and the fade transition (eg: Reporter)
+* Added content/description pull for Flickr feed source
+* Fixed a few notices/errors when deleting a SlideDeck embedded in the theme
+* Fixed an issue with Firefox versions 20 and higher
+* Avatars are no longer loaded in the HTML if the `Show Author Avatar` option is set to `Off`
+* Modified AJAX change lens method in SlideDeck interface to prevent regression bug
+
 = 2.1.20121115 =
 * Updated pathing for Ress js asset loading for better consitency across the board
 * Adding a filter for the shortcode attributes.
@@ -189,6 +201,9 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 * Fixed an issue where jQuery Masonry was not being enqueued
 
 == Upgrade Notice ==
+= 2.1.20121212 =
+Many bug fixes, and lens CSS loading optimizations
+
 = 2.1.20121115 =
 Bug fixes, adds the ability to purchase lenses
 

@@ -71,6 +71,9 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
                                 <?php slidedeck2_html_input( 'data[iframe_by_default]', $data['iframe_by_default'], array( 'attr' => array( 'class' => 'fancy' ), 'type' => 'radio', 'label' => "Include the &ldquo;iframe=1&rdquo; attribute in all new shortcode embeds by default" ) ); ?>
                             </li>
                             <li>
+                                <?php slidedeck2_html_input( 'data[anonymous_stats_optin]', $data['anonymous_stats_optin'], array( 'attr' => array( 'class' => 'fancy' ), 'type' => 'radio', 'label' => "Opt-in to make SlideDeck better with anonymous usage statistics", 'description' => "If you opt-in, anonymous statistics about how you use SlideDeck 2 will be sent to digital-telepathy to help us make SlideDeck 2 better suited to your needs. Absolutely no personally identifiable information is transmitted." ) ); ?><br />
+                            </li>
+                            <li>
                             	<?php slidedeck2_html_input( 'data[twitter_user]', $data['twitter_user'], array( 'attr' => array( 'class' => 'fancy' ), 'label' => "Twitter user to tweet via for overlays" ) ); ?>
                             </li>
                             <li>

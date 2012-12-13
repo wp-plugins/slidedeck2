@@ -26,13 +26,13 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 // The current version of this plugin
-if( !defined( 'SLIDEDECK2_VERSION' ) ) define( 'SLIDEDECK2_VERSION', '2.1.20121115' );
+if( !defined( 'SLIDEDECK2_VERSION' ) ) define( 'SLIDEDECK2_VERSION', self::$version );
 
 // Environment - change to "development" to load .dev.js JavaScript files (DON'T FORGET TO TURN IT BACK BEFORE USING IN PRODUCTION)
 if( !defined( 'SLIDEDECK2_ENVIRONMENT' ) ) define( 'SLIDEDECK2_ENVIRONMENT', 'production' );
 
 // The license of this plugin
-if( !defined( 'SLIDEDECK2_LICENSE' ) ) define( 'SLIDEDECK2_LICENSE', 'LITE' );
+if( !defined( 'SLIDEDECK2_LICENSE' ) ) define( 'SLIDEDECK2_LICENSE', self::$license );
 if( !defined( 'SLIDEDECK_TOTAL_SLIDES_LITE' ) ) define( 'SLIDEDECK_TOTAL_SLIDES_LITE', 5 );
 
 // The directory the plugin resides in
@@ -54,4 +54,4 @@ define( 'SLIDEDECK2_UPDATE_SITE',                    'http://update.slidedeck.co
 // SlideDeck anonymous user hash
 define( 'SLIDEDECK2_USER_HASH', sha1( $_SERVER['HTTP_USER_AGENT'] . $_SERVER['REMOTE_ADDR'] ) );
 // KISS Metrics API Key
-define( 'SLIDEDECK2_KMAPI_KEY', "d1b65dbd653f5c7f63692c5a3a17a7ad5d8d5d4d" );
+define( 'SLIDEDECK2_KMAPI_KEY', "e1a603779b1d37b049548f9c8d7a804954ec7a36" );

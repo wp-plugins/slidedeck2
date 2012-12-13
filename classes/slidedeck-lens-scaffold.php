@@ -123,6 +123,12 @@ class SlideDeckLens_Scaffold {
         add_filter( "{$this->namespace}_sizes", array( &$this, "_slidedeck_sizes" ), 19, 2 );
         
         add_action( "{$this->namespace}_get_lenses", array( &$this, '_slidedeck_get_lenses' ), 9, 2 );
+        
+        // Register JavaScript used by each lens
+        add_action( 'init', array( &$this, '_slidedeck_register_scripts' ), 1 );
+
+        // Register Stylesheet used by this lens
+        add_action( 'init', array( &$this, '_slidedeck_register_styles' ), 1 );
     }
     
     function __get( $name ) {
@@ -381,6 +387,27 @@ class SlideDeckLens_Scaffold {
             $sizes = array_merge( $sizes, $this->lens['meta']['sizes'] );
         
         return $sizes;
+    }
+    
+    /**
+     * SlideDeck Register Scripts
+     * Registration of the lens scripts making them ready to enqueue
+     */
+    function _slidedeck_register_scripts( ) {
+        if( isset( $this->lens['script_url'] ) ) {
+            wp_register_script( "{$this->namespace}-lens-js-{$this->lens['slug']}", $this->lens['script_url'], array( 'jquery', "{$this->namespace}-library-js" ), SLIDEDECK2_VERSION );
+            if( isset( $this->lens['admin_script_url'] ) ) {
+                wp_register_script( "{$this->namespace}-lens-admin-js-{$this->lens['slug']}", $this->lens['admin_script_url'], array( 'jquery', "{$this->namespace}-admin" ), SLIDEDECK2_VERSION, true );
+            }
+        }    }
+    
+    /**
+     * SlideDeck Register Styles
+     * Registration of the lens styles making them ready to enqueue
+     */
+    function _slidedeck_register_styles( ) {
+        $version = isset(  $this->lens['meta']['version'] ) && !empty( $lens['meta']['version'] ) ? $lens['meta']['version'] : SLIDEDECK2_VERSION;
+        wp_register_style( "{$this->namespace}-lens-{$this->lens['slug']}", $this->lens['url'], array( $this->namespace ), $version );
     }
     
     /**

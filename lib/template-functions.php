@@ -813,16 +813,68 @@ if( !function_exists( 'slidedeck2_get_license_key' ) ) {
  */
 if( !function_exists( 'slidedeck2_km' ) ) {
 	function slidedeck2_km( $event = "", $properties = array() ) {
+	    global $SlideDeckPlugin;
+	    
+	    $options = get_option( "slidedeck2_global_options", array() );
+        
+	    // If the user has not opted-in to anonymous stats, fail silently
+	    if( !$options['anonymous_stats_optin'] ) {
+	        return false;
+	    }
+        
+        // Setup for events that should be traccked once
+        $once_events_option_name = "{$SlideDeckPlugin->namespace}_completed_once_events";
+        $once_events = array(
+            'SlideDeck Installed' => false
+        );
+        $completed_once_events = get_option( $once_events_option_name, $once_events );
+        $completed_once_events = array_merge( $once_events, $completed_once_events );
+        
+        // If the event should only happen once and it has been logged as already happened, don't log it
+        if( isset( $completed_once_events[$event] ) && $completed_once_events[$event] === true ) {
+            return false;
+        }
+        
 		$params = array(
 			'_k' => SLIDEDECK2_KMAPI_KEY,
 			'_p' => SLIDEDECK2_USER_HASH,
 			'_n' => urlencode( $event ),
 			'license' => SLIDEDECK2_LICENSE,
-			'version' => SLIDEDECK2_VERSION
+			'version' => SLIDEDECK2_VERSION,
+			'tier' => SlideDeckLitePlugin::highest_installed_tier()
 		);
 		
 		$params = array_merge( $params, $properties );
 		
 	    wp_remote_fopen( "http://trk.kissmetrics.com/e?" . http_build_query( $params ) );
+        
+        // Log one time events as completed
+        if( isset( $once_events[$event] ) ) {
+            $completed_once_events[$event] = true;
+            update_option( $once_events_option_name, $completed_once_events );
+        }
 	}
+}
+
+if( !function_exists( 'slidedeck2_km_link' ) ) {
+    function slidedeck2_km_link( $event = "", $properties = array() ) {
+        $params = "";
+        
+        $options = get_option( "slidedeck2_global_options", array() );
+        
+        // If the user has not opted-in to anonymous stats, fail silently
+        if( !$options['anonymous_stats_optin'] ) {
+            return $params;
+        }
+        
+        $params.= "&kmi=" . SLIDEDECK2_USER_HASH;
+        if( !empty( $event ) ) {
+            $params.= "&kme=" . urlencode( $event );
+        }
+        foreach( $properties as $property => $value ) {
+            $params.= "&km_{$property}={$value}";
+        }
+        
+        return $params;
+    }
 }

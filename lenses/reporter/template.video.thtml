@@ -1,5 +1,5 @@
 <div class="video-wrapper">
-    <div id="video__<?php echo $video_meta['id']; ?>__<?php echo $slidedeck['id']; ?>-<?php echo $deck_iteration; ?>-<?php echo $slide_counter; ?>" class="<?php echo $video_meta['service']; ?> video-container"></div>
+    <?php echo $video_container; ?>
     <div class="cover">
         <a class="play-video-button play" href="#play">Click To Play</a>
     </div>

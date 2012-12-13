@@ -105,6 +105,7 @@ class SlideDeckSource_Flickr extends SlideDeck {
                 $images[ $index ]['image'] = $item->get_enclosure()->link;
                 $images[ $index ]['thumbnail'] = $item->get_enclosure()->thumbnails[0];
                 $images[ $index ]['permalink'] = $item->get_permalink();
+                $images[ $index ]['content'] = $images[ $index ]['description'] = $item->get_content();
                 
                 $images[ $index ]['author_name'] = $item->get_enclosure()->credits[0]->name;
                 $images[ $index ]['author_url'] = 'http://www.flickr.com/photos/' . $slidedeck['options']['flickr_userid'];

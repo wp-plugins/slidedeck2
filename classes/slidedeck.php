@@ -2225,9 +2225,9 @@ class SlideDeck {
         $found_lens_path = false;
         if( !isset( $SlideDeckPlugin->lenses_included[$lens['slug']] ) && $include_lens_files === true ) {
             $SlideDeckPlugin->lenses_included[$lens['slug']] = true;
-
-            $lens_css_tags = $SlideDeckPlugin->Lens->get_css( $lens );
-            $html = $lens_css_tags . $html;
+            
+            // Enqueue the SlideDeck Lens
+            wp_enqueue_style( "{$this->namespace}-lens-{$lens['slug']}" );
             
 			// We try to echo the JS when asked to...
 			if( $echo_js ) {

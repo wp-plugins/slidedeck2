@@ -11,8 +11,8 @@
                 <p class="align-center"><img src="<?php echo SLIDEDECK2_URLPATH; ?>/images/upsell-slide-type-textonly.jpg" alt="Basic, Multi Column, Block Quote" /></p>
             </div>
             <div class="cta">
-                <a class="slidedeck-noisy-button" href="<?php echo slidedeck2_action( "/upgrades" ); ?>" class="button slidedeck-noisy-button"><span>Upgrade to Professional</span></a>
-                <a class="features-link" href="http://demo.slidedeck.com/wp-login.php?utm_campaign=sd2_lite&utm_medium=handslap_link&utm_source=handslap_slide_type&utm_content=textonly_slide" target="_blank">or try it out in the live demo</a>
+                <a class="slidedeck-noisy-button" href="<?php echo slidedeck2_action( "/upgrades&referrer=Textonly+Slide+Type+Handslap" ); ?>" class="button slidedeck-noisy-button"><span>Upgrade to Professional</span></a>
+                <a class="features-link" href="http://demo.slidedeck.com/wp-login.php?utm_campaign=sd2_lite&utm_medium=handslap_link&utm_source=handslap_slide_type&utm_content=textonly_slide<?php echo self::get_cohort_query_string('&') . slidedeck2_km_link(); ?>" target="_blank">or try it out in the live demo</a>
             </div>
         </div>
     </div>

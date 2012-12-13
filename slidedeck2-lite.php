@@ -13,7 +13,7 @@
  Plugin Name: SlideDeck 2 Lite
  Plugin URI: http://www.slidedeck.com/wordpress
  Description: Create SlideDecks on your WordPress blogging platform and insert them into templates and posts. Get started creating SlideDecks from the new SlideDeck menu in the left hand navigation.
- Version: 2.1.20121115
+ Version: 2.1.20121212
  Author: digital-telepathy
  Author URI: http://www.dtelepathy.com
  License: GPL3
@@ -41,12 +41,15 @@ class SlideDeckLitePlugin {
     var $package_slug = 'single';
     static $namespace = "slidedeck";
     static $friendly_name = "SlideDeck 2";
-	static $cohort_name = 'ecf8915';
-	static $cohort_variation = '';
+	  static $cohort_name = 'ecf8915';
+	  static $cohort_variation = '';
     static $partner = false;
+    
+    static $version = '2.1.20121212';
+    static $license = 'LITE';
 
-	// Generally, we are not installing addons. If we are, this gets set to true.
-	static $slidedeck_addons_installing = false;
+	  // Generally, we are not installing addons. If we are, this gets set to true.
+	  static $slidedeck_addons_installing = false;
 
     // Static variable of addons that are currently installed
     static $addons_installed = array( 'tier_5' => 'tier_5' );
@@ -67,7 +70,9 @@ class SlideDeckLitePlugin {
         'dont_enqueue_easing_library' => false,
         'disable_edit_create' => false,
         'twitter_user' => "",
-        'iframe_by_default' => false
+        'iframe_by_default' => false,
+        'anonymous_stats_optin' => false,
+        'anonymous_stats_has_opted' => false
     );
     
     // JavaScript to be run in the footer of the page
@@ -254,6 +259,7 @@ class SlideDeckLitePlugin {
 
         // Load the SlideDeck itself
         $slidedeck = $this->SlideDeck->get( $id );
+        if( empty( $slidedeck ) ) return ''; // return an empty string if there's no deck
 
         // Generate a unique HTML ID
         $slidedeck_unique_id = $this->namespace . '_' . $slidedeck['id'] . '_' . uniqid();
@@ -415,15 +421,15 @@ class SlideDeckLitePlugin {
         $installed_license = get_option( "slidedeck_license", false );
 
         if( $installed_license ) {
-            if( strtolower( $installed_license ) == "lite" && strtolower( SLIDEDECK2_LICENSE ) == "pro" ) {
+            if( strtolower( $installed_license ) == "lite" && strtolower( self::$license ) != "lite" ) {
                 // Upgrade from Lite to PRO
-                slidedeck2_km( "Upgrade to PRO" );
+                slidedeck2_km( "Upgrade to PRO", array( 'license' => self::$license, 'version' => self::$version ) );
             }
         }
 
         // First time installation
         if( !$installed_version ) {
-            slidedeck2_km( "SlideDeck Installed" );
+            slidedeck2_km( "SlideDeck Installed", array( 'license' => self::$license, 'version' => self::$version ) );
 			
 			// Setup the cohorts data
 			self::set_cohort_data();
@@ -432,16 +438,20 @@ class SlideDeckLitePlugin {
             self::set_partner_data();
         }
 
-        if( $installed_version && version_compare( SLIDEDECK2_VERSION, $installed_version, '>' ) ) {
-            if( version_compare( SLIDEDECK2_VERSION, '2.1', '<' ) ) {
+        if( $installed_version && version_compare( self::$version, $installed_version, '>' ) ) {
+            /**
+             * 2.0.x to 2.1.x upgrade process...
+             */
+            if( version_compare( $installed_version, '2.1', '<' ) ) {
                 if( !class_exists( "SlideDeck" ) ) {
-                    include (SLIDEDECK2_DIRNAME . '/classes/slidedeck.php');
+                    include (dirname( __FILE__ ) . '/classes/slidedeck.php');
                 }
 
                 global $SlideDeckPlugin, $wpdb;
 
-                $SlideDeck = new SlideDeck( );
 
+                // Update various cache settings and durations...
+                $SlideDeck = new SlideDeck( );
                 $slidedecks = $SlideDeck->get( null, 'post_title', 'ASC', 'publish' );
 
                 foreach( $slidedecks as $slidedeck ) {
@@ -474,14 +484,16 @@ class SlideDeckLitePlugin {
 
                     update_post_meta( $slidedeck['id'], "slidedeck_options", $slidedeck['options'] );
                 }
+                // End of Update various cache settings and durations...
+                
             }
 
             // Upgrade to new version
-            slidedeck2_km( "SlideDeck Upgraded" );
+            slidedeck2_km( "SlideDeck Upgraded", array( 'license' => self::$license, 'version' => self::$version ) );
         }
 
-        update_option( "slidedeck_version", SLIDEDECK2_VERSION );
-        update_option( "slidedeck_license", SLIDEDECK2_LICENSE );
+        update_option( "slidedeck_version", self::$version );
+        update_option( "slidedeck_license", self::$license );
 		
 		/**
 		 * Installation timestamp: SlideDeck 2
@@ -500,7 +512,7 @@ class SlideDeckLitePlugin {
 		}
 		
         // Activation
-        slidedeck2_km( "SlideDeck Activated" );
+        slidedeck2_km( "SlideDeck Activated", array( 'license' => self::$license, 'version' => self::$version ) );
     }
 
     /**
@@ -564,6 +576,9 @@ class SlideDeckLitePlugin {
         add_action( 'admin_print_footer_scripts', array( &$this, 'print_javascript_constants' ) );
         add_action( "{$this->namespace}_print_footer_scripts", array( &$this, 'print_javascript_constants' ) );
         add_action( 'wp_print_footer_scripts', array( &$this, 'print_javascript_constants' ) );
+        
+        // Add function to check for dt labs modal
+        add_action( 'admin_print_footer_scripts', array( &$this, 'dt_labs_account_modal' ) );
 
         // Add JavaScript and Stylesheets for admin interface on appropriate
         // pages
@@ -627,6 +642,10 @@ class SlideDeckLitePlugin {
         add_action( "wp_ajax_{$this->namespace}2_tweet_feed", array( &$this, 'ajax_tweet_feed' ) );
 
         add_action( "wp_ajax_{$this->namespace}_upsell_modal_content", array( &$this, 'ajax_upsell_modal_content' ) );
+        add_action( "wp_ajax_{$this->namespace}_anonymous_stats_optin", array( &$this, 'ajax_anonymous_stats_optin' ) );
+        
+        add_action( "wp_ajax_{$this->namespace}_dt_labs_account", array( &$this, 'ajax_dt_labs_account' ) );
+        add_action( "wp_ajax_{$this->namespace}_dt_labs_update_modal", array( &$this, 'ajax_dt_labs_update_modal' ) );
 
         // Append necessary lens and initialization script commands to the bottom
         // of the DOM for proper loading
@@ -670,6 +689,7 @@ class SlideDeckLitePlugin {
         
         add_filter( "{$this->namespace}_lens_selection_after_lenses", array( &$this, 'slidedeck_lens_selection_after_lenses' ), 10, 2 );
         add_filter( "{$this->namespace}_manage_lenses_after_lenses", array( &$this, 'slidedeck_manage_lenses_after_lenses') );
+        add_filter( "upgrader_post_install", array( &$this, 'upgrader_post_install' ), 1000, 3 );
 
         // Add shortcode to replace SlideDeck shortcodes in content with
         // SlideDeck contents
@@ -741,8 +761,14 @@ class SlideDeckLitePlugin {
             'disable_edit_create' => isset( $data['disable_edit_create'] ) && !empty( $data['disable_edit_create'] ) ? true : false,
             'twitter_user' => str_replace( "@", "", $data['twitter_user'] ), 'license_key' => $old_options['license_key'],
             'iframe_by_default' => isset( $data['iframe_by_default'] ) && !empty( $data['iframe_by_default'] ) ? true : false,
+            'anonymous_stats_optin' => isset( $data['anonymous_stats_optin'] ) && !empty( $data['anonymous_stats_optin'] ) ? true : false,
+            'anonymous_stats_has_opted' => true
         );
 
+        if( $options['anonymous_stats_optin'] === true ) {
+            slidedeck2_km( "SlideDeck Installed", array( 'license' => self::$license, 'version' => self::$version ) );
+        }
+        
         /**
          * Verify License Key
          */
@@ -819,7 +845,14 @@ class SlideDeckLitePlugin {
     function admin_print_scripts( ) {
         global $wp_scripts;
         
-        echo '<script type="text/javascript">var SlideDeckInterfaces = {};</script>';
+        $anonymous_stats = array(
+            'apikey' => SLIDEDECK2_KMAPI_KEY,
+            'optin' => $this->get_option( 'anonymous_stats_optin' ),
+            'hash' => SLIDEDECK2_USER_HASH,
+            'opted' => $this->get_option( 'anonymous_stats_has_opted' )
+        );
+        
+        echo '<script type="text/javascript">var SlideDeckInterfaces = {}; var SlideDeckAnonymousStats = ' . json_encode( $anonymous_stats ) . ';</script>';
         
         $wp_scripts->registered["{$this->namespace}-library-js"]->src .= "?noping";
         
@@ -986,6 +1019,19 @@ class SlideDeckLitePlugin {
     }
 
     /**
+     * AJAX response to upsell modal
+     */
+    function ajax_anonymous_stats_optin() {
+        include( SLIDEDECK2_DIRNAME . '/views/elements/_anonymous-stats-optin-modal.php' );
+        exit;
+    }
+    
+    function ajax_dt_labs_account() {
+        include( SLIDEDECK2_DIRNAME . '/views/elements/_dt-account-modal.php' );
+        exit;
+    }
+
+    /**
      * Outputs an <ul> for the SlideDeck Blog on the "Overview" page
      *
      * @uses fetch_feed()
@@ -1115,13 +1161,13 @@ class SlideDeckLitePlugin {
 
         $slidedeck = $response['preview'];
 
-        $options_model = $this->get_options_model( $slidedeck );
-
         $lenses = $this->get_slidedeck_lenses( $slidedeck );
 
         $lens = $this->Lens->get( $slidedeck['lens'] );
         $lens_classname = slidedeck2_get_classname_from_filename( $slidedeck['lens'] );
         $response['lens'] = $lens;
+
+        $options_model = $this->get_options_model( $slidedeck );
         
         // If this Lens has an options model, loop through it and set the new
         // defaults
@@ -1298,6 +1344,8 @@ class SlideDeckLitePlugin {
                 $response['message'] = "Folder could not be deleted, please make sure the server can delete this folder";
                 $response['error'] = true;
                 $response['redirect'] = $this->action( '/lenses' ) . '&action=delete_authorize&lens=' . $data['lens'] . '&_wpnonce=' . wp_create_nonce( $this->namespace . '-delete-lens-authorize' );
+            } else {
+                slidedeck2_km( "SlideDeck Deleted Lens", array( 'slug' => $data['lens'] ) );
             }
         }
 
@@ -1515,7 +1563,7 @@ class SlideDeckLitePlugin {
         $preview = false;
         if( isset( $_GET['preview'] ) ) {
             if( (int) $_GET['preview'] === 1 ) {
-                $preview = true;
+                $this->preview = $preview = true;
             }
         }
         
@@ -1868,7 +1916,7 @@ class SlideDeckLitePlugin {
         $new_lens_slug = isset( $data['new_lens_slug'] ) ? $data['new_lens_slug'] : "";
 
         $replace_js = false;
-        if( $_REQUEST['create_or_copy'] == "create" )
+        if( $data['create_or_copy'] == "create" )
             $replace_js = true;
 
         /**
@@ -1893,7 +1941,7 @@ class SlideDeckLitePlugin {
 
         if( $lens ) {
             slidedeck2_set_flash( "<strong>" . esc_html( __( "Lens Copied Successfully", $this->namespace ) ) . "</strong>" );
-            slidedeck2_km( "New Lens Copied/Created" );
+            slidedeck2_km( "New Lens " . ( $data['create_or_copy'] == 'create' ? "Created" : "Copied" ) );
         } else {
             slidedeck2_set_flash( __( "<strong>ERROR:</strong> Could not copy skin because the " . SLIDEDECK2_CUSTOM_LENS_DIR . " directory is not writable or does not exist.", 'slidedeck' ), true );
         }
@@ -1990,6 +2038,8 @@ class SlideDeckLitePlugin {
         
         if( !$deleted )
             return new WP_Error( 'could_not_remove_theme', sprintf( __('Could not fully remove the lens %s.', $this->namespace ), $lens ) );
+        
+        slidedeck2_km( "SlideDeck Deleted Lens", array( 'slug' => $lens ) );
         
         return true;
     }
@@ -2399,7 +2449,7 @@ class SlideDeckLitePlugin {
             $message = "<div id='{$this->namespace}-addon-notice' class='error updated fade'><p><strong>";
             $message .= sprintf( __( 'Addons are available for %s!', $this->namespace ), $this->friendly_name );
             $message .= "</strong> ";
-            $message .= sprintf( __( 'There are addons available for your installation of %1$s. %2$sInstall Your Addons%3$s', $this->namespace ), $this->friendly_name, '<a class="button" style="text-decoration:none;color:#333;" href="' . $this->action( '/upgrades' ) . '">', '</a>' );
+            $message .= sprintf( __( 'There are addons available for your installation of %1$s. %2$sInstall Your Addons%3$s', $this->namespace ), $this->friendly_name, '<a class="button" style="text-decoration:none;color:#333;" href="' . $this->action( '/upgrades&referrer=Addons+Available+Message' ) . '">', '</a>' );
             $message .= "</p></div>";
     
             echo $message;
@@ -2422,6 +2472,63 @@ class SlideDeckLitePlugin {
 
         echo $message;
     }
+    
+    
+    /**
+     * DT Labs account modal
+     * 
+     * Decides when it's time to show the modal.
+     * And then does. Or doesn't.
+     *
+     */
+     
+    function dt_labs_account_modal() {
+        $dates = self::get_installation_date();
+        
+        $now = $dates[1];
+        
+        if ( get_option( "{$this->namespace}_dt_account_timeline_start" ) ) {
+            $start = get_option( "{$this->namespace}_dt_account_timeline_start" );
+            $delay = get_option( "{$this->namespace}_dt_account_timeline_delay" );
+        } else {
+            $start = $dates[0];
+            $delay = 864000;
+        }
+        
+        if ( $now - $start > $delay ) {
+            echo '<script>(function($){$(document).ready(function(){ $.get(ajaxurl + "?action=slidedeck_dt_labs_account", function(data){ SlideDeckPlugin.dtLabsAccountModal.open(data); }); });})(jQuery);</script>';
+        }
+           
+    }
+    
+    function ajax_dt_labs_update_modal() {
+        $dates = self::get_installation_date();
+    
+        //no thanks
+        if( wp_verify_nonce( $_REQUEST['_wpnonce'], "dt_labs_update_modal_no_thanks" ) ) {
+            $start = $dates[1];
+            $delay_forever = $start + strtotime( '+5000 days' );
+                      
+            update_option( "{$this->namespace}_dt_account_timeline_start", $delay_forever );
+            update_option( "{$this->namespace}_dt_account_timeline_delay", '0' );
+            
+            exit;
+        }
+        
+        //remind me later
+        if( wp_verify_nonce( $_REQUEST['_wpnonce'], "dt_labs_update_modal_remind_me_later" ) ) {
+            $start = $dates[1];
+            $delay = 604800;
+            
+            update_option( "{$this->namespace}_dt_account_timeline_start", $start );
+            update_option( "{$this->namespace}_dt_account_timeline_delay", $delay );
+            
+            exit;
+        }
+        
+        die('No nonce found');
+    }
+    
     
     static function discount_time_left() {
         $dates = self::get_installation_date();
@@ -2803,6 +2910,10 @@ class SlideDeckLitePlugin {
             exit ;
         }
 
+        if( isset( $_REQUEST['referrer'] ) && !empty( $_REQUEST['referrer'] ) ) {
+            slidedeck2_km( "Visit Addons", array( 'cta' => $_REQUEST['referrer'] ) );
+        }
+        
         include (SLIDEDECK2_DIRNAME . '/views/admin-upgrades.php');
     }
 
@@ -3023,6 +3134,12 @@ class SlideDeckLitePlugin {
         
         echo $this->footer_scripts;
         
+        // Output IE Conditional CSS if present
+        foreach( (array) $this->lenses_included as $lens_slug => $val ) {
+            $lens = $this->Lens->get( $lens_slug );
+            echo $this->Lens->get_css( $lens );
+        }
+        
         if( !empty( $this->footer_styles ) ) {
             echo '<style type="text/css" id="' . $this->namespace . '-footer-styles">' . $this->footer_styles . '</style>';
         }
@@ -3172,6 +3289,10 @@ class SlideDeckLitePlugin {
                 if( wp_verify_nonce( $nonce, "{$this->namespace}-cover-update" ) ) {
                     $this->update_cover( );
                 }
+                
+                if( wp_verify_nonce( $nonce, "{$this->namespace}-stats-optin" ) ) {
+                    $this->update_stats_optin();
+                }
             }
             // Handle GET requests
             else {
@@ -3188,7 +3309,7 @@ class SlideDeckLitePlugin {
         }
 
         if( preg_match( "/admin\.php\?.*page\=" . SLIDEDECK2_BASENAME . "\/need-support/", $uri ) ) {
-            wp_redirect( $this->action('/upgrades') );
+            wp_redirect( $this->action('/upgrades&referrer=Get+Support+Menu+Navigation') );
             exit ;
         }
 
@@ -3693,6 +3814,23 @@ class SlideDeckLitePlugin {
     }
 
     /**
+     * AJAX submission for updating the stats optin from the modal form
+     */
+    function update_stats_optin() {
+        $data = slidedeck2_sanitize( $_REQUEST['data'] );
+        
+        $options = get_option( $this->option_name, false );
+        $options['anonymous_stats_optin'] = isset( $data['anonymous_stats_optin'] ) && !empty( $data['anonymous_stats_optin'] ) ? true : false;
+        $options['anonymous_stats_has_opted'] = true;
+        
+        update_option( $this->option_name, $options );
+        
+        if( $options['anonymous_stats_optin'] == true ) {
+            slidedeck2_km( "SlideDeck Installed", array( 'license' => self::$license, 'version' => self::$version ) );
+        }
+    }
+
+    /**
      * Upload lens request submission
      *
      * Adaptation of WordPress core theme upload and install routines for
@@ -3825,6 +3963,8 @@ class SlideDeckLitePlugin {
         $values = $defaults;
         if( isset( $array_data[$tier][$context] ) && !empty( $array_data[$tier][$context] ) ){
             $values = array_merge( $defaults, $array_data[$tier][$context] );
+            $values['tier'] = $tier;
+            $values['context'] = $context;
         }
         
         // Render the button!
@@ -3834,6 +3974,27 @@ class SlideDeckLitePlugin {
         ob_end_clean( );
 
         return $html;
+    }
+
+    /**
+     * Hook into upgrader_post_install
+     * 
+     * Do actions or modify return after upgrader has run for lens installation
+     * 
+     * @param mixed $res boolean(true) if the upload is deemed successful or WP_Error object if failed
+     * @param array $hook_extra Extra values passed to the upload routine
+     * @param array $result The results of the upload
+     * 
+     * @return mixed
+     */
+    function upgrader_post_install( $res, $hook_extra, $result ) {
+        // Make sure this is a lens upload
+        if( !is_wp_error( $res ) && isset( $hook_extra['lens_dirname'] ) ) {
+            $lens_meta = $this->Lens->get_meta( $result['destination'] . "lens.json" );
+            slidedeck2_km( "SlideDeck Installed Lens", array( 'name' => $lens_meta['meta']['name'], 'slug' => $lens_meta['slug'] ) );
+        }
+
+        return $res;
     }
 
     /**
@@ -3990,11 +4151,9 @@ class SlideDeckLitePlugin {
             foreach( (array) $this->lenses_included as $lens_slug => $val ) {
                 $lens = $this->Lens->get( $lens_slug );
                 if( isset( $lens['script_url'] ) ) {
-                    wp_register_script( "{$this->namespace}-lens-js-{$lens_slug}", $lens['script_url'], array( 'jquery', "{$this->namespace}-library-js" ), SLIDEDECK2_VERSION );
                     wp_enqueue_script( "{$this->namespace}-lens-js-{$lens_slug}" );
                     if( $this->is_plugin( ) ) {
                         if( isset( $lens['admin_script_url'] ) ) {
-                            wp_register_script( "{$this->namespace}-lens-admin-js-{$lens_slug}", $lens['admin_script_url'], array( 'jquery', "{$this->namespace}-admin" ), SLIDEDECK2_VERSION, true );
                             wp_enqueue_script( "{$this->namespace}-lens-admin-js-{$lens_slug}" );
                         }
                     }
@@ -4023,12 +4182,12 @@ class SlideDeckLitePlugin {
         }
         
         if( $load_assets === true ) {
+            wp_enqueue_style( $this->namespace );
+                
             foreach( (array) $this->lenses_included as $lens_slug => $val ) {
-                $lens = $this->Lens->get( $lens_slug );
-                echo $this->Lens->get_css( $lens );
+                wp_enqueue_style( "{$this->namespace}-lens-{$lens_slug}" );
             }
     
-            wp_enqueue_style( $this->namespace );
         }
     }
 

@@ -10,7 +10,7 @@
 				<img height="114" id="covers-modal-upsell" src="https://s3.amazonaws.com/slidedeck-pro/lite_upsell_assets/images/slide-count-modal-upsell.jpg" alt="More Slides" />
 			</div>
 			<div class="cta">
-				<a class="slidedeck-noisy-button" href="<?php echo slidedeck2_action( "/upgrades" ); ?>" class="button slidedeck-noisy-button"><span>Upgrade to Personal</span></a>
+				<a class="slidedeck-noisy-button" href="<?php echo slidedeck2_action( "/upgrades&referrer=Slide+Count+Handslap" ); ?>" class="button slidedeck-noisy-button"><span>Upgrade to Personal</span></a>
 				<a class="features-link" href="http://www.slidedeck.com/features?utm_campaign=sd2_lite&utm_medium=handslap_link&utm_source=handslap_slide_count&utm_content=summer_vacation_three_covers<?php echo self::get_cohort_query_string('&'); ?>" target="_blank">or learn more about other SlideDeck features</a>
 			</div>
 		</div>

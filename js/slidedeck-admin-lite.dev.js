@@ -48,5 +48,27 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
 		});
 		$('body').trigger( 'slidedeck:lens-change-update-choices' );
 		
+		// dt Labs Account Prompt
+        SlideDeckPlugin.dtLabsAccountModal = new SimpleModal({
+            context: "dt-account",
+            onComplete: function(modal) {
+                
+                $( '.upsell-modal .cta' ).on('click', 'a', function(e) {
+                    if ( $( this ).attr( 'id' ) == 'dt-labs-learn-more' ) {
+                        $( this ).siblings( '.no-thanks' ).click();
+                    } else {
+                        e.preventDefault();   
+                        $.ajax({
+                            url: this.href,
+                            type: "POST",
+                            success: function(response){},
+                        });
+                    }
+                    
+                    SlideDeckPlugin.dtLabsAccountModal.close();
+                });
+            }
+        });
+		
 	});
 })(jQuery);

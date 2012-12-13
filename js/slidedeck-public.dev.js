@@ -129,7 +129,14 @@ function onYouTubePlayerAPIReady() {
         deckElement.find('.video-container.youtube').each(function(){
             var videoContainer = this;
             var videoContainerID = jQuery(videoContainer).attr('id');
-            var videoID = videoContainerID.split('__')[1];
+            var videoID = '';
+            
+            if( jQuery(videoContainer).data('video-id') ){
+                videoID = jQuery(videoContainer).data('video-id');
+            }else{
+                videoID = videoContainerID.split('__')[1];
+            }
+            
             var iFrameYouTubePlayer = new YT.Player( videoContainerID, {
                 height: '100%',
                 width: '100%',
@@ -190,7 +197,13 @@ window.dmAsyncInit = function(){
         deckElement.find('.video-container.dailymotion .video-player-dm').each(function(){
             var videoContainer = this;
             var videoContainerID = jQuery(videoContainer).parent().attr('id');
-            var videoID = videoContainerID.split('__')[1];
+            var videoID = '';
+            
+            if( jQuery(videoContainer).parent().data('video-id') ){
+                videoID = jQuery(videoContainer).parent().data('video-id');
+            }else{
+                videoID = videoContainerID.split('__')[1];
+            }
             
             // Note the ternary statemnent at the end that handles a vertical deck by adding an offset:
             var videoIndex = deckElement.find('dd').index( jQuery( '#' + videoContainerID ).parents('dd') ) - ( __isVerticalDeck( deckElement ) ? 1 : 0 );
@@ -358,7 +371,13 @@ function briBriFlex(elem, max){
             
             var cover = $(this).parent();
             var deckId = deckElement[0].id;
-            var videoContainerID = cover.prev('.video-container').attr('id').split('__')[1];
+            
+            var videoContainerID = '';            
+            if( cover.prev('.video-container').data('video-id') ){
+                videoContainerID = cover.prev('.video-container').data('video-id');
+            }else{
+                videoContainerID = cover.prev('.video-container').attr('id').split('__')[1];
+            }
             var slidedeck = deckElement.slidedeck();
             var slides = slidedeck.slides;
             
@@ -455,7 +474,12 @@ function briBriFlex(elem, max){
             thedeck.deck.find('.video-container.vimeo').each(function(){
                 var videoContainer = this;
                 var videoContainerID = this.id;
-                var videoID = videoContainerID.split('__')[1];
+                var videoID = '';
+                if( jQuery(videoContainer).data('video-id') ){
+                    videoID = jQuery(videoContainer).data('video-id');
+                }else{
+                    videoID = videoContainerID.split('__')[1];
+                }
                 
                 jQuery(videoContainer).append( '<iframe id="vimeoiFrame-' + videoContainerID + '" src="http://player.vimeo.com/video/' + videoID + '?api=1&byline=0&title=0&portrait=0&player_id=vimeoiFrame-' + videoContainerID + '" width="100%" height="100%" frameborder="0"></iframe>' );
                 

@@ -1773,6 +1773,12 @@ var tb_position = updateTBSize;
                     $iframe[0].src = iframeSrc;
                     $this.removeClass('animating');
                 }).addClass('open');
+                
+                if( SlideDeckAnonymousStats.optin == true ) {
+                    var isCustom = $this.closest('.slidedeck-row').find('>img.icon').attr('src').indexOf("/custom/images/icon.png") != -1 ? true : false;
+                    var img = new Image();
+                    img.src = "http://trk.kissmetrics.com/e?_k=" + SlideDeckAnonymousStats.apikey + "&_p=" + SlideDeckAnonymousStats.hash + "&_n=" + escape( "Preview SlideDeck" ) + "&" + escape( "SlideDeck Type" ) + "=" + ( isCustom ? "custom" : "dynamic" );
+                }
             }
         }).delegate('.slidedeck-getcode-link', 'click', function(event){
             event.preventDefault();
@@ -2073,7 +2079,14 @@ var tb_position = updateTBSize;
                 $.ajax({
                     url: ajaxurl + '?cachebreaker=' + Math.floor( Math.random() * 100000 ) + '&' + $(this).parents('form').serialize(),
                     success: function( response ){
-                        $('.addon-verification-response').html( response );
+                        $('.addon-verification-response').html( response )
+                            .find('a').each(function(){
+                                if( SlideDeckAnonymousStats.optin == true ) {
+                                    if( this.href.match(/dtelepathy\.com/) ) {
+                                        this.search += "&kmi=" + SlideDeckAnonymousStats.hash;
+                                    }
+                                }
+                            });
                     }
                 });
             });
@@ -2375,6 +2388,32 @@ var tb_position = updateTBSize;
                 });
             });
         }
+        
+        if( !SlideDeckAnonymousStats.opted ) {
+            SlideDeckPlugin.anonymousStatsOptinModal = new SimpleModal({
+                context: "anonymous-stats",
+                onComplete: function(modal){
+                    modal.elems.modal.on('submit', 'form', function(event){
+                        event.preventDefault();
+                        
+                        $.ajax({
+                            type: this.getAttribute('method'),
+                            url: this.getAttribute('action'),
+                            data: $(this).serialize()
+                        });
+                        
+                        SlideDeckPlugin.anonymousStatsOptinModal.close();
+                    }).on('click', 'input[type="radio"]', function(event){
+                        $(this).closest('form').submit();
+                    });
+                }
+            });
+        
+            $.get(ajaxurl + "?action=slidedeck_anonymous_stats_optin", function(data){
+                SlideDeckPlugin.anonymousStatsOptinModal.open(data);
+            });
+        }
+
     }); // End of DOM Ready
     
     

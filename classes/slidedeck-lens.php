@@ -440,9 +440,9 @@ class SlideDeckLens {
      * @return string HTML markup of lens CSS tags
      */
     function get_css( $lens ) {
-        $version = isset( $lens['meta']['mersion'] ) && !empty( $lens['meta']['version'] ) ? $lens['meta']['Version'] : SLIDEDECK2_VERSION;
+        $version = isset( $lens['meta']['version'] ) && !empty( $lens['meta']['version'] ) ? $lens['meta']['version'] : SLIDEDECK2_VERSION;
         
-        $lens_css_tags = '<link rel="stylesheet" type="text/css" href="' . $lens['url'] . '?v=' . $version . '" media="screen" />';
+        $lens_css_tags = '';
         if( isset( $lens['ie_url'] ) && !empty( $lens['ie_url'] ) ) {
             $lens_css_tags .= '<!--[if lte IE 8]><link rel="stylesheet" type="text/css" href="' . $lens['ie_url'] . '?v=' . $version . '" media="screen" /><![endif]-->';
         }
@@ -719,6 +719,20 @@ class SlideDeckLens {
         }
         
         $nodes = apply_filters( "{$this->namespace}_slide_nodes", $nodes, $slidedeck );
+        
+        /**
+         * Check for avatar exclusion
+         * 
+         * If this is not a preview and the author avatar option is set to 'no'
+         * then set all the author avatar values to ''
+         */
+        if( $SlideDeckPlugin->preview === false ) {
+            if( ( (bool) $slidedeck['options']['show-author-avatar'] ) === false ) {
+                foreach( $nodes as &$node ) {
+                    $nodes['author_avatar'] = '';
+                }
+            }
+        }
 		
         // Make all keyed node values accessible as variables for the template
         extract( $nodes );
@@ -734,6 +748,10 @@ class SlideDeckLens {
             $template = $lens['templates'][$source];
         }
 		
+        if( isset( $video_meta ) ){
+            $video_container = "<div id=\"video__{$video_meta['id']}__{$slidedeck['id']}-{$deck_iteration}-{$slide_counter}\" class=\"{$video_meta['service']} video-container\" data-video-id=\"{$video_meta['id']}\"></div>";
+        }
+        
         ob_start();
             
             // Load the template to be processed as PHP

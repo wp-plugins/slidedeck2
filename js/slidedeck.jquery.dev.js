@@ -1,5 +1,5 @@
 /*!
- * SlideDeck 1.4.1 Pro - 2012-10-24
+ * SlideDeck 1.4.3 Pro - 2012-12-10
  * 
  * More information on this project:
  * http://www.slidedeck.com/
@@ -52,7 +52,7 @@ var SlideDeckLens = {};
             distribution  = window.slideDeck2Distribution;
         }
         
-        var VERSION = versionPrefix + "1.4.1";
+        var VERSION = versionPrefix + "1.4.3";
         
         this.options = {
             speed: 500,
@@ -103,7 +103,7 @@ var SlideDeckLens = {};
             chromeFrame: (UA.match(/msie/) && UA.match(/chrome/)) ? true : false,
             chromeiOS: UA.match(/crios/) ? true : false, // CriOS (Chrome for iOS)
             firefox: UA.match(/firefox/) ? true : false,
-            firefox2: UA.match(/firefox\/2/) ? true : false,
+            firefox2: UA.match(/firefox\/2\./) ? true : false,
             firefox30: UA.match(/firefox\/3\.0/) ? true : false,
             msie: UA.match(/msie/) ? true : false,
             msie6: (UA.match(/msie 6/) && !UA.match(/msie 7|8/)) ? true : false,
@@ -441,9 +441,18 @@ var SlideDeckLens = {};
 
             switch(transition){
                 case "stack":
-                case "fade":
                     slideCSS.zIndex = self.slides.length - i;
                     slideCSS.left = 0;
+                break;
+                case "fade":
+                    var $currentSlide = self.slides.eq(self.current - 1);
+                    slideCSS.zIndex = self.slides.length - i;
+                    slideCSS.left = 0;
+                    
+                    // Fade out other slides
+                    self.slides.not($currentSlide).css({
+                        opacity: 0
+                    });
                 break;
                 
                 case "flip":

@@ -74,6 +74,8 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
         
         <link rel="stylesheet" type="text/css" href="<?php echo $wp_styles->registered['slidedeck']->src . ( strpos( $wp_styles->registered['slidedeck']->src, "?" ) !== false ? "&" : "?" ) . "v=" . $wp_styles->registered['slidedeck']->ver; ?>" />
         
+        <link rel="stylesheet" type="text/css" href="<?php echo $lens['url']; ?>?v=<?php echo isset( $lens['meta']['version'] ) && !empty( $lens['meta']['version'] ) ? $lens['meta']['version'] : SLIDEDECK2_VERSION; ?>" />
+        
         <?php echo $this->Lens->get_css( $lens ); ?>
         
         <style type="text/css">
