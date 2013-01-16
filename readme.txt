@@ -68,6 +68,14 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 
 
 == Changelog ==
+= 2.1.20130116 =
+* Extracted a Regex for filtering images from feeds/sources, and added a filter for it `slidedeck_image_blacklist`
+* Made an accommodation for a rare case where many WordPress custom taxonomies could make the WordPress Posts Source's taxonomy selector unusable
+* Updated the button style of the `Insert SlideDeck` button to match the new WordPress 3.5 and higher look
+* Tweaked the FancyForms dropdown styles so the z-indexing is no longer an issue
+* Adjusted the following lenses for a mobile/responsive bug: fashion, half-moon, o-town, reporter, tool-kit, twitter.
+* Fixed a warning message related to the $expansion_factor variable
+
 = 2.1.20121212 =
 * Updated references in activation routine to fix free to paid upgrade identification if free plugin was still activated
 * Help us make SlideDeck 2 better! Added optional anonymous usage statistics opt-in.
@@ -201,6 +209,9 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 * Fixed an issue where jQuery Masonry was not being enqueued
 
 == Upgrade Notice ==
+= 2.1.20130116 =
+Collection of miscellaneous bug fixes
+
 = 2.1.20121212 =
 Many bug fixes, and lens CSS loading optimizations
 

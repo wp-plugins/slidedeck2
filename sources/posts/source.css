@@ -1,4 +1,8 @@
 .slidedeck-content-source.source-posts.open { min-width: 770px; }
+#slidedeck-filters {
+    overflow: auto;
+    max-height: 300px;
+}
 #slidedeck-filters ul,
 #slidedeck-filters ul li{
 	list-style-type: none;

@@ -330,7 +330,7 @@ class SlideDeckSource_Posts extends SlideDeck {
         // Set the expansion factor based on the auto or auto_100 options
         if( $slidedeck['options']['preferredImageSize'] == 'auto' ) {
             $expansion_factor = 1.2; // 120%
-        } elseif ( $slidedeck['options']['preferredImageSize'] == 'auto_100' ) {
+        } else {
             $expansion_factor = 1; // 100%
         }
         

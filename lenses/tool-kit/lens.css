@@ -14,7 +14,7 @@ Tags: images, posts, feeds, pages, slidedeck
     position: relative;
     overflow: hidden;
     font-size: 10px;
-    margin: 0 auto;
+    margin: 0;
 }
 .lens-tool-kit ul.verticalSlideNav {
     display:none;

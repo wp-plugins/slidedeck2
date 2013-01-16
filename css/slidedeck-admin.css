@@ -533,7 +533,6 @@ form.slidedeck-form input.input-large {
     color: #8e8e8e;
 }
 
-form.slidedeck-form .button,
 form.slidedeck-form .button {
     font-weight: bold;
     text-shadow: 0 1px 1px #fff;
@@ -551,8 +550,8 @@ form.slidedeck-form .button.purple {
     text-shadow: 0 1px 0 #9f99a5;
     border: 1px solid #4a4450;
     -webkit-box-shadow: 0px 2px 0px 0px #343038, inset 0px 1px 0px 0px #a39ba9;
-    -moz--box-shadow: 0px 2px 0px 0px #343038, inset 0px 1px 0px 0px #a39ba9;
-    -o--box-shadow: 0px 2px 0px 0px #343038, inset 0px 1px 0px 0px #a39ba9;
+    -moz-box-shadow: 0px 2px 0px 0px #343038, inset 0px 1px 0px 0px #a39ba9;
+    -o-box-shadow: 0px 2px 0px 0px #343038, inset 0px 1px 0px 0px #a39ba9;
     box-shadow: 0px 2px 0px 0px #343038, inset 0px 1px 0px 0px #a39ba9;
     /* IE9 SVG, needs conditional override of 'filter' to 'none' */
     background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzgzNzk4YiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM2NjVmNmUiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
@@ -580,8 +579,8 @@ form.slidedeck-form .button.purple:active {
     color: #45404a;
     text-shadow: 0 1px 0 #948e99;
     -webkit-box-shadow: inset 0px -1px 0px 0px #a39ba9, inset 0px 0px 3px 0px rgba(0, 0, 0, .3);
-    -moz--box-shadow: inset 0px -1px 0px 0px #a39ba9, inset 0px 0px 3px 0px rgba(0, 0, 0, .3);
-    -o--box-shadow: inset 0px -1px 0px 0px #a39ba9, inset 0px 0px 3px 0px rgba(0, 0, 0, .3);
+    -moz-box-shadow: inset 0px -1px 0px 0px #a39ba9, inset 0px 0px 3px 0px rgba(0, 0, 0, .3);
+    -o-box-shadow: inset 0px -1px 0px 0px #a39ba9, inset 0px 0px 3px 0px rgba(0, 0, 0, .3);
     box-shadow: inset 0px -1px 0px 0px #a39ba9, inset 0px 0px 3px 0px rgba(0, 0, 0, .3);
     /* IE9 SVG, needs conditional override of 'filter' to 'none' */
     background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzVjNTY2MyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM3ODcwN2YiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
@@ -2654,6 +2653,7 @@ input#save-slidedeck-button {
 #slidedeck-insert-iframe-section-header .fancy-select .selected {
     color: #333;
     font: normal 12px sans-serif;
+    line-height: 2em;
 }
 .insert-iframe-modal #fancyform-options-dropdown { padding-top: 24px; }
 .insert-iframe-modal #fancyform-options-dropdown .options .option {

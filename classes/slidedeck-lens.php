@@ -617,13 +617,13 @@ class SlideDeckLens {
         $html_string = preg_replace( "/([\n\r]+)/", "", $html_string );
         
         $image_strs = array();
-        preg_match_all( '/<img(\s*([a-zA-Z]+)\=\"([a-zA-Z0-9\/\#\&\=\|\-_\+\%\!\?\:\;\.\(\)\~\s\,]*)\")+\s*\/?>/', $html_string, $image_strs );
-        
+        preg_match_all( '/<img(\s*([a-zA-Z]+)\=[\"\']([a-zA-Z0-9\/\#\&\=\|\-_\+\%\!\?\:\;\.\(\)\~\s\,]*)[\"\'])+\s*\/?>/', $html_string, $image_strs );
+
         $images_all = array();
         if( isset( $image_strs[0] ) && !empty( $image_strs[0] ) ) {
             foreach( (array) $image_strs[0] as $image_str ) {
                 $image_attr = array();
-                preg_match_all( '/([a-zA-Z]+)\=\"([a-zA-Z0-9\/\#\&\=\|\-_\+\%\!\?\:\;\.\(\)\~\s\,]*)\"/', $image_str, $image_attr );
+                preg_match_all( '/([a-zA-Z]+)\=[\"\']([a-zA-Z0-9\/\#\&\=\|\-_\+\%\!\?\:\;\.\(\)\~\s\,]*)[\"\']/', $image_str, $image_attr );
                 
                 if( in_array( 'src', $image_attr[1] ) ) {
                     $images_all[] = array_combine( $image_attr[1], $image_attr[2] );
