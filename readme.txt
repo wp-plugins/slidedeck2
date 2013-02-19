@@ -3,7 +3,7 @@ Contributors: dtelepathy, kynatro, jamie3d, dtrenkner, oriontimbers, nielsfogt, 
 Donate link: http://www.slidedeck.com/
 Tags: Slider, dynamic, responsive, image gallery, dtelepathy, digital telepathy, digital-telepathy, iPad, jquery, media, photo, pictures, plugin, posts, Search Engine Optimized, seo, skinnable, slide, slide show, slider, slideshow, theme, touch support, video, widget, Flickr, Instagram, 500px, RSS, Pinterest, Google+, Twitter, YouTube, Vimeo, Dailymotion, Picasa, Dribbble
 Requires at least: 3.3
-Tested up to: 3.5
+Tested up to: 3.5.1
 Stable tag: trunk
 License: GPLv3
 
@@ -68,6 +68,12 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 
 
 == Changelog ==
+= 2.1.20130219 =
+* Updating the version of plupload in anticipation of jQuery 1.9
+* Removing all calls to jQuery.browser or $.browser in anticipation of jQuery 1.9
+* Attempted a fix for the fullscreen images flashing issue
+* Addressing an issue where editing a lens could result in a broken page
+
 = 2.1.20130116 =
 * Extracted a Regex for filtering images from feeds/sources, and added a filter for it `slidedeck_image_blacklist`
 * Made an accommodation for a rare case where many WordPress custom taxonomies could make the WordPress Posts Source's taxonomy selector unusable
@@ -209,6 +215,9 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 * Fixed an issue where jQuery Masonry was not being enqueued
 
 == Upgrade Notice ==
+= 2.1.20130219 =
+Preparing for jQuery 1.9, misc bug fixes
+
 = 2.1.20130116 =
 Collection of miscellaneous bug fixes
 

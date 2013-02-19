@@ -13,7 +13,7 @@
  Plugin Name: SlideDeck 2 Lite
  Plugin URI: http://www.slidedeck.com/wordpress
  Description: Create SlideDecks on your WordPress blogging platform and insert them into templates and posts. Get started creating SlideDecks from the new SlideDeck menu in the left hand navigation.
- Version: 2.1.20130116
+ Version: 2.1.20130219
  Author: digital-telepathy
  Author URI: http://www.dtelepathy.com
  License: GPL3
@@ -41,11 +41,15 @@ class SlideDeckLitePlugin {
     var $package_slug = 'single';
     static $namespace = "slidedeck";
     static $friendly_name = "SlideDeck 2";
-      static $cohort_name = 'ecf8915';
-      static $cohort_variation = '';
-    static $partner = false;
     
-    static $version = '2.1.20130116';
+    static $cohort_name = 'ecf8915';
+    static $cohort_variation = '';
+    static $partner = false;
+    static $overriding_cohorts = array(
+        'ecf3509'
+    );
+    
+    static $version = '2.1.20130219';
     static $license = 'LITE';
 
       // Generally, we are not installing addons. If we are, this gets set to true.
@@ -580,9 +584,6 @@ class SlideDeckLitePlugin {
         add_action( 'admin_print_footer_scripts', array( &$this, 'print_javascript_constants' ) );
         add_action( "{$this->namespace}_print_footer_scripts", array( &$this, 'print_javascript_constants' ) );
         add_action( 'wp_print_footer_scripts', array( &$this, 'print_javascript_constants' ) );
-        
-        // Add function to check for dt labs modal
-        add_action( 'admin_print_footer_scripts', array( &$this, 'dt_labs_account_modal' ) );
 
         // Add JavaScript and Stylesheets for admin interface on appropriate
         // pages
@@ -648,7 +649,6 @@ class SlideDeckLitePlugin {
         add_action( "wp_ajax_{$this->namespace}_upsell_modal_content", array( &$this, 'ajax_upsell_modal_content' ) );
         add_action( "wp_ajax_{$this->namespace}_anonymous_stats_optin", array( &$this, 'ajax_anonymous_stats_optin' ) );
         
-        add_action( "wp_ajax_{$this->namespace}_dt_labs_account", array( &$this, 'ajax_dt_labs_account' ) );
         add_action( "wp_ajax_{$this->namespace}_dt_labs_update_modal", array( &$this, 'ajax_dt_labs_update_modal' ) );
 
         // Append necessary lens and initialization script commands to the bottom
@@ -769,7 +769,7 @@ class SlideDeckLitePlugin {
             'anonymous_stats_has_opted' => true
         );
         
-        if( $options['anonymous_stats_optin'] === true ) {
+        if( $options['anonymous_stats_optin'] === true || self::partner_override() ) {
             slidedeck2_km( "SlideDeck Installed", array( 'license' => self::$license, 'version' => self::$version ) );
         }
         
@@ -1027,11 +1027,6 @@ class SlideDeckLitePlugin {
      */
     function ajax_anonymous_stats_optin() {
         include( SLIDEDECK2_DIRNAME . '/views/elements/_anonymous-stats-optin-modal.php' );
-        exit;
-    }
-    
-    function ajax_dt_labs_account() {
-        include( SLIDEDECK2_DIRNAME . '/views/elements/_dt-account-modal.php' );
         exit;
     }
 
@@ -2477,63 +2472,6 @@ class SlideDeckLitePlugin {
         echo $message;
     }
     
-    
-    /**
-     * DT Labs account modal
-     * 
-     * Decides when it's time to show the modal.
-     * And then does. Or doesn't.
-     *
-     */
-     
-    function dt_labs_account_modal() {
-        $dates = self::get_installation_date();
-        
-        $now = $dates[1];
-        
-        if ( get_option( "{$this->namespace}_dt_account_timeline_start" ) ) {
-            $start = get_option( "{$this->namespace}_dt_account_timeline_start" );
-            $delay = get_option( "{$this->namespace}_dt_account_timeline_delay" );
-        } else {
-            $start = $dates[0];
-            $delay = 864000;
-        }
-        
-        if ( $now - $start > $delay ) {
-            echo '<script>(function($){$(document).ready(function(){ $.get(ajaxurl + "?action=slidedeck_dt_labs_account", function(data){ SlideDeckPlugin.dtLabsAccountModal.open(data); }); });})(jQuery);</script>';
-        }
-           
-    }
-    
-    function ajax_dt_labs_update_modal() {
-        $dates = self::get_installation_date();
-    
-        //no thanks
-        if( wp_verify_nonce( $_REQUEST['_wpnonce'], "dt_labs_update_modal_no_thanks" ) ) {
-            $start = $dates[1];
-            $delay_forever = $start + strtotime( '+5000 days' );
-                      
-            update_option( "{$this->namespace}_dt_account_timeline_start", $delay_forever );
-            update_option( "{$this->namespace}_dt_account_timeline_delay", '0' );
-            
-            exit;
-        }
-        
-        //remind me later
-        if( wp_verify_nonce( $_REQUEST['_wpnonce'], "dt_labs_update_modal_remind_me_later" ) ) {
-            $start = $dates[1];
-            $delay = 604800;
-            
-            update_option( "{$this->namespace}_dt_account_timeline_start", $start );
-            update_option( "{$this->namespace}_dt_account_timeline_delay", $delay );
-            
-            exit;
-        }
-        
-        die('No nonce found');
-    }
-    
-    
     static function discount_time_left() {
         $dates = self::get_installation_date();
         $start = $dates[0];
@@ -2656,6 +2594,24 @@ class SlideDeckLitePlugin {
                 echo '<a href="' . esc_url( $this->get_insert_iframe_src( ) ) . '" class="thickbox add_slidedeck" id="add_slidedeck" title="' . esc_attr__( 'Insert your SlideDeck', $this->namespace ) . '" onclick="return false;"> ' . $img . '</a>';
             }
         }
+    }
+
+    /**
+     * Check for an override for specific partners
+     *
+     * @uses SlideDeckPlugin::get_cohort_data()
+     * 
+     * @return boolean whether or not this cohort_name should override
+     */
+    static function partner_override() {
+        $cohort = self::get_cohort_data();
+        $cohort_name = ( isset( $cohort['name'] ) && !empty( $cohort['name'] ) ) ? $cohort['name'] : '' ;
+
+        if( in_array( $cohort_name, self::$overriding_cohorts ) ) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -2988,6 +2944,8 @@ class SlideDeckLitePlugin {
         }
 
         $is_writable = $this->Lens->is_writable( );
+        
+        $can_edit_lenses = !in_array( self::highest_installed_tier(), array( 'tier_5', 'tier_10', 'tier_20' ) );
 
         include (SLIDEDECK2_DIRNAME . '/views/lenses/manage.php');
     }
@@ -3839,7 +3797,7 @@ class SlideDeckLitePlugin {
         
         update_option( $this->option_name, $options );
         
-        if( $options['anonymous_stats_optin'] == true ) {
+        if( $options['anonymous_stats_optin'] == true || self::partner_override() ) {
             slidedeck2_km( "SlideDeck Installed", array( 'license' => self::$license, 'version' => self::$version ) );
         }
     }

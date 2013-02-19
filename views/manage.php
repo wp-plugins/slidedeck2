@@ -53,6 +53,10 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
         	?>
     	</div>
 	    
+        <div style="height: 152px;">
+            <iframe height="152px" frameborder="0" scrolling="no" width="980px" allowtransparency="true" src="http://www.slidedeck.com/lite-signup-in-app/"></iframe>
+        </div>
+
 	    <div id="slidedeck-table">
 	        <?php if( !empty( $slidedecks ) ): ?>
     	        <form action="<?php echo admin_url( 'admin-ajax.php' ); ?>" id="slidedeck-table-sort">

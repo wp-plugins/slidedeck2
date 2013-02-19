@@ -107,6 +107,7 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
     font-size: 14px !important;
     line-height: 36px;
     padding: 0 25px;
+    height: 38px;
 }
 /* End of Additional Sources Upsell */
 
@@ -230,15 +231,25 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
     margin-left: 0;
 }
 
+.slidedeck_installation-discount.wp-pointer .wp-pointer-content .more-info .wrapper {
+    overflow: hidden;
+    clear: both;
+    padding-bottom: 0.5em;
+}
+
 .slidedeck_installation-discount.wp-pointer .wp-pointer-content .more-info a.button.slidedeck-noisy-button {
     top: 25px;
     z-index: 1000;
+    clear: both;
+    display: inline-block;
+    height: 32px;
 }
 
 .slidedeck_installation-discount.wp-pointer .wp-pointer-content .more-info a.button.slidedeck-noisy-button span {
     height: 30px;
     padding: 0 20px;
     line-height: 30px;
+    position: relative;
 }
 
 .slidedeck_installation-discount.wp-pointer .wp-pointer-buttons {

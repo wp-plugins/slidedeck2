@@ -653,7 +653,8 @@ class SlideDeckLens {
      */
     function test_image_for_ads_and_tracking( $input_image = "" ) {
         // Filter out advertisements and tracking beacons
-        if( preg_match( '/(tweetmeme|stats|share-buttons|advertisement|feedburner|commindo|valueclickmedia|imediaconnection|adify|traffiq|premiumnetwork|advertisingz|gayadnetwork|vantageous|networkadvertising|advertising|digitalpoint|viraladnetwork|decknetwork|burstmedia|doubleclick).|feeds\.[a-zA-Z0-9\-_]+\.com\/~ff|wp\-digg\-this|feeds\.wordpress\.com|\/media\/post_label_source|ads\.pheedo\.com/i', $input_image ) )
+        $blacklist_regex = apply_filters( "{$this->namespace}_image_blacklist", SLIDEDECK2_IMAGE_BLACKLIST );
+        if( preg_match( $blacklist_regex, $input_image ) )
             return false;
         
         return $input_image;

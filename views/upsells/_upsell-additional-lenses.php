@@ -6,12 +6,12 @@
             'utm_content' => "SD2LENSFASHION"
         ),
         'classic' => array(
-            'thumbnail' => "https://s3.amazonaws.com/slidedeck-pro/upsell_assets/images/lenses/half-moon/thumbnail.jpg",
+            'thumbnail' => "https://s3.amazonaws.com/slidedeck-pro/upsell_assets/images/lenses/classic/thumbnail.jpg",
             'name' => "Classic",
             'utm_content' => "SD2LENSCLASSIC"
         ),
         'half-moon' => array(
-            'thumbnail' => "https://s3.amazonaws.com/slidedeck-pro/upsell_assets/images/lenses/classic/thumbnail.jpg",
+            'thumbnail' => "https://s3.amazonaws.com/slidedeck-pro/upsell_assets/images/lenses/half-moon/thumbnail.jpg",
             'name' => "Half Moon",
             'utm_content' => "SD2LENSHALFMOON"
         )

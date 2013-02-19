@@ -18,7 +18,7 @@
                         </label>
                         <label>
                             No thanks, I don&rsquo;t want to share this information
-                            <input type="radio" name="data[anonymous_stats_optin]" />
+                            <input type="radio" value="" name="data[anonymous_stats_optin]" />
                         </label>
                     </p>
                 </form>

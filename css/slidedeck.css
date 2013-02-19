@@ -36,6 +36,10 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
     background-position: center center;
 }
 
+.slidedeck-frame {
+    position: relative;
+}
+
 /* Navigation Style Outline Overrides */
 .slidedeck-frame a.deck-navigation,
 .slidedeck-frame .vertical-slide-nav a,

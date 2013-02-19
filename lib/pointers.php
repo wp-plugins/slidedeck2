@@ -82,7 +82,8 @@ class SlideDeckPointers {
         
         $install_args = array(
             'position' => array(
-                'edge' => 'top'
+                'edge' => 'top',
+                'align' => "left"
             )
         );
         
@@ -91,8 +92,9 @@ class SlideDeckPointers {
         $content.= '<strong>' . esc_js( __( "Welcome, thanks for choosing SlideDeck Lite!", $this->namespace ) ) . '</strong>';
         $content.= '<p>' . esc_js( __( "You are free to use this plugin for life and as a token of our appreciation we would like to offer you a 25% discount for all versions of SlideDeck 2. ", $this->namespace ) );
         $content.= '<strong>' . esc_js( __( "This offer expires in 7 days.", $this->namespace ) ) . '</strong></p>';
-        $content.= '<span class="the-offer no-margin">25% Off<span>&nbsp;</span></span><span class="the-offer">7 Days<span>&nbsp;</span></span>';
-        $content.= '<a href="' . $SlideDeckPlugin->action( '/upgrades' ) . '" class="button slidedeck-noisy-button"><span>Learn More</span></a></div>';
+        $content.= '<div class="wrapper"><span class="the-offer no-margin">25% Off<span>&nbsp;</span></span><span class="the-offer">7 Days<span>&nbsp;</span></span></div>';
+        $content.= '<a href="' . $SlideDeckPlugin->action( '/upgrades' ) . '" class="button slidedeck-noisy-button"><span>Learn More</span></a>';
+        $content.= '</div>';
         
         
         $this->create( "installation-discount", '#discount-upgrade-notice', $content, $install_args );

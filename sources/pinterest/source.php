@@ -34,23 +34,23 @@ class SlideDeckSource_Pinterest extends SlideDeck {
             'sslverify' => false
         );
         
-		$username = false;
-		$board_name = false;
-		if( isset( $slidedeck['options']['pinterest_url'] ) && !empty( $slidedeck['options']['pinterest_url'] ) ){
-			
-			preg_match( '#pinterest\.com/([0-9a-zA-Z\-_]+)/?([0-9a-zA-Z\-_]+)?#', $slidedeck['options']['pinterest_url'], $matches );
-			
-			if( isset( $matches['1'] ) && !empty( $matches['1'] ) ) {
-				// Try Username
-				$username = $matches['1'];
-	        	$feed_url = 'http://pinterest.com/' . $username . '/feed.rss';
-				if( isset( $matches['2'] ) && !empty( $matches['2'] ) ) {
-					// Try board slug
-					$board_name = $matches['2'];
-					$feed_url = 'http://pinterest.com/' . $username . '/' . $board_name . '/rss';
-				}
-			}
-		}
+        $username = false;
+        $board_name = false;
+        if( isset( $slidedeck['options']['pinterest_url'] ) && !empty( $slidedeck['options']['pinterest_url'] ) ){
+            
+            preg_match( '#pinterest\.com/([0-9a-zA-Z\-_]+)/?([0-9a-zA-Z\-_]+)?#', $slidedeck['options']['pinterest_url'], $matches );
+            
+            if( isset( $matches['1'] ) && !empty( $matches['1'] ) ) {
+                // Try Username
+                $username = $matches['1'];
+                $feed_url = 'http://pinterest.com/' . $username . '/feed.rss';
+                if( isset( $matches['2'] ) && !empty( $matches['2'] ) ) {
+                    // Try board slug
+                    $board_name = $matches['2'];
+                    $feed_url = 'http://pinterest.com/' . $username . '/' . $board_name . '/rss';
+                }
+            }
+        }
         
         
         // Create a cache key
@@ -164,78 +164,78 @@ class SlideDeckSource_Pinterest extends SlideDeck {
         // How many decks are on the page as of now.
         $deck_iteration = 0;
         if( isset( $SlideDeckPlugin->SlideDeck->rendered_slidedecks[ $slidedeck['id'] ] ) )
-        	$deck_iteration = $SlideDeckPlugin->SlideDeck->rendered_slidedecks[ $slidedeck['id'] ];
+            $deck_iteration = $SlideDeckPlugin->SlideDeck->rendered_slidedecks[ $slidedeck['id'] ];
         
         // Slides associated with this SlideDeck
         $slides_nodes = $this->get_slides_nodes( $slidedeck );
         $slide_counter = 1;
         if( is_array( $slides_nodes ) ){
-	        // Loop through all slide nodes to build a structured slides array
-	        foreach( $slides_nodes as &$slide_nodes ) {
-	            $slide = array(
-	                'source' => $this->name,
-	                'title' => $slide_nodes['title'],
-	                'created_at' => $slide_nodes['created_at']
-	            );
-	            $slide = array_merge( $this->slide_node_model, $slide );
-				
-	            // Look to see if an image is associated with this slide
-	            
-	            $has_image = false;
+            // Loop through all slide nodes to build a structured slides array
+            foreach( $slides_nodes as &$slide_nodes ) {
+                $slide = array(
+                    'source' => $this->name,
+                    'title' => $slide_nodes['title'],
+                    'created_at' => $slide_nodes['created_at']
+                );
+                $slide = array_merge( $this->slide_node_model, $slide );
+                
+                // Look to see if an image is associated with this slide
+                
+                $has_image = false;
                 $images = $SlideDeckPlugin->Lens->parse_html_for_images( $slide_nodes['content'] );
                 if( !empty( $images ) ) {
                     $first_image = reset( $images );
                     $has_image = $first_image;
                 }
-	            
-	            if( $has_image ) {
-	            	$thumbnail = $has_image;
-	            	$full_image = preg_replace( '/_b\./', '.', $has_image );
-	                $slide['classes'][] = "has-image";
-	                $slide['thumbnail'] = $thumbnail;
-	                $slide['type'] = "image";
-	            } else {
-	                $slide['classes'][] = "no-image";
-	            }
-	            
-	            $slide_nodes['source'] = $slide['source'];
-	            $slide_nodes['type'] = $slide['type'];
-	            
-	            // Excerpt node
-	            if( !array_key_exists( 'excerpt', $slide_nodes ) || empty( $slide_nodes['excerpt'] ) )
-	                $slide_nodes['excerpt'] = $slide_nodes['content'];
-	            
-	            // Truncate excerpt node length
-	            $excerpt_length = $has_image ? $slidedeck['options']['excerptLengthWithImages'] : $slidedeck['options']['excerptLengthWithoutImages'];
-	            $slide_nodes['excerpt'] = slidedeck2_stip_tags_and_truncate_text( $slide_nodes['excerpt'], $excerpt_length, "&hellip;" );
-	            
-	            // Truncate title node length
-	            $title_length = $has_image ? $slidedeck['options']['titleLengthWithImages'] : $slidedeck['options']['titleLengthWithoutImages'];
-	            $slide_nodes['title'] = slidedeck2_stip_tags_and_truncate_text( $slide['title'], $title_length, "&hellip;" );
-	            
-	            if( !empty( $slide_nodes['excerpt'] ) ) {
-	                $slide['classes'][] = "has-excerpt";
-	            } else {
-	                $slide['classes'][] = "no-excerpt";
-	            }
-	            
-	            if( !empty( $slide_nodes['title'] ) ) {
-	                $slide['classes'][] = "has-title";
-	            } else {
-	                $slide['classes'][] = "no-title";
-	            }
-	            
-	            // Set image node
-	            if( $has_image ) $slide_nodes['image'] = $full_image;
-	            
-	            // Set link target node
-	            $slide_nodes['target'] = $slidedeck['options']['linkTarget'];
-	            
-	            $slide['content'] = $SlideDeckPlugin->Lens->process_template( $slide_nodes, $slidedeck );
-	            
-	            $slide_counter++;
-	            
-	            $slides[] = $slide;
+                
+                if( $has_image ) {
+                    $thumbnail = $has_image;
+                    $full_image = preg_replace( '/pinterest\.com\/[0-9]+\//', 'pinterest.com/600/', $has_image );
+                    $slide['classes'][] = "has-image";
+                    $slide['thumbnail'] = $thumbnail;
+                    $slide['type'] = "image";
+                } else {
+                    $slide['classes'][] = "no-image";
+                }
+                
+                $slide_nodes['source'] = $slide['source'];
+                $slide_nodes['type'] = $slide['type'];
+                
+                // Excerpt node
+                if( !array_key_exists( 'excerpt', $slide_nodes ) || empty( $slide_nodes['excerpt'] ) )
+                    $slide_nodes['excerpt'] = $slide_nodes['content'];
+                
+                // Truncate excerpt node length
+                $excerpt_length = $has_image ? $slidedeck['options']['excerptLengthWithImages'] : $slidedeck['options']['excerptLengthWithoutImages'];
+                $slide_nodes['excerpt'] = slidedeck2_stip_tags_and_truncate_text( $slide_nodes['excerpt'], $excerpt_length, "&hellip;" );
+                
+                // Truncate title node length
+                $title_length = $has_image ? $slidedeck['options']['titleLengthWithImages'] : $slidedeck['options']['titleLengthWithoutImages'];
+                $slide_nodes['title'] = slidedeck2_stip_tags_and_truncate_text( $slide['title'], $title_length, "&hellip;" );
+                
+                if( !empty( $slide_nodes['excerpt'] ) ) {
+                    $slide['classes'][] = "has-excerpt";
+                } else {
+                    $slide['classes'][] = "no-excerpt";
+                }
+                
+                if( !empty( $slide_nodes['title'] ) ) {
+                    $slide['classes'][] = "has-title";
+                } else {
+                    $slide['classes'][] = "no-title";
+                }
+                
+                // Set image node
+                if( $has_image ) $slide_nodes['image'] = $full_image;
+                
+                // Set link target node
+                $slide_nodes['target'] = $slidedeck['options']['linkTarget'];
+                
+                $slide['content'] = $SlideDeckPlugin->Lens->process_template( $slide_nodes, $slidedeck );
+                
+                $slide_counter++;
+                
+                $slides[] = $slide;
             }
         }
         
