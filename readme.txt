@@ -68,6 +68,10 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 
 
 == Changelog ==
+= 2.1.20130228 =
+* Fixing an issue with the O-Town Lens JavaScript file
+* Lenses can now have no variations and the variation dropdown is correctly hidden
+
 = 2.1.20130219 =
 * Updating the version of plupload in anticipation of jQuery 1.9
 * Removing all calls to jQuery.browser or $.browser in anticipation of jQuery 1.9
@@ -215,6 +219,9 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 * Fixed an issue where jQuery Masonry was not being enqueued
 
 == Upgrade Notice ==
+= 2.1.20130228 =
+Bug Fix for O-Town lens
+
 = 2.1.20130219 =
 Preparing for jQuery 1.9, misc bug fixes
 
