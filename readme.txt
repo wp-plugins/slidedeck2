@@ -68,6 +68,9 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 
 
 == Changelog ==
+= 2.1.20130306 =
+* Security improvements
+
 = 2.1.20130228 =
 * Fixing an issue with the O-Town Lens JavaScript file
 * Lenses can now have no variations and the variation dropdown is correctly hidden
@@ -219,6 +222,9 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 * Fixed an issue where jQuery Masonry was not being enqueued
 
 == Upgrade Notice ==
+= 2.1.20130306 =
+Security fixes in this release, please make sure you update your copy
+
 = 2.1.20130228 =
 Bug Fix for O-Town lens
 

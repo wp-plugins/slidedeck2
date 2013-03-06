@@ -198,26 +198,9 @@ var tb_position = updateTBSize;
         
         onComplete: function(){
             var self = this,
-                clip = new ZeroClipboard.Client(),
                 $action = $('#slidedeck-publish-method-copy-paste .action');
             var $clipButton = $action.find('.slidedeck-copy-to-clipboard');
             var $clipMessage = $action.find('.complete-message');
-            
-            clip.setText($action.find('input[type="text"]').val());
-            $action.append(clip.getHTML($clipButton.outerWidth(),$clipButton.outerHeight()));
-            
-            clip.addEventListener('onMouseOver', function(){
-                $clipButton.addClass('hover');
-            });
-            clip.addEventListener('onMouseOut', function(){
-                $clipButton.removeClass('hover').removeClass('active');
-            });
-            clip.addEventListener('onMouseDown', function(){
-                $clipButton.addClass('active');
-            });
-            clip.addEventListener('onComplete', function(){
-                $clipMessage.fadeIn();
-            });
             
             // Bind don't show to checkbox
             $('#first-save-do-not-show-again').find('input').bind('click', function(event){

@@ -63,9 +63,7 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
             <p><?php _e( "Copy &amp; Paste this shortcode into your post" . ( current_user_can( 'edit_pages' ) ? " or page" : "" ), $namespace ); ?></p>
             
             <div class="action">
-                <input type="text" value="<?php echo slidedeck2_get_shortcode( $slidedeck_id ); ?>" readonly="readonly"<?php if( $iframe_by_default ) echo ' style="font-size:12px;"'; ?> />
-                <a href="#" class="slidedeck-copy-to-clipboard"><?php _e( "Copy Shortcode to Clipboard", $namespace ); ?> <img src="<?php echo SLIDEDECK2_URLPATH; ?>/images/icon-clipboard.png" alt=""></a>
-                <span class="complete-message" style="display:none;"><?php _e( "Copied Successfully!", $namespace ); ?></span>
+                <input type="text" value="<?php echo slidedeck2_get_shortcode( $slidedeck_id ); ?>" readonly="readonly"<?php if( $iframe_by_default ) echo ' style="font-size:12px;"'; ?> onclick="this.select();" />
             </div>
         </div>
         

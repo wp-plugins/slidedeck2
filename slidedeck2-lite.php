@@ -13,7 +13,7 @@
  Plugin Name: SlideDeck 2 Lite
  Plugin URI: http://www.slidedeck.com/wordpress
  Description: Create SlideDecks on your WordPress blogging platform and insert them into templates and posts. Get started creating SlideDecks from the new SlideDeck menu in the left hand navigation.
- Version: 2.1.20130228
+ Version: 2.1.20130306
  Author: digital-telepathy
  Author URI: http://www.dtelepathy.com
  License: GPL3
@@ -49,7 +49,7 @@ class SlideDeckLitePlugin {
         'ecf3509'
     );
     
-    static $version = '2.1.20130228';
+    static $version = '2.1.20130306';
     static $license = 'LITE';
 
       // Generally, we are not installing addons. If we are, this gets set to true.
@@ -877,7 +877,6 @@ class SlideDeckLitePlugin {
         wp_enqueue_script( "{$this->namespace}-simplemodal" );
         wp_enqueue_script( 'jquery-minicolors' );
         wp_enqueue_script( 'wp-pointer' );
-        wp_enqueue_script( 'zeroclipboard' );
         wp_enqueue_script( 'jquery-masonry' );
     }
 
@@ -4191,8 +4190,6 @@ class SlideDeckLitePlugin {
         wp_register_script( "{$this->namespace}-preview", SLIDEDECK2_URLPATH . '/js/slidedeck-preview' . (SLIDEDECK2_ENVIRONMENT == 'development' ? '.dev' : '') . '.js', array( 'jquery' ), SLIDEDECK2_VERSION );
         // Simple Modal Library
         wp_register_script( "{$this->namespace}-simplemodal", SLIDEDECK2_URLPATH . '/js/simplemodal' . (SLIDEDECK2_ENVIRONMENT == 'development' ? '.dev' : '') . '.js', array( 'jquery' ), '1.0.1' );
-        // Zero Clipboard
-        wp_register_script( "zeroclipboard", SLIDEDECK2_URLPATH . '/js/zeroclipboard/ZeroClipboard.js', array( 'jquery' ), '1.0.7' );
         // Twitter Intent API
         wp_register_script( "twitter-intent-api", (is_ssl( ) ? 'https:' : 'http:') . "//platform.twitter.com/widgets.js", array( ), '1316526300' );
         // Froogaloop for handling Vimeo videos

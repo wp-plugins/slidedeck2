@@ -145,6 +145,3 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
     	
     </div>
 </div>
-<script type="text/javascript">
-    ZeroClipboard.setMoviePath('<?php echo SLIDEDECK2_URLPATH; ?>/js/zeroclipboard/ZeroClipboard10.swf');
-</script>

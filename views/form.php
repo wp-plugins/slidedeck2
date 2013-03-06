@@ -117,9 +117,7 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
 
 <?php if( isset( $_GET['firstsave'] ) ): ?>
     <?php global $wp_scripts; ?>
-    <script type="text/javascript" src="<?php echo $wp_scripts->registered['zeroclipboard']->src; ?>"></script>
     <script type="text/javascript">
-        ZeroClipboard.setMoviePath('<?php echo SLIDEDECK2_URLPATH; ?>/js/zeroclipboard/ZeroClipboard10.swf');
         jQuery(document).ready(function(){SlideDeckPlugin.FirstSaveDialog.open(<?php echo $slidedeck['id']; ?>);});
     </script>
 <?php endif; ?>
