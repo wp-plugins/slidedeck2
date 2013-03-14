@@ -68,6 +68,9 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 
 
 == Changelog ==
+= 2.1.20130313 =
+* Support library update and removal of unused libraries
+
 = 2.1.20130306 =
 * Security improvements
 
