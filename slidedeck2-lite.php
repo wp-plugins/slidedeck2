@@ -13,7 +13,7 @@
  Plugin Name: SlideDeck 2 Lite
  Plugin URI: http://www.slidedeck.com/wordpress
  Description: Create SlideDecks on your WordPress blogging platform and insert them into templates and posts. Get started creating SlideDecks from the new SlideDeck menu in the left hand navigation.
- Version: 2.1.20130313
+ Version: 2.1.20130325
  Author: digital-telepathy
  Author URI: http://www.dtelepathy.com
  License: GPL3
@@ -49,7 +49,7 @@ class SlideDeckLitePlugin {
         'ecf3509'
     );
     
-    static $version = '2.1.20130313';
+    static $version = '2.1.20130325';
     static $license = 'LITE';
 
       // Generally, we are not installing addons. If we are, this gets set to true.
@@ -57,6 +57,17 @@ class SlideDeckLitePlugin {
 
     // Static variable of addons that are currently installed
     static $addons_installed = array( 'tier_5' => 'tier_5' );
+    
+    static $cache_groups = array(
+        "cover-get",
+        "lenses-get",
+        "lenses-get-meta",
+        "get",
+        "get-parent-id",
+        "options",
+        "slides",
+        "get-meta-results"
+    );
 
     var $decks = array();
 
@@ -76,7 +87,8 @@ class SlideDeckLitePlugin {
         'twitter_user' => "",
         'iframe_by_default' => false,
         'anonymous_stats_optin' => false,
-        'anonymous_stats_has_opted' => false
+        'anonymous_stats_has_opted' => false,
+        'flush_wp_object_cache' => false
     );
     
     // JavaScript to be run in the footer of the page
@@ -171,6 +183,13 @@ class SlideDeckLitePlugin {
         $lib_files = glob( SLIDEDECK2_DIRNAME . '/lib/*.php' );
         foreach( $lib_files as $filename ) {
             include_once ($filename);
+        }
+
+        // Loop through $cache_groups to add to Non Persistent Cache
+        if( function_exists( 'wp_cache_add_non_persistent_groups' ) ){
+            foreach( SlideDeckLitePlugin::$cache_groups as $cache_group ){
+                wp_cache_add_non_persistent_groups( slidedeck2_cache_group( $cache_group ) );
+            }
         }
 
         // WordPress Pointers helper
@@ -766,7 +785,8 @@ class SlideDeckLitePlugin {
             'twitter_user' => str_replace( "@", "", $data['twitter_user'] ), 'license_key' => $old_options['license_key'],
             'iframe_by_default' => isset( $data['iframe_by_default'] ) && !empty( $data['iframe_by_default'] ) ? true : false,
             'anonymous_stats_optin' => isset( $data['anonymous_stats_optin'] ) && !empty( $data['anonymous_stats_optin'] ) ? true : false,
-            'anonymous_stats_has_opted' => true
+            'anonymous_stats_has_opted' => true,
+            'flush_wp_object_cache' => isset( $data['flush_wp_object_cache'] ) && !empty( $data['flush_wp_object_cache'] ) ? true : false
         );
         
         if( $options['anonymous_stats_optin'] === true || self::partner_override() ) {
@@ -856,7 +876,7 @@ class SlideDeckLitePlugin {
             'opted' => $this->get_option( 'anonymous_stats_has_opted' )
         );
         
-        echo '<script type="text/javascript">var SlideDeckInterfaces = {}; var SlideDeckAnonymousStats = ' . json_encode( $anonymous_stats ) . ';</script>';
+        echo '<script type="text/javascript">var SlideDeckInterfaces = {}; var SlideDeckAnonymousStats = ' . json_encode( $anonymous_stats ) . '; var SlideDeckLicenseExpired = false; var SlideDeckLicenseExpiredOn = false;</script>';
         
         $wp_scripts->registered["{$this->namespace}-library-js"]->src .= "?noping";
         
@@ -2793,7 +2813,8 @@ class SlideDeckLitePlugin {
             'disable_edit_create' => false,
             'license_key' => "",
             'twitter_user' => "",
-            'iframe_by_default' => false
+            'iframe_by_default' => false,
+            'flush_wp_object_cache' => false
         );
         $data = (array) get_option( $this->option_name, $defaults );
         $data = array_merge( $defaults, $data );

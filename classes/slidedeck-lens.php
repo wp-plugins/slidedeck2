@@ -362,7 +362,7 @@ class SlideDeckLens {
     function get( $slug = "" ) {
         $cache_key = $this->namespace . "--" . md5( __METHOD__ . $slug );
         
-        $lenses = wp_cache_get( $cache_key, "{$this->namespace}-lenses-get" );
+        $lenses = wp_cache_get( $cache_key, slidedeck2_cache_group( 'lenses-get' ) );
         if( $lenses == false ) {
             $lenses = array();
             $all_lens_files = array();
@@ -394,7 +394,7 @@ class SlideDeckLens {
                 }
             }
             
-            wp_cache_set( $cache_key, $lenses, "{$this->namespace}-lenses-get" );
+            wp_cache_set( $cache_key, $lenses, slidedeck2_cache_group( 'lenses-get' ) );
         }
         
         $lenses = apply_filters( "{$this->namespace}_get_lenses", $lenses, $slug );
@@ -470,7 +470,7 @@ class SlideDeckLens {
 		
         $cache_key = $this->namespace . "--" . md5( __METHOD__ . $filename );
         
-        $lens = wp_cache_get( $cache_key, "{$this->namespace}-lenses-get-meta" );
+        $lens = wp_cache_get( $cache_key, slidedeck2_cache_group( 'lenses-get-meta' ) );
         if( $lens == false ) {
             $lens_data = file_get_contents( $filename );
             $lens_folder = dirname( $filename );
@@ -544,7 +544,7 @@ class SlideDeckLens {
 					$lens['templates'][$source] = $template_file;
 				}
 			}
-            wp_cache_set( $cache_key, $lens, "{$this->namespace}-lenses-get-meta" );
+            wp_cache_set( $cache_key, $lens, slidedeck2_cache_group( 'lenses-get-meta' ) );
         }
 
         return $lens;

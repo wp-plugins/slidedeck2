@@ -524,7 +524,7 @@ class SlideDeckSource_Posts extends SlideDeck {
                     if( $taxonomy_object->hierarchical ) {
                         $field = 'id';
                     }else{
-                        $field = 'name';
+                        $field = 'slug';
                     }
                     // Add each taxonomy query to the tax query array...
                     foreach( $terms as $term_ids ) {

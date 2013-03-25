@@ -82,6 +82,9 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
                             <li>
                             	<?php slidedeck2_html_input( 'last_saved_gplus_api_key', $last_saved_gplus_api_key, array( 'type' => 'password', 'attr' => array( 'class' => 'fancy' ), 'label' => "Last used Google+ API Key" ) ); ?>
                             </li>
+                            <li>
+                                <?php slidedeck2_html_input( 'data[flush_wp_object_cache]', $data['flush_wp_object_cache'], array( 'attr' => array( 'class' => 'fancy' ), 'type' => 'radio', 'label' => "Enable aggressive cache flushing", 'description' => "Enables a brute force wp_cache_flush() call whenever a SlideDeck is saved." ) ); ?><br />
+                            </li>
                         </ul>
                     </div>
                     <div class="save-wrapper">

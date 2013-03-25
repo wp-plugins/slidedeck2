@@ -803,6 +803,19 @@ if( !function_exists( 'slidedeck2_get_license_key' ) ) {
     }
 }
 
+
+/**
+ * Get the Upgrade URL
+ * 
+ * @return string
+ */
+if( !function_exists( 'slidedeck2_get_renewal_url' ) ) {
+    function slidedeck2_get_renewal_url() {
+        return SLIDEDECK2_RENEWAL_URL . '&renewal_keyhash=' . md5( slidedeck2_get_license_key() );
+    }
+}
+
+
 /**
  * Track an even with KISS metrics
  * 
@@ -884,5 +897,21 @@ if( !function_exists( 'slidedeck2_km_link' ) ) {
         }
         
         return $params;
+    }
+}
+
+/**
+ * Build the SlideDeck 2 cache groups for use in non-persistent cache and setting cache group names
+ * 
+ * @param string $group_key The name of the cache group
+ * 
+ * @return $cache_group
+ */
+if( !function_exists( 'slidedeck2_cache_group' ) ){
+    function slidedeck2_cache_group( $group_key ){
+        $cache_groups = array_combine( SlideDeckLitePlugin::$cache_groups, SlideDeckLitePlugin::$cache_groups );
+        $cache_group = SlideDeckLitePlugin::$namespace . "-" . $cache_groups[$group_key];
+
+        return $cache_group;
     }
 }

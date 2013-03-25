@@ -46,11 +46,11 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
             <dd>
                 <div class="section">
                     <h3><?php _e( "How do I get an API Key?", $namespace ); ?></h3>
-                    <p><?php _e( "Anyone can get an Api Key. All you need is a Google account and you must be logged in to get the key. We wish it were easier, but you should only need to get an API Key once.", $namespace ); ?></p>
+                    <p><?php _e( "Anyone can get an API Key. All you need is a Google account and you must be logged in to get the key. We wish it were easier, but you should only need to get an API Key once.", $namespace ); ?></p>
                 </div>
                 <div class="section">
                     <h3><?php _e( "Enable API Access for Google+", $namespace ); ?></h3>
-                    <p><?php _e( sprintf( "Acccess the %sGoogle APIs Console%s and if necessary, click the &ldquo;Create Project&rdquo; link. Once you're in the Service screen, enable the Google+ API by turning the switch on.", '<a href="https://code.google.com/apis/console/#project:755401620327:services" target="_blank">', '</a>' ), $namespace ); ?></p>
+                    <p><?php _e( sprintf( "Acccess the %sGoogle APIs Console%s and, if necessary, click the &ldquo;Create Project&rdquo; link. Once you&rsquo;re in the Service screen, enable the Google+ API by turning the switch on.", '<a href="https://code.google.com/apis/console/#project:755401620327:services" target="_blank">', '</a>' ), $namespace ); ?></p>
                         
                     <img src="<?php echo SLIDEDECK2_URLPATH; ?>/images/gplus-how-to/step1.png" class="align-left" alt="<?php _e( "Start using the Google APIs console", $namespace ); ?>" />
                     <img src="<?php echo SLIDEDECK2_URLPATH; ?>/images/gplus-how-to/step2.png" class="align-right" alt="<?php _e( "Enable API Access", $namespace ); ?>" />
@@ -60,7 +60,7 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
             <dd>
                 <div class="section">
                     <h3><?php _e( "Agree to the Terms", $namespace ); ?></h3>
-                    <p><?php _e( "You'll need to click through some of the Terms of Service agreements (usually 2 of them). Once you've agreed to the terms, you should be redirected back to the overview page.", $namespace ); ?></p>
+                    <p><?php _e( "You&rsquo;ll need to click through some of the Terms of Service agreements (usually 2 of them). Once you&rsquo;ve agreed to the terms, you should be redirected back to the overview page.", $namespace ); ?></p>
                     
                     <img src="<?php echo SLIDEDECK2_URLPATH; ?>/images/gplus-how-to/step3.png" alt="<?php _e( "Agree to the Terms", $namespace ); ?>" />
                 </div>
@@ -69,7 +69,7 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
             <dd>
                 <div class="section">
                     <h3><?php _e( "Copy your API Key then paste it into SlideDeck 2", $namespace ); ?></h3>
-                    <p><?php _e( "Click the API ACcess menu at the top left and copy your API Key! We'll automatically save your key so it will be pre-populated for your next SlideDeck 2.", $namespace ); ?></p>
+                    <p><?php _e( "Click the API Access menu at the top left and copy your API Key! We&rsquo;ll automatically save your key so it will be pre-populated for your next SlideDeck 2.", $namespace ); ?></p>
                     
                     <img src="<?php echo SLIDEDECK2_URLPATH; ?>/images/gplus-how-to/step4.png" alt="<?php _e( "Copy your API Key", $namespace ); ?>" />
                 </div>

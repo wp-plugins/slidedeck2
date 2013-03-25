@@ -197,10 +197,7 @@ var tb_position = updateTBSize;
         elems: {},
         
         onComplete: function(){
-            var self = this,
-                $action = $('#slidedeck-publish-method-copy-paste .action');
-            var $clipButton = $action.find('.slidedeck-copy-to-clipboard');
-            var $clipMessage = $action.find('.complete-message');
+            var self = this;
             
             // Bind don't show to checkbox
             $('#first-save-do-not-show-again').find('input').bind('click', function(event){
@@ -2172,6 +2169,25 @@ var tb_position = updateTBSize;
         
         updateTBSize();
         
+        var expiredFor = Math.round( new Date().getTime() / 1000 ) - SlideDeckLicenseExpiredOn;
+        if( expiredFor < 1209600 ) {
+            // Refresh the upgrade/renew button with fresh content
+            // Only if the last saved expiration date is expired.
+            if( $('div.upgrade-button-cta').length ) {
+                if( SlideDeckLicenseExpired ) {
+                    $.ajax({
+                        url: ajaxurl,
+                        data: "action=slidedeck_check_license_expiry&_license_status_nonce=" + $('div.upgrade-button-cta').data('nonce') + "&context=" + $('div.upgrade-button-cta').data('context'),
+                        type: 'GET',
+                        complete: function(data){
+                            $('div.upgrade-button-cta').replaceWith( data.responseText );
+                        }
+                    });
+                }
+            }
+        }
+
+
         // SlideDeck.com blog RSS feed AJAX update
         if($('#slidedeck-blog-rss-feed').length){
             $.ajax({

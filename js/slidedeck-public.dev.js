@@ -179,9 +179,13 @@ function onYouTubePlayerAPIReady() {
                     'disablekb': 1,
                     'cc_load_policy': 0,
                     'iv_load_policy': 3,
-                    'modestbranding': 1
+                    'modestbranding': 1,
+                    'fs': 1
                 }
             });
+            
+            jQuery( '#' + videoContainerID ).attr( 'webkitallowfullscreen', true );
+            jQuery( '#' + videoContainerID ).attr( 'mozallowfullscreen', true );
             
             // Note the ternary statemnent at the end that handles a vertical deck by adding an offset:
             var videoIndex = deckElement.find('dd').index( jQuery( '#' + videoContainerID ).parents('dd') ) - ( __isVerticalDeck( deckElement ) ? 1 : 0 );

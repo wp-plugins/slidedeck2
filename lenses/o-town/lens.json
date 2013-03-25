@@ -1,7 +1,7 @@
 {
     "name": "O-Town",
     "uri": "http://www.slidedeck.com/",
-    "sources": ["posts","gplus","rss","instagram","dribbble","gplusimages","flickr","twitter","youtube","dailymotion","vimeo","custom","fivehundredpixels","pinterest"],
+    "sources": ["posts","gplus","rss","instagram","dribbble","gplusimages","flickr","twitter","youtube","dailymotion","vimeo","fivehundredpixels","pinterest","custom"],
     "author": "dtelepathy",
     "author_uri": "http://www.dtelepathy.com/",
     "contributors": ["orville", "oriontimbers", "kynatro"],
@@ -32,7 +32,7 @@
         "lato": {
             "label": "Lato",
             "stack": "Lato, sans-serif",
-            "import": "http://fonts.googleapis.com/css?family=Lato:400",
+            "import": "//fonts.googleapis.com/css?family=Lato:400",
             "weight": "400"
         }
     },

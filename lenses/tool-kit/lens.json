@@ -1,7 +1,7 @@
 {
     "name": "Tool Kit",
     "uri": "http://www.slidedeck.com/",
-    "sources": ["posts","gplus","rss","instagram","dribbble","gplusimages","flickr","twitter","youtube","dailymotion","vimeo","custom","fivehundredpixels","pinterest"],
+    "sources": ["posts","gplus","rss","instagram","dribbble","gplusimages","flickr","twitter","youtube","dailymotion","vimeo","fivehundredpixels","pinterest","custom"],
     "author": "dtelepathy",
     "author_uri": "http://www.dtelepathy.com/",
     "contributors": ["dtrenkner", "kynatro", "burkett"],

@@ -51,91 +51,91 @@ $slidedeck_fonts = array(
     'raleway' => array(
         'label' => "Raleway",
         'stack' => 'Raleway, sans-serif',
-        'import' => "http://fonts.googleapis.com/css?family=Raleway:100",
+        'import' => "//fonts.googleapis.com/css?family=Raleway:100",
         'weight' => 'bold'
     ),
     'open-sans' => array(
     	'label' => "Open Sans",
     	'stack' => "'Open Sans', sans-serif",
-    	'import' => "http://fonts.googleapis.com/css?family=Open+Sans:400",
+    	'import' => "//fonts.googleapis.com/css?family=Open+Sans:400",
         'weight' => '400'
 	),
 	'lato' => array(
 		'label' => "Lato",
 		'stack' => 'Lato, sans-serif',
-		'import' => "http://fonts.googleapis.com/css?family=Lato:400",
+		'import' => "//fonts.googleapis.com/css?family=Lato:400",
 		'weight' => '400'
 	),
 	'londrina' => array(
         'label' => "Londrina Solid",
         'stack' => "'Londrina Solid', cursive",
-        'import' => "http://fonts.googleapis.com/css?family=Londrina+Solid",
+        'import' => "//fonts.googleapis.com/css?family=Londrina+Solid",
         'weight' => 'normal'
     ),
 	'oswald' => array(
 		'label' => "Oswald",
 		'stack' => 'Oswald, sans-serif',
-		'import' => "http://fonts.googleapis.com/css?family=Oswald",
+		'import' => "//fonts.googleapis.com/css?family=Oswald",
 		'weight' => '400'
 	),
 	'arvo' => array(
 		'label' => "Arvo",
 		'stack' => "Arvo, serif",
-		'import' => "http://fonts.googleapis.com/css?family=Arvo:700",
+		'import' => "//fonts.googleapis.com/css?family=Arvo:700",
 		'weight' => '700'
 	),
 	'josefin-sans' => array(
 		'label' => "Josefin Sans",
 		'stack' => "'Josefin Sans', sans-serif",
-		'import' => "http://fonts.googleapis.com/css?family=Josefin+Sans:700",
+		'import' => "//fonts.googleapis.com/css?family=Josefin+Sans:700",
 		'weight' => '700'
 	),
 	'bitter' => array(
 		'label' => "Bitter",
 		'stack' => 'Bitter, serif',
-		'import' => "http://fonts.googleapis.com/css?family=Bitter:700",
+		'import' => "//fonts.googleapis.com/css?family=Bitter:700",
 		'weight' => '700'
 	),
 	'muli' => array(
 		'label' => "Muli",
 		'stack' => 'Muli, sans-serif',
-		'import' => "http://fonts.googleapis.com/css?family=Muli",
+		'import' => "//fonts.googleapis.com/css?family=Muli",
 		'weight' => '400'
 	),
 	'pacifico' => array(
 		'label' => "Pacifico",
 		'stack' => 'Pacifico, cursive',
-		'import' => "http://fonts.googleapis.com/css?family=Pacifico",
+		'import' => "//fonts.googleapis.com/css?family=Pacifico",
 		'weight' => '400'
 	),
 	'lobster-two' => array(
 		'label' => "Lobster Two",
 		'stack' => "'Lobster Two', cursive",
-		'import' => "http://fonts.googleapis.com/css?family=Lobster+Two:700",
+		'import' => "//fonts.googleapis.com/css?family=Lobster+Two:700",
 		'weight' => '700'
 	),
 	'josefin-slab' => array(
 		'label' => "Josefin Slab",
 		'stack' => "'Josefin Slab', serif",
-		'import' => "http://fonts.googleapis.com/css?family=Josefin+Slab:700",
+		'import' => "//fonts.googleapis.com/css?family=Josefin+Slab:700",
 		'weight' => '700'
 	),
 	'ubuntu' => array(
 		'label' => "Ubuntu",
 		'stack' => 'Ubuntu, sans-serif',
-		'import' => "http://fonts.googleapis.com/css?family=Ubuntu:700",
+		'import' => "//fonts.googleapis.com/css?family=Ubuntu:700",
 		'weight' => '700'
 	),
 	'cabin' => array(
 		'label' => "Cabin",
 		'stack' => 'Cabin, sans-serif',
-		'import' => "http://fonts.googleapis.com/css?family=Cabin:700",
+		'import' => "//fonts.googleapis.com/css?family=Cabin:700",
 		'weight' => '700'
 	),
 	'linden-hill' => array(
 		'label' => "Linden Hill",
 		'stack' => "'Linden Hill', serif",
-		'import' => "http://fonts.googleapis.com/css?family=Linden+Hill",
+		'import' => "//fonts.googleapis.com/css?family=Linden+Hill",
 		'weight' => '400'
 	)
 );

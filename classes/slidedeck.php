@@ -1320,7 +1320,7 @@ class SlideDeck {
             $cache_key.= "-" . $this->_cache_get_buster();
         }
         
-        $slidedecks = wp_cache_get( $cache_key, "{$this->namespace}-get" );
+        $slidedecks = wp_cache_get( $cache_key, slidedeck2_cache_group( 'get' ) );
         
         if( $slidedecks == false ) {
             $query_posts = $wpdb->get_results( $sql );
@@ -1345,7 +1345,7 @@ class SlideDeck {
                 $slidedecks[] = $slidedeck;
             }
             
-            wp_cache_set( $cache_key, $slidedecks, "{$this->namespace}-get" );
+            wp_cache_set( $cache_key, $slidedecks, slidedeck2_cache_group( 'get' ) );
         }
 
         if( $orderby == "slidedeck_source" ) {
@@ -1466,7 +1466,7 @@ class SlideDeck {
         
         $cache_key = $this->namespace . "--" . md5( $sql );
         
-        $parent_id = wp_cache_get( $cache_key, "{$this->namespace}-get-parent-id" );
+        $parent_id = wp_cache_get( $cache_key, slidedeck2_cache_group( 'get-parent-id' ) );
         
         if( $parent_id == false ) {
             $row = $wpdb->get_row( $sql );
@@ -1479,7 +1479,7 @@ class SlideDeck {
                 $parent_id = $row->ID;
             }
             
-            wp_cache_set( $cache_key, $parent_id, "{$this->namespace}-get-parent-id" );
+            wp_cache_set( $cache_key, $parent_id, slidedeck2_cache_group( 'get-parent-id' ) );
         }
         
         return $parent_id;
@@ -1797,7 +1797,7 @@ class SlideDeck {
     function get_options( $id, $deprecated, $lens, $source ) {
         $cache_key = $this->namespace . "--" . md5( serialize( func_get_args() ) );
         
-        $options = wp_cache_get( $cache_key, "{$this->namespace}-options" );
+        $options = wp_cache_get( $cache_key, slidedeck2_cache_group( 'options' ) );
         
         if( $options == false ) {
             $stored_options = (array) get_post_meta( $id, "{$this->namespace}_options", true );
@@ -1806,7 +1806,7 @@ class SlideDeck {
             
             $options = array_merge( (array) $default_options, $stored_options );
             
-            wp_cache_set( $cache_key, $options, "{$this->namespace}-options" );
+            wp_cache_set( $cache_key, $options, slidedeck2_cache_group( 'options' ) );
         }
         
         return $options;
@@ -2421,9 +2421,15 @@ class SlideDeck {
      * @return object $slidedeck Updated SlideDeck object
      */
     final public function save( $id = null, $params = array() ) {
+        global $SlideDeckPlugin;
+        
         // Fail silently if not parameters were passed in
         if( !isset( $id ) || empty( $params ) ) {
             return false;
+        }
+        
+        if( $SlideDeckPlugin->get_option( 'flush_wp_object_cache' ) ){
+            wp_cache_flush();
         }
         
         // Clean the data for safe storage

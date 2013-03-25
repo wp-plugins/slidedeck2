@@ -116,7 +116,6 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
 </script>
 
 <?php if( isset( $_GET['firstsave'] ) ): ?>
-    <?php global $wp_scripts; ?>
     <script type="text/javascript">
         jQuery(document).ready(function(){SlideDeckPlugin.FirstSaveDialog.open(<?php echo $slidedeck['id']; ?>);});
     </script>

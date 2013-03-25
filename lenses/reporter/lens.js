@@ -253,7 +253,8 @@
 				
 				buttons.bind('click', function(){
 					var $self = $(this);
-					deck.goTo(($self).index('.nav-button')+1);
+					
+					deck.goTo( buttons.index(this)+1 );
 
 					if( slidedeckFrame.hasClass('sd2-nav-dates') ){
 						buttons.find('span').removeClass('active');

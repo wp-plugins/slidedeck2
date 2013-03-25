@@ -68,6 +68,15 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 
 
 == Changelog ==
+= 2.1.20130325 =
+* Reporter Lens: Fixed an issue where multiple decks on one page would not navigate correctly.
+* Renamed language files for proper inclusion
+* Modified the way that custom taxonomies were looked up for the WordPress Posts Source
+* Modified our caching methods to better work with Object Caching setups
+* Added a new Advanced Option for aggressive cache flushing
+* Updated image source handling for Flickr; will use current protocol i.e. http/https
+* Updated font additions to remove protocol from source URL
+
 = 2.1.20130313 =
 * Support library update and removal of unused libraries
 
@@ -225,6 +234,9 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 * Fixed an issue where jQuery Masonry was not being enqueued
 
 == Upgrade Notice ==
+= 2.1.20130325 =
+Bug fixes and better upgrade messaging
+
 = 2.1.20130306 =
 Security fixes in this release, please make sure you update your copy
 
