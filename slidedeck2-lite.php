@@ -13,7 +13,7 @@
  Plugin Name: SlideDeck 2 Lite
  Plugin URI: http://www.slidedeck.com/wordpress
  Description: Create SlideDecks on your WordPress blogging platform and insert them into templates and posts. Get started creating SlideDecks from the new SlideDeck menu in the left hand navigation.
- Version: 2.1.20130325
+ Version: 2.2
  Author: digital-telepathy
  Author URI: http://www.dtelepathy.com
  License: GPL3
@@ -49,7 +49,7 @@ class SlideDeckLitePlugin {
         'ecf3509'
     );
     
-    static $version = '2.1.20130325';
+    static $version = '2.2';
     static $license = 'LITE';
 
       // Generally, we are not installing addons. If we are, this gets set to true.
@@ -2966,7 +2966,7 @@ class SlideDeckLitePlugin {
         $is_writable = $this->Lens->is_writable( );
         
         $can_edit_lenses = !in_array( self::highest_installed_tier(), array( 'tier_5', 'tier_10', 'tier_20' ) );
-
+        
         include (SLIDEDECK2_DIRNAME . '/views/lenses/manage.php');
     }
 
@@ -3502,6 +3502,7 @@ class SlideDeckLitePlugin {
     function shortcode( $atts ) {
         global $post;
         $default_deck_link_text = '';
+        $has_custom_css = false;
         
         if( isset( $atts['id'] ) && !empty( $atts['id'] ) )
             $default_deck_link_text = get_the_title( $atts['id'] ) . ' <small>[' . __( "see the SlideDeck", $this->namespace ) . ']</small>';
@@ -3524,6 +3525,9 @@ class SlideDeckLitePlugin {
             'start' => false
         ), $atts ) );
         
+        $custom_css = get_post_meta( $id, $this->namespace . '_custom_css', true );
+        if( !empty( $custom_css ) ) $has_custom_css = true;
+
         // Make sure that the RESS flag is set so we load the necessary assets in the footer
         if( $ress == true ) {
             $this->page_has_ress_deck = true;
@@ -3537,7 +3541,13 @@ class SlideDeckLitePlugin {
             if( ( $iframe !== false ) || ( $ress !== false ) ) {
                 return $this->_render_iframe( $id, $width, $height, $nocovers, $ress, $proportional );
             } else {
-                return $this->SlideDeck->render( $id, array( 'width' => $width, 'height' => $height ), $include_lens_files, $preview, $echo_js, $start );
+                $deck_output = '';
+
+                if( $has_custom_css ) $deck_output .= '<div class="' . $this->namespace . '-custom-css-wrapper-' . $id . '">';
+                $deck_output .= $this->SlideDeck->render( $id, array( 'width' => $width, 'height' => $height ), $include_lens_files, $preview, $echo_js, $start );
+                if( $has_custom_css ) $deck_output .= '</div>';
+                
+                return $deck_output;
             }
         } else {
             return "";
@@ -3804,7 +3814,7 @@ class SlideDeckLitePlugin {
 
         die( "Saved!" );
     }
-
+    
     /**
      * AJAX submission for updating the stats optin from the modal form
      */
@@ -3873,7 +3883,7 @@ class SlideDeckLitePlugin {
 
         if( $result || is_wp_error( $result ) )
             $file_upload->cleanup( );
-
+        
         include (ABSPATH . 'wp-admin/admin-footer.php');
     }
 
@@ -4115,16 +4125,16 @@ class SlideDeckLitePlugin {
         }
         
         if( $load_assets === true ) {
-    
-            if( $this->get_option( 'dont_enqueue_scrollwheel_library' ) != true ) {
-                wp_enqueue_script( 'scrolling-js' );
-            }
-    
-            if( $this->get_option( 'dont_enqueue_easing_library' ) != true ) {
-                wp_enqueue_script( 'jquery-easing' );
-            }
-    
+            
             if( !is_admin( ) ) {
+                if( $this->get_option( 'dont_enqueue_scrollwheel_library' ) != true ) {
+                    wp_enqueue_script( 'scrolling-js' );
+                }
+        
+                if( $this->get_option( 'dont_enqueue_easing_library' ) != true ) {
+                    wp_enqueue_script( 'jquery-easing' );
+                }
+                
                 wp_enqueue_script( "{$this->namespace}-library-js" );
                 wp_enqueue_script( "{$this->namespace}-public" );
                 wp_enqueue_script( "twitter-intent-api" );

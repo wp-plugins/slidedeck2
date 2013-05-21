@@ -36,4 +36,4 @@
 	
 </div>
 
-<div class="sd2-slide-background" style="background-image: url(<?php echo $image; ?>);"></div>
+<div class="sd2-slide-background" data-sd2-slide-image="<?php echo $image; ?>"></div>

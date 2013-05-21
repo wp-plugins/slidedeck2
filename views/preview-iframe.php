@@ -213,7 +213,7 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
                 box-sizing: content-box;
                 border-color: #bbb;
                 color: #464646;
-                background: #f2f2f2 url('<?php echo admin_url(); ?>/images/white-grad.png') repeat-x scroll left top;
+                background: #f2f2f2;
                 text-shadow: rgba(255,255,255,1) 0 1px 0;
                 margin-right: 5px;
             }
@@ -222,7 +222,7 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
                 border-color: #666;
             }
             .button:active {
-                background: #eee url('<?php echo admin_url(); ?>/images/white-grad-active.png') repeat-x scroll left top;
+                background: #eee;
             }
         </style>
         

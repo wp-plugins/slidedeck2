@@ -1283,7 +1283,8 @@ fieldset.slidedeck-form-section#slidedeck-section-preview {
 #slidedeck-custom-slide-editor span.required, .slidedeck-content-source span.required {
     display: inline-block;
     margin-right: 2px;
-    color: #f00;
+    color: #f00;
+
 }
 #slidedeck-custom-slide-editor ul.slide-content-fields .desc, .slidedeck-content-source ul.content-source-fields .desc {
     clear: both;
@@ -3391,14 +3392,6 @@ textarea#back_title {
     display: inline-block;
 }
 form.slidedeck-form .slidedeck2-slider-wrapper input[type="text"] {
-    border-color: #fff;
-    color: #999;
-    -webkit-transition: all 0.5s;
-    -moz-transition: all 0.5s;
-    -o-transition: all 0.5s;
-    transition: all 0.5s;
-}
-form.slidedeck-form .slidedeck2-slider-wrapper input[type="text"]:hover {
     border-color: #dfdfdf;
     color: #666;
 }

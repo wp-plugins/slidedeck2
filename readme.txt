@@ -68,6 +68,16 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 
 
 == Changelog ==
+= 2.2 =
+* Fixed the `expansion_factor is not defined` error.
+* Fixed the `_preferred_image_size` is not defined error.
+* Added groudwork for custom CSS (available in Professional and higher).
+* Fixed issue where some SlideDeck scripts were being output on other plugin pages (eg: Gravity Forms)
+* Tool Kit Lens: Thumbnail images are now centered within the cropped frame.
+* Reporter Lens: Fixed an issue where the layout might not change even with an empty title.
+* Now includes Lazy Loading for image slides.
+* Now includes Lazy Loading for video slides.
+
 = 2.1.20130325 =
 * Reporter Lens: Fixed an issue where multiple decks on one page would not navigate correctly.
 * Renamed language files for proper inclusion
@@ -234,6 +244,9 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 * Fixed an issue where jQuery Masonry was not being enqueued
 
 == Upgrade Notice ==
+= 2.2 =
+Adds Lazy Loading for images and video
+
 = 2.1.20130325 =
 Bug fixes and better upgrade messaging
 

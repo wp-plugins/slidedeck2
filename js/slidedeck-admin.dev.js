@@ -732,7 +732,7 @@ var tb_position = updateTBSize;
             var $optionGroup = this.elems.optionsGroupsLists.eq(optionIndex);
             
             // Reset the .inner div to height: auto in case height was set by collapsible toggle
-            $('#slidedeck-section-options > div.inner').css({'height': 'auto'});
+            //$('#slidedeck-section-options > div.inner').css({'height': 'auto'});
             
             // Adjust the height of the option group area so only this group is shown
             this.elems.optionsGroups.stop().animate({
@@ -1906,16 +1906,22 @@ var tb_position = updateTBSize;
             var cookieVal = null;
             var inner_height = $.data($inner[0], 'inner_height');
             var animate_height = inner_height;
-            
+            var after_height = 0;
+
             // Open
             if($section.hasClass('closed')){
                 $section.removeClass('closed');
+                $section.find('.inner').height('auto');
+                animate_height = $section.find('.inner').height();
+                after_height = 'auto';
+                $section.find('.inner').height(0);
             }
             // Close
             else {
                 $.data($inner[0], 'inner_height', $inner.height());
                 $section.addClass('closed');
                 animate_height = 0;
+                after_height = 0;
                 cookieVal = 1;
             }
             
@@ -1923,6 +1929,7 @@ var tb_position = updateTBSize;
                 height: animate_height + 'px'
             }, 500, function(){
                 $this.removeClass('animating');
+                $section.find('.inner').height(after_height);
             });
             // Set open state
             $.cookie(cookieName, cookieVal);
@@ -1942,7 +1949,7 @@ var tb_position = updateTBSize;
             
             // Cache the fieldset element
             $.data(this, '$section', $section);
-            
+
             // Log the opened height for use in the collapse action
             $.data($inner[0], 'inner_height', $inner.height());
             

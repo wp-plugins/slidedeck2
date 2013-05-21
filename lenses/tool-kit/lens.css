@@ -455,6 +455,7 @@ Tags: images, posts, feeds, pages, slidedeck
     left: 4px;
     width: 40px;
     height: 40px;
+    background-position: center center;
     background-size: cover;
 }
 .lens-tool-kit.sd2-nav-hanging .sd-nav-deck .sd-thumb {

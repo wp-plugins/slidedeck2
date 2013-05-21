@@ -2034,3 +2034,16 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
 div.sd2-ress-wrapper {
 	overflow: hidden;
 }
+
+img.sd2-image-lazy-loading,
+div.sd2-image-lazy-loading {
+    background: url('../images/lazy-load-large.gif') no-repeat center center;
+    -webkit-background-size: auto auto !important;
+    -moz-background-size: auto auto !important;
+    -o-background-size: auto auto !important;
+    background-size: auto auto !important;
+}
+.slidedeck-frame.sd2-small img.sd2-image-lazy-loading,
+.slidedeck-frame.sd2-small div.sd2-image-lazy-loading {
+    background-image: url('../images/lazy-load-small.gif');
+}
