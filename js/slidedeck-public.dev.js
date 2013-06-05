@@ -1227,14 +1227,12 @@ function briBriFlex(elem, max){
         }
     };
     SlideDeckLazyLoad.prototype.lazyLoadVideos = function( currentIndex ){
-        currentSlideElement = this.slidedeck.slides.eq( currentIndex - 1 );
+        currentSlideElement = this.slidedeck.slides.eq( currentIndex );
         if( __isVerticalDeck(this.slidedeck.deck) ){
             currentSlideElement = this.slidedeck.vertical().slides.eq( currentIndex );
         }
-
         if( currentSlideElement.hasClass('slide-type-video') ) {
             if( !currentSlideElement.data('sd2-lazy-loaded') ){
-                //console.log( "Lazy Loading: " + (currentIndex + 1) );
                 this.slidedeck.deck.data('video-slidedeck').loadYouTubeVideo( this.slidedeck.deck, currentIndex );
                 this.slidedeck.deck.data('video-slidedeck').loadVimeoVideo( this.slidedeck.deck, currentIndex );
                 this.slidedeck.deck.data('video-slidedeck').loadDailyMotionVideo( this.slidedeck.deck, currentIndex );

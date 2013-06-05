@@ -68,6 +68,12 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 
 
 == Changelog ==
+= 2.2.1 =
+* Fixed an indexing issue with Lazy Loading Videos
+* Flickr content source: fixed author URL linking for groups
+* Fixed a PHP notice in the widget class
+
+== Changelog ==
 = 2.2 =
 * Fixed the `expansion_factor is not defined` error.
 * Fixed the `_preferred_image_size` is not defined error.
@@ -244,6 +250,9 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 * Fixed an issue where jQuery Masonry was not being enqueued
 
 == Upgrade Notice ==
+= 2.2.1 =
+Fixed an indexing issue with Lazy Loading Videos
+
 = 2.2 =
 Adds Lazy Loading for images and video
 
