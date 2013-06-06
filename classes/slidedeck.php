@@ -2136,8 +2136,9 @@ class SlideDeck {
         
         $html.= apply_filters( "{$this->namespace}_render_slidedeck_after", "", $slidedeck );
         
+        /** TODO:: Create a filter here that will be in both plugins, and then hook into this in the slidedeck2-lite.php file instead*/
         if( !SlideDeckLitePlugin::get_partner_data() ){
-            $html.= '<a href="http://www.slidedeck.com/?utm_campaign=sd2_lite&utm_medium=chiclet&utm_source=' . urlencode( $_SERVER['HTTP_HOST'] ) . '&utm_content=sd2_lite_chiclet" rel="external" class="slidedeck-2-bug">SlideDeck 2</a>';
+            $html.= '<a href="http://www.slidedeck.com/?utm_campaign=sd2_lite&utm_medium=chiclet&utm_source=' . urlencode( $_SERVER['HTTP_HOST'] ) . '&utm_content=sd2_lite_chiclet_v2" rel="external" class="slidedeck-2-bug"><span class="slidedeck-2-bug-logo">SlideDeck 2</span><span class="slidedeck-2-bug-text">The Web\'s best<br/><strong>WordPress slider</strong></span></a>';
         }
         
         $html.= '</div>';
