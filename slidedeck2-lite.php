@@ -13,7 +13,7 @@
  Plugin Name: SlideDeck 2 Lite
  Plugin URI: http://www.slidedeck.com/wordpress
  Description: Create SlideDecks on your WordPress blogging platform and insert them into templates and posts. Get started creating SlideDecks from the new SlideDeck menu in the left hand navigation.
- Version: 2.3
+ Version: 2.3.1
  Author: digital-telepathy
  Author URI: http://www.dtelepathy.com
  License: GPL3
@@ -49,7 +49,7 @@ class SlideDeckLitePlugin {
         'ecf3509'
     );
     
-    static $version = '2.3';
+    static $version = '2.3.1';
     static $license = 'LITE';
 
       // Generally, we are not installing addons. If we are, this gets set to true.
@@ -4167,45 +4167,6 @@ class SlideDeckLitePlugin {
         wp_register_script( "{$this->namespace}-preview", SLIDEDECK2_URLPATH . '/js/slidedeck-preview' . (SLIDEDECK2_ENVIRONMENT == 'development' ? '.dev' : '') . '.js', array( 'jquery' ), SLIDEDECK2_VERSION );
         // Simple Modal Library
         wp_register_script( "{$this->namespace}-simplemodal", SLIDEDECK2_URLPATH . '/js/simplemodal' . (SLIDEDECK2_ENVIRONMENT == 'development' ? '.dev' : '') . '.js', array( 'jquery' ), '1.0.1' );
-        // Twitter Intent API
-        wp_register_script( "twitter-intent-api", (is_ssl( ) ? 'https:' : 'http:') . "//platform.twitter.com/widgets.js", array( ), '1316526300' );
-        // Froogaloop for handling Vimeo videos
-        wp_register_script( 'froogaloop', SLIDEDECK2_URLPATH . '/js/froogaloop.min.js', array( ), SLIDEDECK2_VERSION, true );
-        // Youtube JavaScript API
-        wp_register_script( 'youtube-api', (is_ssl( ) ? 'https' : 'http') . '://www.youtube.com/player_api', array( ), SLIDEDECK2_VERSION, true );
-        // Dailymotion JavaScript API
-        wp_register_script( 'dailymotion-api', (is_ssl( ) ? 'https' : 'http') . '://api.dmcdn.net/all.js', array( ), SLIDEDECK2_VERSION, true );
-        // jQuery Masonry
-        wp_register_script( 'jquery-masonry', SLIDEDECK2_URLPATH . '/js/jquery.masonry.js', array( 'jquery' ), '2.1.01' );
-    }
-
-    /**
-     * Register styles used by this plugin for enqueuing elsewhere
-     *
-     * @uses wp_register_style()
-     */
-    function wp_register_styles( ) {
-        // Admin Stylesheet
-        wp_register_style( "{$this->namespace}-admin", SLIDEDECK2_URLPATH . "/css/{$this->namespace}-admin.css", array( ), SLIDEDECK2_VERSION, 'screen' );
-        // Admin Stylesheet
-        wp_register_style( "{$this->namespace}-admin-lite", SLIDEDECK2_URLPATH . "/css/{$this->namespace}-admin-lite.css", array( ), SLIDEDECK2_VERSION, 'screen' );
-        // Gplus How-to Modal Stylesheet
-        wp_register_style( "gplus-how-to-modal", SLIDEDECK2_URLPATH . "/css/gplus-how-to-modal.css", array( ), SLIDEDECK2_VERSION, 'screen' );
-        // Public Stylesheet
-        wp_register_style( $this->namespace, SLIDEDECK2_URLPATH . "/css/slidedeck.css", array( ), SLIDEDECK2_VERSION, 'screen' );
-        // Fancy Form Elements library
-        wp_register_style( "{$this->namespace}-fancy-form", SLIDEDECK2_URLPATH . '/css/fancy-form.css', array( ), '1.0.0', 'screen' );
-        // jQuery MiniColors Color Picker
-        wp_register_style( "jquery-minicolors", SLIDEDECK2_URLPATH . '/css/jquery.minicolors.css', array( ), '7d21e3c363', 'screen' );
-    }
-
-}
-
-register_activation_hook( __FILE__, array( 'SlideDeckLitePlugin', 'activate' ) );
-register_deactivation_hook( __FILE__, array( 'SlideDeckLitePlugin', 'deactivate' ) );
-
-// SlideDeck Personal should load, then Lite, then Professional, then Developer
-add_action( 'plugins_loaded', array( 'SlideDeckLitePlugin', 'instance' ), 15 );IRONMENT == 'development' ? '.dev' : '') . '.js', array( 'jquery' ), '1.0.1' );
         // Twitter Intent API
         wp_register_script( "twitter-intent-api", (is_ssl( ) ? 'https:' : 'http:') . "//platform.twitter.com/widgets.js", array( ), '1316526300' );
         // Froogaloop for handling Vimeo videos

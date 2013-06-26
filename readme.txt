@@ -68,6 +68,9 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 
 
 == Changelog ==
+= 2.3.1 =
+* Fixing corrupt commit
+
 = 2.3 =
 * Removed Twitter Feed from Manage Page
 * Adjust registered script handling in IFRAME mode to make better accommodation for schema-less URLs
@@ -259,7 +262,7 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 * Fixed an issue where jQuery Masonry was not being enqueued
 
 == Upgrade Notice ==
-= 2.3 =
+= 2.3.1 =
 Removed Twitter as a source and fixed minor bugs
 
 = 2.2.2 =
