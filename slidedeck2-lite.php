@@ -13,7 +13,7 @@
  Plugin Name: SlideDeck 2 Lite
  Plugin URI: http://www.slidedeck.com/wordpress
  Description: Create SlideDecks on your WordPress blogging platform and insert them into templates and posts. Get started creating SlideDecks from the new SlideDeck menu in the left hand navigation.
- Version: 2.2.2
+ Version: 2.3
  Author: digital-telepathy
  Author URI: http://www.dtelepathy.com
  License: GPL3
@@ -49,7 +49,7 @@ class SlideDeckLitePlugin {
         'ecf3509'
     );
     
-    static $version = '2.2.2';
+    static $version = '2.3';
     static $license = 'LITE';
 
       // Generally, we are not installing addons. If we are, this gets set to true.
@@ -663,7 +663,6 @@ class SlideDeckLitePlugin {
         add_action( "wp_ajax_{$this->namespace}_verify_license_key", array( &$this, 'ajax_verify_license_key' ) );
         add_action( "wp_ajax_{$this->namespace}_verify_addons_license_key", array( &$this, 'ajax_verify_addons_license_key' ) );
         add_action( "wp_ajax_{$this->namespace}2_blog_feed", array( &$this, 'ajax_blog_feed' ) );
-        add_action( "wp_ajax_{$this->namespace}2_tweet_feed", array( &$this, 'ajax_tweet_feed' ) );
 
         add_action( "wp_ajax_{$this->namespace}_upsell_modal_content", array( &$this, 'ajax_upsell_modal_content' ) );
         add_action( "wp_ajax_{$this->namespace}_anonymous_stats_optin", array( &$this, 'ajax_anonymous_stats_optin' ) );
@@ -1104,59 +1103,6 @@ class SlideDeckLitePlugin {
 
         include (SLIDEDECK2_DIRNAME . '/views/elements/_options-lenses.php');
         exit ;
-    }
-
-    /**
-     * Outputs SlideDeck Markup for the latest tweets deck
-     *
-     * @uses fetch_feed()
-     * @uses wp_redirect()
-     * @uses SlideDeckPlugin::action()
-     * @uses is_wp_error()
-     * @uses SimplePie::get_item_quantity()
-     * @uses SimplePie::get_items()
-     */
-    function ajax_tweet_feed( ) {
-        if( !SLIDEDECK2_IS_AJAX_REQUEST ) {
-            wp_redirect( $this->action( ) );
-            exit ;
-        }
-
-        // Combines the dt and sd feeds:
-        $rss = fetch_feed( array( 'http://api.twitter.com/1/statuses/user_timeline.rss?screen_name=slidedeck', 'http://api.twitter.com/1/statuses/user_timeline.rss?screen_name=dtelepathy', ) );
-
-        // Checks that the object is created correctly
-        if( !is_wp_error( $rss ) ) {
-            // Figure out how many total items there are, but limit it to 5.
-            $maxitems = $rss->get_item_quantity( 5 );
-
-            // Build an array of all the items, starting with element 0 (first
-            // element).
-            $rss_items = $rss->get_items( 0, $maxitems );
-
-            $url_regex = '/((https?|ftp|gopher|telnet|file|notes|ms-help):((\/\/)|(\\\\))+[\w\d:#@%\/\;$()~_?\+-=\\\.&]*)/';
-            $formatted_rss_items = array( );
-            foreach( $rss_items as $key => $value ) {
-                $tweet = $value->get_title( );
-
-                // Remove the 'dtelepathy: ' part at the beginning of the feed:
-                $tweet = preg_replace( '/^[^\s]+:\s/', '', $tweet );
-                // Link all the links:
-                $tweet = preg_replace( $url_regex, '<a href="$1" target="_blank">' . "$1" . '</a>', $tweet );
-                // Link the hashtags and mentions
-                $tweet = preg_replace( array( '/\@([a-zA-Z0-9_]+)/', # Twitter
-                # Usernames
-                '/\#([a-zA-Z0-9_]+)/' # Hash Tags
-                ), array( '<a href="http://twitter.com/$1" target="_blank">@$1</a>', '<a href="http://twitter.com/search?q=%23$1" target="_blank">#$1</a>' ), $tweet );
-
-                $formatted_rss_items[] = array( 'tweet' => $tweet, 'time_ago' => human_time_diff( strtotime( $value->get_date( ) ), current_time( 'timestamp' ) ) . " ago", 'permalink' => $value->get_permalink( ) );
-            }
-
-            include (SLIDEDECK2_DIRNAME . '/views/elements/_latest-tweets.php');
-            exit ;
-        }
-
-        die( "Could not connect to Twitter..." );
     }
 
     /**
@@ -4221,6 +4167,45 @@ class SlideDeckLitePlugin {
         wp_register_script( "{$this->namespace}-preview", SLIDEDECK2_URLPATH . '/js/slidedeck-preview' . (SLIDEDECK2_ENVIRONMENT == 'development' ? '.dev' : '') . '.js', array( 'jquery' ), SLIDEDECK2_VERSION );
         // Simple Modal Library
         wp_register_script( "{$this->namespace}-simplemodal", SLIDEDECK2_URLPATH . '/js/simplemodal' . (SLIDEDECK2_ENVIRONMENT == 'development' ? '.dev' : '') . '.js', array( 'jquery' ), '1.0.1' );
+        // Twitter Intent API
+        wp_register_script( "twitter-intent-api", (is_ssl( ) ? 'https:' : 'http:') . "//platform.twitter.com/widgets.js", array( ), '1316526300' );
+        // Froogaloop for handling Vimeo videos
+        wp_register_script( 'froogaloop', SLIDEDECK2_URLPATH . '/js/froogaloop.min.js', array( ), SLIDEDECK2_VERSION, true );
+        // Youtube JavaScript API
+        wp_register_script( 'youtube-api', (is_ssl( ) ? 'https' : 'http') . '://www.youtube.com/player_api', array( ), SLIDEDECK2_VERSION, true );
+        // Dailymotion JavaScript API
+        wp_register_script( 'dailymotion-api', (is_ssl( ) ? 'https' : 'http') . '://api.dmcdn.net/all.js', array( ), SLIDEDECK2_VERSION, true );
+        // jQuery Masonry
+        wp_register_script( 'jquery-masonry', SLIDEDECK2_URLPATH . '/js/jquery.masonry.js', array( 'jquery' ), '2.1.01' );
+    }
+
+    /**
+     * Register styles used by this plugin for enqueuing elsewhere
+     *
+     * @uses wp_register_style()
+     */
+    function wp_register_styles( ) {
+        // Admin Stylesheet
+        wp_register_style( "{$this->namespace}-admin", SLIDEDECK2_URLPATH . "/css/{$this->namespace}-admin.css", array( ), SLIDEDECK2_VERSION, 'screen' );
+        // Admin Stylesheet
+        wp_register_style( "{$this->namespace}-admin-lite", SLIDEDECK2_URLPATH . "/css/{$this->namespace}-admin-lite.css", array( ), SLIDEDECK2_VERSION, 'screen' );
+        // Gplus How-to Modal Stylesheet
+        wp_register_style( "gplus-how-to-modal", SLIDEDECK2_URLPATH . "/css/gplus-how-to-modal.css", array( ), SLIDEDECK2_VERSION, 'screen' );
+        // Public Stylesheet
+        wp_register_style( $this->namespace, SLIDEDECK2_URLPATH . "/css/slidedeck.css", array( ), SLIDEDECK2_VERSION, 'screen' );
+        // Fancy Form Elements library
+        wp_register_style( "{$this->namespace}-fancy-form", SLIDEDECK2_URLPATH . '/css/fancy-form.css', array( ), '1.0.0', 'screen' );
+        // jQuery MiniColors Color Picker
+        wp_register_style( "jquery-minicolors", SLIDEDECK2_URLPATH . '/css/jquery.minicolors.css', array( ), '7d21e3c363', 'screen' );
+    }
+
+}
+
+register_activation_hook( __FILE__, array( 'SlideDeckLitePlugin', 'activate' ) );
+register_deactivation_hook( __FILE__, array( 'SlideDeckLitePlugin', 'deactivate' ) );
+
+// SlideDeck Personal should load, then Lite, then Professional, then Developer
+add_action( 'plugins_loaded', array( 'SlideDeckLitePlugin', 'instance' ), 15 );IRONMENT == 'development' ? '.dev' : '') . '.js', array( 'jquery' ), '1.0.1' );
         // Twitter Intent API
         wp_register_script( "twitter-intent-api", (is_ssl( ) ? 'https:' : 'http:') . "//platform.twitter.com/widgets.js", array( ), '1316526300' );
         // Froogaloop for handling Vimeo videos

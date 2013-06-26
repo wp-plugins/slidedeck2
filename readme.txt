@@ -1,9 +1,9 @@
 === SlideDeck 2 Lite Responsive Content Slider ===
 Contributors: dtelepathy, kynatro, jamie3d, dtrenkner, oriontimbers, nielsfogt, bkenyon, barefootceo, dtlabs
 Donate link: http://www.slidedeck.com/
-Tags: Slider, dynamic, responsive, image gallery, dtelepathy, digital telepathy, digital-telepathy, iPad, jquery, media, photo, pictures, plugin, posts, Search Engine Optimized, seo, skinnable, slide, slide show, slider, slideshow, theme, touch support, video, widget, Flickr, Instagram, 500px, RSS, Pinterest, Google+, Twitter, YouTube, Vimeo, Dailymotion, Picasa, Dribbble
+Tags: Slider, dynamic, responsive, image gallery, dtelepathy, digital telepathy, digital-telepathy, iPad, jquery, media, photo, pictures, plugin, posts, Search Engine Optimized, seo, skinnable, slide, slide show, slider, slideshow, theme, touch support, video, widget, Flickr, Instagram, 500px, RSS, Pinterest, Google+, YouTube, Vimeo, Dailymotion, Picasa, Dribbble, Facebook, NextGEN Gallery
 Requires at least: 3.3
-Tested up to: 3.5.1
+Tested up to: 3.5.2
 Stable tag: trunk
 License: GPLv3
 
@@ -13,7 +13,7 @@ Create responsive content sliders on your WordPress blogging platform. Manage Sl
 
 = Responsive Content Slider by SlideDeck 2 =
 = Easily create responsive content sliders for your WordPress site without code. Use images & text, plus YouTube, Flickr, Pinterest & more =
-SlideDeck 2 for WordPress is a responsive slider plugin that lets you easily create content sliders out of almost any content. Connect to a variety of Content Sources like YouTube, Flickr, Twitter, WordPress posts and Pinterest to create gorgeous, dynamic sliders in a few clicks - no coding is required.
+SlideDeck 2 for WordPress is a responsive slider plugin that lets you easily create content sliders out of almost any content. Connect to a variety of Content Sources like YouTube, Flickr, WordPress posts and Pinterest to create gorgeous, dynamic sliders in a few clicks - no coding is required.
 
 **Requirements:** WordPress 3.3+, PHP5 and higher
 
@@ -23,7 +23,7 @@ SlideDeck 2 for WordPress is a responsive slider plugin that lets you easily cre
 * [Knowledge Base](https://dtelepathy.zendesk.com/categories/20031167-slidedeck-2)
 
 **Lite Version:**
-This Lite version of SlideDeck 2 does not include the full set of 13 content sources that are available in the premium version. To see all the features available in the premium versions, check out the [live demo server](http://demo.slidedeck.com/wp-login.php).
+This Lite version of SlideDeck 2 does not include the full set of 14 content sources, like Facebook and NextGEN Gallery, that are available in the premium version. To see all the features available in the premium versions, check out the [live demo server](http://demo.slidedeck.com/wp-login.php).
 
 This plugin is free to use and is not actively supported by the author, but will be monitored for serious bugs that may need correcting.
 
@@ -68,6 +68,13 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 
 
 == Changelog ==
+= 2.3 =
+* Removed Twitter Feed from Manage Page
+* Adjust registered script handling in IFRAME mode to make better accommodation for schema-less URLs
+* Updated lense templates for better Lazy Loading handling
+* Removed Twitter as a source
+* Flickr Author links for Groups fixed
+
 = 2.2.2 =
 * Revised SlideDeck Branding
 
@@ -252,6 +259,9 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 * Fixed an issue where jQuery Masonry was not being enqueued
 
 == Upgrade Notice ==
+= 2.3 =
+Removed Twitter as a source and fixed minor bugs
+
 = 2.2.2 =
 Revised the SlideDeck branding
 
