@@ -13,7 +13,7 @@
  Plugin Name: SlideDeck 2 Lite
  Plugin URI: http://www.slidedeck.com/wordpress
  Description: Create SlideDecks on your WordPress blogging platform and insert them into templates and posts. Get started creating SlideDecks from the new SlideDeck menu in the left hand navigation.
- Version: 2.3.1
+ Version: 2.3.2
  Author: digital-telepathy
  Author URI: http://www.dtelepathy.com
  License: GPL3
@@ -49,7 +49,7 @@ class SlideDeckLitePlugin {
         'ecf3509'
     );
     
-    static $version = '2.3.1';
+    static $version = '2.3.2';
     static $license = 'LITE';
 
       // Generally, we are not installing addons. If we are, this gets set to true.
@@ -973,6 +973,7 @@ class SlideDeckLitePlugin {
             $this->menu['options'] = add_submenu_page( SLIDEDECK2_BASENAME, 'SlideDeck Options', 'Advanced Options', 'manage_options', SLIDEDECK2_BASENAME . '/options', array( &$this, 'page_options' ) );
             $this->menu['upgrades'] = add_submenu_page( SLIDEDECK2_BASENAME, 'Get More Features', 'Get More Features', 'manage_options', SLIDEDECK2_BASENAME . '/upgrades', array( &$this, 'page_upgrades' ) );
             $this->menu['support'] = add_submenu_page( SLIDEDECK2_BASENAME, 'Need Support?', 'Need Support?', 'manage_options', SLIDEDECK2_BASENAME . '/need-support', array( &$this, 'page_route' ) );
+            $this->menu['slidedeck-app'] = add_submenu_page( SLIDEDECK2_BASENAME, 'Try SlideDeck App', 'Try SlideDeck App', 'manage_options', SLIDEDECK2_BASENAME . '/filament', array( &$this, 'page_route' ) );
 
             add_action( "load-{$this->menu['manage']}", array( &$this, "load_admin_page" ) );
             add_action( "load-{$this->menu['lenses']}", array( &$this, "load_admin_page" ) );
@@ -3245,6 +3246,11 @@ class SlideDeckLitePlugin {
 
         if( preg_match( "/admin\.php\?.*page\=" . SLIDEDECK2_BASENAME . "\/need-support/", $uri ) ) {
             wp_redirect( $this->action('/upgrades&referrer=Get+Support+Menu+Navigation') );
+            exit ;
+        }
+
+        if( preg_match( "/admin\.php\?.*page\=" . SLIDEDECK2_BASENAME . "\/filament/", $uri ) ) {
+            wp_redirect( "http://filament.io/applications/slidedeck-app?utm_source=sd2lite_wp&utm_medium=deployment&utm_content=admin&utm_campaign=filament" );
             exit ;
         }
 

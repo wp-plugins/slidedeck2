@@ -68,6 +68,10 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 
 
 == Changelog ==
+= 2.3.2 =
+* Fixed an issue with the IE version detection snippet
+* Check out SlideDeck App for using SlideDeck on non-WordPress projects!
+
 = 2.3.1 =
 * Fixing corrupt commit
 
@@ -262,6 +266,9 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 * Fixed an issue where jQuery Masonry was not being enqueued
 
 == Upgrade Notice ==
+= 2.3.2 =
+Fixed a bug in IE detection script
+
 = 2.3.1 =
 Removed Twitter as a source and fixed minor bugs
 
