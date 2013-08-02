@@ -3,7 +3,7 @@ Contributors: dtelepathy, kynatro, jamie3d, dtrenkner, oriontimbers, nielsfogt, 
 Donate link: http://www.slidedeck.com/
 Tags: Slider, dynamic, responsive, image gallery, dtelepathy, digital telepathy, digital-telepathy, iPad, jquery, media, photo, pictures, plugin, posts, Search Engine Optimized, seo, skinnable, slide, slide show, slider, slideshow, theme, touch support, video, widget, Flickr, Instagram, 500px, RSS, Pinterest, Google+, YouTube, Vimeo, Dailymotion, Picasa, Dribbble, Facebook, NextGEN Gallery
 Requires at least: 3.3
-Tested up to: 3.5.2
+Tested up to: 3.6
 Stable tag: trunk
 License: GPLv3
 
@@ -68,6 +68,9 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 
 
 == Changelog ==
+= 2.3.3 =
+* Updated jquery request for IFRAME requests and insertion menu to accommodate for new WordPress 3.6 registered script structure
+
 = 2.3.2 =
 * Fixed an issue with the IE version detection snippet
 * Check out SlideDeck App for using SlideDeck on non-WordPress projects!
@@ -266,6 +269,9 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 * Fixed an issue where jQuery Masonry was not being enqueued
 
 == Upgrade Notice ==
+= 2.3.3 =
+HOTFIX: Compatibility updates for WordPress 3.6 and RESS/IFRAME rendered SlideDecks and insert SlideDeck views
+
 = 2.3.2 =
 Fixed a bug in IE detection script
 
