@@ -21,6 +21,7 @@ SlideDeck 2 for WordPress is a responsive slider plugin that lets you easily cre
 
 * [More Details](http://www.slidedeck.com/)
 * [Knowledge Base](https://dtelepathy.zendesk.com/categories/20031167-slidedeck-2)
+* [Join our affiliate program](http://www.slidedeck.com/affiliates)
 
 **Lite Version:**
 This Lite version of SlideDeck 2 does not include the full set of 14 content sources, like Facebook and NextGEN Gallery, that are available in the premium version. To see all the features available in the premium versions, check out the [live demo server](http://demo.slidedeck.com/wp-login.php).
@@ -49,6 +50,10 @@ Where 1644 is the SlideDeck's ID. You can also see this code snippet when you sa
 6. Example - YouTube videos from NativeInstruments using the Reporter Lens
 
 == Frequently Asked Questions ==
+
+= Do you have an affiliate program? =
+Yes, we do! It's free to join, and you can get up to a 75% commission on each sale of SlideDeck you refer to us - that's $112 per sale! Go here to sign up: [http://slidedeck.com/affiliates](http://slidedeck.com/affiliates)
+
 
 = Can I show multiple SlideDecks on one page? =
 Of course! The only limitation is the number of slides per SlideDeck, and what kind of content you're sourcing for each slide. The greater the amount of content you're trying to show all at once, the slower your pages will render for your visitors, so avoid trying to show 10 SlideDecks, each with 10 YouTube videos, as it'll make your page pretty sluggish!
