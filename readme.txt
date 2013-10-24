@@ -11,6 +11,8 @@ Create responsive content sliders on your WordPress blogging platform. Manage Sl
 
 == Description ==
 
+http://www.youtube.com/watch?v=IXUH73L7_lM
+
 = Responsive Content Slider by SlideDeck 2 =
 = Easily create responsive content sliders for your WordPress site without code. Use images & text, plus YouTube, Flickr, Pinterest & more =
 SlideDeck 2 for WordPress is a responsive slider plugin that lets you easily create content sliders out of almost any content. Connect to a variety of Content Sources like YouTube, Flickr, WordPress posts and Pinterest to create gorgeous, dynamic sliders in a few clicks - no coding is required.
