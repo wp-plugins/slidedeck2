@@ -13,7 +13,7 @@
  Plugin Name: SlideDeck 2 Lite
  Plugin URI: http://www.slidedeck.com/wordpress
  Description: Create SlideDecks on your WordPress blogging platform and insert them into templates and posts. Get started creating SlideDecks from the new SlideDeck menu in the left hand navigation.
- Version: 2.3.3
+ Version: 2.3.5
  Author: digital-telepathy
  Author URI: http://www.dtelepathy.com
  License: GPL3
@@ -49,15 +49,15 @@ class SlideDeckLitePlugin {
         'ecf3509'
     );
     
-    static $version = '2.3.3';
+    static $version = '2.3.5';
     static $license = 'LITE';
 
-      // Generally, we are not installing addons. If we are, this gets set to true.
-      static $slidedeck_addons_installing = false;
+    // Generally, we are not installing addons. If we are, this gets set to true.
+    static $slidedeck_addons_installing = false;
 
     // Static variable of addons that are currently installed
     static $addons_installed = array( 'tier_5' => 'tier_5' );
-    
+
     static $cache_groups = array(
         "cover-get",
         "lenses-get",
@@ -90,7 +90,23 @@ class SlideDeckLitePlugin {
         'anonymous_stats_has_opted' => false,
         'flush_wp_object_cache' => false
     );
-    
+
+    var $roles = array(
+        'main_menu' =>              'publish_posts',
+        'manage_decks_menu' =>      'publish_posts',
+        'show_menu' =>              'manage_options',
+        'manage_lenses_menu' =>     'manage_options',
+        'advanced_options_menu' =>  'manage_options',
+        'more_features_menu' =>     'manage_options',
+        'get_support_menu' =>       'manage_options',
+        'view_advanced_options' =>  'manage_options',
+        'view_more_features' =>     'manage_options',
+        'manage_lenses' =>          'manage_options',
+        'add_new_lens' =>           'install_themes',
+        'upload_lens' =>            'install_themes',
+        'delete_lens' =>            'delete_themes',
+    );
+
     // JavaScript to be run in the footer of the page
     var $footer_scripts = "";
 
@@ -456,10 +472,10 @@ class SlideDeckLitePlugin {
         // First time installation
         if( !$installed_version ) {
             slidedeck2_km( "SlideDeck Installed", array( 'license' => self::$license, 'version' => self::$version ) );
-            
+
             // Setup the cohorts data
             self::set_cohort_data();
-            
+
             // Setup the partner data
             self::set_partner_data();
         }
@@ -475,7 +491,6 @@ class SlideDeckLitePlugin {
                 }
 
                 global $SlideDeckPlugin, $wpdb;
-
 
                 // Update various cache settings and durations...
                 $SlideDeck = new SlideDeck( );
@@ -593,7 +608,7 @@ class SlideDeckLitePlugin {
         // Options page for configuration
         add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
         add_action( 'admin_menu', array( &$this, 'license_key_check' ) );
-        
+
         add_action( 'admin_menu', array( &$this, 'install_date_check' ) );
 
         // Add JavaScript for pointers
@@ -787,11 +802,11 @@ class SlideDeckLitePlugin {
             'anonymous_stats_has_opted' => true,
             'flush_wp_object_cache' => isset( $data['flush_wp_object_cache'] ) && !empty( $data['flush_wp_object_cache'] ) ? true : false
         );
-        
+
         if( $options['anonymous_stats_optin'] === true || self::partner_override() ) {
             slidedeck2_km( "SlideDeck Installed", array( 'license' => self::$license, 'version' => self::$version ) );
         }
-        
+
         /**
          * Verify License Key
          */
@@ -874,11 +889,11 @@ class SlideDeckLitePlugin {
             'hash' => SLIDEDECK2_USER_HASH,
             'opted' => $this->get_option( 'anonymous_stats_has_opted' )
         );
-        
+
         echo '<script type="text/javascript">var SlideDeckInterfaces = {}; var SlideDeckAnonymousStats = ' . json_encode( $anonymous_stats ) . '; var SlideDeckLicenseExpired = false; var SlideDeckLicenseExpiredOn = false;</script>';
-        
+
         $wp_scripts->registered["{$this->namespace}-library-js"]->src .= "?noping";
-        
+
         wp_enqueue_script( "{$this->namespace}-library-js" );
         wp_enqueue_script( "{$this->namespace}-admin" );
         wp_enqueue_script( "{$this->namespace}-admin-lite" );
@@ -959,21 +974,23 @@ class SlideDeckLitePlugin {
      * @uses add_options_page()
      */
     function admin_menu( ) {
+        $this->roles = apply_filters( "{$this->namespace}_roles", $this->roles );
+
         $show_menu = true;
         if( $this->get_option( 'disable_edit_create' ) == true ) {
-            if( !current_user_can( 'manage_options' ) ) {
+            if( !current_user_can( $this->roles['show_menu'] ) ) {
                 $show_menu = false;
             }
         }
         if( $show_menu === true ) {
-            add_menu_page( 'SlideDeck 2', 'SlideDeck 2', 'publish_posts', SLIDEDECK2_BASENAME, array( &$this, 'page_route' ), SLIDEDECK2_URLPATH . '/images/icon.png', 37 );
+            add_menu_page( 'SlideDeck 2', 'SlideDeck 2', $this->roles['main_menu'], SLIDEDECK2_BASENAME, array( &$this, 'page_route' ), SLIDEDECK2_URLPATH . '/images/icon.png', 37 );
 
-            $this->menu['manage'] = add_submenu_page( SLIDEDECK2_BASENAME, 'Manage SlideDecks', 'Manage', 'publish_posts', SLIDEDECK2_BASENAME, array( &$this, 'page_route' ) );
-            $this->menu['lenses'] = add_submenu_page( SLIDEDECK2_BASENAME, 'SlideDeck Lenses', 'Lenses', 'manage_options', SLIDEDECK2_BASENAME . '/lenses', array( &$this, 'page_lenses_route' ) );
-            $this->menu['options'] = add_submenu_page( SLIDEDECK2_BASENAME, 'SlideDeck Options', 'Advanced Options', 'manage_options', SLIDEDECK2_BASENAME . '/options', array( &$this, 'page_options' ) );
-            $this->menu['upgrades'] = add_submenu_page( SLIDEDECK2_BASENAME, 'Get More Features', 'Get More Features', 'manage_options', SLIDEDECK2_BASENAME . '/upgrades', array( &$this, 'page_upgrades' ) );
-            $this->menu['support'] = add_submenu_page( SLIDEDECK2_BASENAME, 'Need Support?', 'Need Support?', 'manage_options', SLIDEDECK2_BASENAME . '/need-support', array( &$this, 'page_route' ) );
-            $this->menu['slidedeck-app'] = add_submenu_page( SLIDEDECK2_BASENAME, 'Try SlideDeck App', 'Try SlideDeck App', 'manage_options', SLIDEDECK2_BASENAME . '/filament', array( &$this, 'page_route' ) );
+            $this->menu['manage'] = add_submenu_page( SLIDEDECK2_BASENAME, 'Manage SlideDecks', 'Manage', $this->roles['manage_decks_menu'], SLIDEDECK2_BASENAME, array( &$this, 'page_route' ) );
+            $this->menu['lenses'] = add_submenu_page( SLIDEDECK2_BASENAME, 'SlideDeck Lenses', 'Lenses', $this->roles['manage_lenses_menu'], SLIDEDECK2_BASENAME . '/lenses', array( &$this, 'page_lenses_route' ) );
+            $this->menu['options'] = add_submenu_page( SLIDEDECK2_BASENAME, 'SlideDeck Options', 'Advanced Options', $this->roles['advanced_options_menu'], SLIDEDECK2_BASENAME . '/options', array( &$this, 'page_options' ) );
+            $this->menu['upgrades'] = add_submenu_page( SLIDEDECK2_BASENAME, 'Get More Features', 'Get More Features', $this->roles['more_features_menu'], SLIDEDECK2_BASENAME . '/upgrades', array( &$this, 'page_upgrades' ) );
+            $this->menu['support'] = add_submenu_page( SLIDEDECK2_BASENAME, 'Need Support?', 'Need Support?', $this->roles['get_support_menu'], SLIDEDECK2_BASENAME . '/need-support', array( &$this, 'page_route' ) );
+            $this->menu['slidedeck-app'] = add_submenu_page( SLIDEDECK2_BASENAME, 'Try SlideDeck App', 'Try SlideDeck App', $this->roles['manage_decks_menu'], SLIDEDECK2_BASENAME . '/filament', array( &$this, 'page_route' ) );
 
             add_action( "load-{$this->menu['manage']}", array( &$this, "load_admin_page" ) );
             add_action( "load-{$this->menu['lenses']}", array( &$this, "load_admin_page" ) );
@@ -1194,9 +1211,10 @@ class SlideDeckLitePlugin {
 
         // Get the post type object
         $post_type_object = get_post_type_object( $post_type );
+        $post_type_cap = apply_filters( "{$this->namespace}_create_new_with_slidedeck_cap", $post_type_object->cap->edit_posts );
 
         // Make sure the user can actually edit this post type, if not fail
-        if( !current_user_can( $post_type_object->cap->edit_posts ) )
+        if( !current_user_can( $post_type_cap ) )
             wp_die( __( "You are not authorized to do that", $this->namespace ) );
 
         $slidedeck_id = intval( $_REQUEST['slidedeck'] );
@@ -1291,7 +1309,7 @@ class SlideDeckLitePlugin {
         $data = slidedeck2_sanitize( $_POST );
         $response = array( 'message' => "Lens deleted successfuly", 'error' => false );
         
-        if( !current_user_can( 'delete_themes' ) ) {
+        if( !current_user_can( $this->roles['delete_lens'] ) ) {
             $response['message'] = "Sorry, your user does not have permission to delete a lens";
             $response['error'] = true;
             die( json_encode( $response ) );
@@ -1680,7 +1698,8 @@ class SlideDeckLitePlugin {
      * AJAX response to upsell modal
      */
     function ajax_upsell_modal_content() {
-        include( SLIDEDECK2_DIRNAME . '/views/upsells/_upsell-modal-' . $_REQUEST['feature'] . '.php' );
+        $feature = preg_replace( '/[^a-zA-Z0-9\-\_]/' , '', $_REQUEST['feature'] );
+        include( SLIDEDECK2_DIRNAME . '/views/upsells/_upsell-modal-' . $feature . '.php' );
         exit;
     }
 
@@ -1794,7 +1813,7 @@ class SlideDeckLitePlugin {
 
         $response = wp_remote_post( SLIDEDECK2_UPDATE_SITE . '/available-addons', array(
                 'method' => 'POST', 
-                'timeout' => 4, 
+                'timeout' => 15, 
                 'redirection' => 5, 
                 'httpversion' => '1.0', 
                 'blocking' => true,
@@ -2749,7 +2768,7 @@ class SlideDeckLitePlugin {
      * @uses wp_die()
      */
     function page_options( ) {
-        if( !current_user_can( 'manage_options' ) )
+        if( !current_user_can( $this->roles['view_advanced_options'] ) )
             wp_die( __( "You do not have privileges to access this page", $this->namespace ) );
 
         $defaults = array(
@@ -2788,7 +2807,7 @@ class SlideDeckLitePlugin {
      * @uses wp_die()
      */
     function page_upgrades( ) {
-        if( !current_user_can( 'manage_options' ) )
+        if( !current_user_can( $this->roles['view_more_features'] ) )
             wp_die( __( "You do not have privileges to access this page", $this->namespace ) );
 
         $namespace = $this->namespace;
@@ -2860,7 +2879,7 @@ class SlideDeckLitePlugin {
      * @uses wp_die()
      */
     function page_lenses_add( ) {
-        if( !current_user_can( 'install_themes' ) )
+        if( !current_user_can( $this->roles['add_new_lens'] ) )
             wp_die( __( "You do not have privileges to access this page", $this->namespace ) );
 
         $namespace = $this->namespace;
@@ -2898,7 +2917,7 @@ class SlideDeckLitePlugin {
      */
     function page_lenses_manage( ) {
         // Die if user cannot manage options
-        if( !current_user_can( 'manage_options' ) )
+        if( !current_user_can( $this->roles['manage_lenses'] ) )
             wp_die( __( "You do not have privileges to access this page", $this->namespace ) );
 
         $namespace = $this->namespace;
@@ -3805,7 +3824,7 @@ class SlideDeckLitePlugin {
      * @uses File_Upload_Upgrader::cleanup()
      */
     function upload_lens( ) {
-        if( !current_user_can( 'install_themes' ) )
+        if( !current_user_can( $this->roles['upload_lens'] ) )
             wp_die( __( 'You do not have sufficient permissions to install SlideDeck lenses on this site.', $this->namespace ) );
 
         check_admin_referer( "{$this->namespace}-upload-lens" );

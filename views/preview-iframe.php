@@ -49,6 +49,7 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
                 if( $script == 'jquery' && !$wp_scripts->registered[$script]->src ) $script = 'jquery-core';
 
                 $src = $wp_scripts->registered[$script]->src;
+
                 if ( !preg_match( '|^(https?:)?//|', $src ) && !( $content_url && 0 === strpos( $src, $content_url ) ) ) {
                     $src = $base_url . $src;
                 }

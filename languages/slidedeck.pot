@@ -630,7 +630,7 @@ msgid "Fetching Latest Tweets..."
 msgstr ""
 
 #: ../views/manage.php:131
-msgid "A product of"
+msgid "Made by"
 msgstr ""
 
 #: ../views/manage.php:132

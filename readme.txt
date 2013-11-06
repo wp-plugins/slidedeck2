@@ -75,6 +75,12 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 
 
 == Changelog ==
+= 2.3.5 =
+* Fixed an issue when the user agent server variable is not set.
+* Reporter Lens: Improved the reliability of and Lazy Loading when using crossfade.
+* Fixed a potential file inclusion vulnerability reported by one of our users.
+* Added the ability to filter the admin roles for SlideDeck with: `add_filter( 'slidedeck_roles', 'function' );`
+
 = 2.3.3 =
 * Updated jquery request for IFRAME requests and insertion menu to accommodate for new WordPress 3.6 registered script structure
 
@@ -276,6 +282,9 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 * Fixed an issue where jQuery Masonry was not being enqueued
 
 == Upgrade Notice ==
+= 2.3.5 =
+Improved the reliability of and Lazy Loading when using crossfade
+
 = 2.3.3 =
 HOTFIX: Compatibility updates for WordPress 3.6 and RESS/IFRAME rendered SlideDecks and insert SlideDeck views
 

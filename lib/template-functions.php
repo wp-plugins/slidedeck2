@@ -849,7 +849,7 @@ if( !function_exists( 'slidedeck2_km' ) ) {
         if( isset( $completed_once_events[$event] ) && $completed_once_events[$event] === true ) {
             return false;
         }
-        
+
         $params = array(
             '_k' => SLIDEDECK2_KMAPI_KEY,
             '_p' => SLIDEDECK2_USER_HASH,
@@ -858,7 +858,7 @@ if( !function_exists( 'slidedeck2_km' ) ) {
             'version' => SLIDEDECK2_VERSION,
             'tier' => SlideDeckLitePlugin::highest_installed_tier()
         );
-        
+
         // Get the cohort data from the database
         $cohort = SlideDeckLitePlugin::get_cohort_data();
         foreach( $cohort as $key => $value ) {

@@ -334,12 +334,24 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
 
 #slidedeck-section-lenses .upgrade-license-lenses span.shadow {
     display: block;
-position: absolute;
-top: 122px;
-left: 50%;
-margin-left: -87px;
-width: 170px;
-height: 10px;
-background: url('../images/lens-thumbnail-shadow.png') center center no-repeat;
-z-index: 1;
+    position: absolute;
+    top: 122px;
+    left: 50%;
+    margin-left: -87px;
+    width: 170px;
+    height: 10px;
+    background: url('../images/lens-thumbnail-shadow.png') center center no-repeat;
+    z-index: 1;
+}
+
+#slidedeck-manage-footer {
+    border: none;
+    background: transparent;
+    margin: 0;
+    padding: 0;
+    max-width: 980px;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    -o-box-shadow: none;
+    box-shadow: none;
 }
