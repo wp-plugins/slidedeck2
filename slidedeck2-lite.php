@@ -13,7 +13,7 @@
  Plugin Name: SlideDeck 2 Lite
  Plugin URI: http://www.slidedeck.com/wordpress
  Description: Create SlideDecks on your WordPress blogging platform and insert them into templates and posts. Get started creating SlideDecks from the new SlideDeck menu in the left hand navigation.
- Version: 2.3.5
+ Version: 2.3.6
  Author: digital-telepathy
  Author URI: http://www.dtelepathy.com
  License: GPL3
@@ -39,8 +39,8 @@
 
 class SlideDeckLitePlugin {
     var $package_slug = 'single';
-    static $namespace = "slidedeck";
-    static $friendly_name = "SlideDeck 2";
+    static $st_namespace = "slidedeck";
+    static $st_friendly_name = "SlideDeck 2";
     
     static $cohort_name = 'ecf8915';
     static $cohort_variation = '';
@@ -49,7 +49,7 @@ class SlideDeckLitePlugin {
         'ecf3509'
     );
     
-    static $version = '2.3.5';
+    static $version = '2.3.6';
     static $license = 'LITE';
 
     // Generally, we are not installing addons. If we are, this gets set to true.
@@ -186,8 +186,8 @@ class SlideDeckLitePlugin {
     function __construct( ) {
         SlideDeckLitePlugin::load_constants();
         
-        $this->friendly_name = SlideDeckLitePlugin::$friendly_name;
-        $this->namespace = SlideDeckLitePlugin::$namespace;
+        $this->friendly_name = SlideDeckLitePlugin::$st_friendly_name;
+        $this->namespace = SlideDeckLitePlugin::$st_namespace;
 
         /**
          * Make this plugin available for translation.
@@ -2774,6 +2774,7 @@ class SlideDeckLitePlugin {
         $defaults = array(
             'always_load_assets' => true,
             'disable_wpautop' => false,
+            'anonymous_stats_optin' => false,
             'dont_enqueue_scrollwheel_library' => false,
             'dont_enqueue_easing_library' => false,
             'disable_edit_create' => false,
@@ -3112,7 +3113,7 @@ class SlideDeckLitePlugin {
         if( !isset( $this->constants_printed ) ) {
             echo '<script type="text/javascript">' . "\n";
             echo 'var slideDeck2URLPath = "' . SLIDEDECK2_URLPATH . '";' . "\n";
-            echo 'var slideDeck2AddonsURL = "' . slidedeck2_action( "/upgrades" ) . '";' . "\n";
+            if( is_admin() ) echo 'var slideDeck2AddonsURL = "' . slidedeck2_action( "/upgrades" ) . '";' . "\n";
             echo 'var slideDeck2iframeByDefault = ' . var_export( $this->get_option( 'iframe_by_default' ), true ) . ';' . "\n";
             echo '</script>' . "\n";
             
@@ -3382,8 +3383,8 @@ class SlideDeckLitePlugin {
         $data = self::$partner;
         
         // Only set the partner data if it does not exist. 
-        if( get_option( self::$namespace . '_partner', false ) === false ) {
-            add_option( self::$namespace . '_partner', $data );
+        if( get_option( self::$st_namespace . '_partner', false ) === false ) {
+            add_option( self::$st_namespace . '_partner', $data );
         }
     }
     
@@ -3394,7 +3395,7 @@ class SlideDeckLitePlugin {
      * @uses add_option()
      */
     static function get_partner_data() {
-        return get_option( self::$namespace . '_partner', false );
+        return get_option( self::$st_namespace . '_partner', false );
     }
 
     /**
@@ -3412,8 +3413,8 @@ class SlideDeckLitePlugin {
         );
         
         // Only set the cohort if it does not exist. 
-        if( get_option( self::$namespace . '_cohort', false ) === false ) {
-            add_option( self::$namespace . '_cohort', $data );
+        if( get_option( self::$st_namespace . '_cohort', false ) === false ) {
+            add_option( self::$st_namespace . '_cohort', $data );
         }
     }
     
@@ -3424,7 +3425,7 @@ class SlideDeckLitePlugin {
      * @uses add_option()
      */
     static function get_cohort_data() {
-        return get_option( self::$namespace . '_cohort', false );
+        return get_option( self::$st_namespace . '_cohort', false );
     }
 
     /**
@@ -3452,7 +3453,7 @@ class SlideDeckLitePlugin {
      */
     static function get_installation_date() {
         $floor_date = strtotime( "Aug 23, 2012" );
-        $installed = get_option( self::$namespace . '2_lite_installed', $floor_date );
+        $installed = get_option( self::$st_namespace . '2_lite_installed', $floor_date );
         $installed = max( $installed, $floor_date );
         $current_time = time();
         $discount_timetable = array( $installed, $current_time );
