@@ -3,7 +3,7 @@ Contributors: dtelepathy, kynatro, jamie3d, dtrenkner, oriontimbers, nielsfogt, 
 Donate link: http://www.slidedeck.com/
 Tags: Slider, dynamic, responsive, image gallery, dtelepathy, digital telepathy, digital-telepathy, iPad, jquery, media, photo, pictures, plugin, posts, Search Engine Optimized, seo, skinnable, slide, slide show, slider, slideshow, theme, touch support, video, widget, Flickr, Instagram, 500px, RSS, Pinterest, Google+, YouTube, Vimeo, Dailymotion, Picasa, Dribbble, Facebook, NextGEN Gallery
 Requires at least: 3.3
-Tested up to: 3.7
+Tested up to: 3.8
 Stable tag: trunk
 License: GPLv3
 
@@ -75,6 +75,9 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 
 
 == Changelog ==
+= 2.3.7 =
+* Updated the core slidedeck.js to be more compatible with IE11
+
 = 2.3.6 =
 * Addressing PHP strict notices and warnings.
 * Fixing static warning in SlideDeck widget.
@@ -287,6 +290,10 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 * Improved the "first image in gallery" logic to properly retrieve the first listed image in a gallery that has not yet been intentionally sorted by the user
 * Fixed a regression bug with post thumbnail support in the posts dynamic content source that was preventing SlideDecks from working properly with themes that don't have thumbnail support
 * Fixed an issue where jQuery Masonry was not being enqueued
+
+== Upgrade Notice ==
+= 2.3.7 =
+Repaired IE11 support
 
 == Upgrade Notice ==
 = 2.3.5 =
