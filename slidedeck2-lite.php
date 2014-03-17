@@ -13,7 +13,7 @@
  Plugin Name: SlideDeck 2 Lite
  Plugin URI: http://www.slidedeck.com/wordpress
  Description: Create SlideDecks on your WordPress blogging platform and insert them into templates and posts. Get started creating SlideDecks from the new SlideDeck menu in the left hand navigation.
- Version: 2.3.7
+ Version: 2.3.8
  Author: digital-telepathy
  Author URI: http://www.dtelepathy.com
  License: GPL3
@@ -49,7 +49,7 @@ class SlideDeckLitePlugin {
         'ecf3509'
     );
     
-    static $version = '2.3.7';
+    static $version = '2.3.8';
     static $license = 'LITE';
 
     // Generally, we are not installing addons. If we are, this gets set to true.
@@ -296,8 +296,12 @@ class SlideDeckLitePlugin {
      *
      * @return string
      */
-    private function _render_iframe( $id, $width = null, $height = null, $nocovers = false, $ress = false, $proportional = true ) {
+    private function _render_iframe( $id, $width = null, $height = null, $nocovers = false, $ress = false, $proportional = true, $post = null, $front_page ) {
         global $wp_scripts;
+        $post_id = 0;
+        if( is_object( $post ) ) {
+            $post_id = $post->ID;
+        }
 
         // Load the SlideDeck itself
         $slidedeck = $this->SlideDeck->get( $id );
@@ -313,6 +317,12 @@ class SlideDeckLitePlugin {
         // Get the IFRAME source URL
         $iframe_url = $this->get_iframe_url( $id, $dimensions['outer_width'], $dimensions['outer_height'] );
         $iframe_url .= "&slidedeck_unique_id=" . $slidedeck_unique_id;
+        $iframe_url .= "&post_id=" . $post_id;
+        if( $front_page ) {
+            $iframe_url .= "&front_page=true";
+        } else {
+            $iframe_url .= "&front_page=false";
+        }
         $iframe_url .= "&start=";
 
         if( $nocovers )
@@ -472,7 +482,7 @@ class SlideDeckLitePlugin {
         // First time installation
         if( !$installed_version ) {
             slidedeck2_km( "SlideDeck Installed", array( 'license' => self::$license, 'version' => self::$version ) );
-
+            
             // Setup the cohorts data
             self::set_cohort_data();
 
@@ -893,7 +903,7 @@ class SlideDeckLitePlugin {
         echo '<script type="text/javascript">var SlideDeckInterfaces = {}; var SlideDeckAnonymousStats = ' . json_encode( $anonymous_stats ) . '; var SlideDeckLicenseExpired = false; var SlideDeckLicenseExpiredOn = false;</script>';
 
         $wp_scripts->registered["{$this->namespace}-library-js"]->src .= "?noping";
-
+        
         wp_enqueue_script( "{$this->namespace}-library-js" );
         wp_enqueue_script( "{$this->namespace}-admin" );
         wp_enqueue_script( "{$this->namespace}-admin-lite" );
@@ -3478,7 +3488,11 @@ class SlideDeckLitePlugin {
         global $post;
         $default_deck_link_text = '';
         $has_custom_css = false;
-        
+        $front_page = false;
+        if( is_front_page() ) {
+            $front_page = true;
+        }
+
         if( isset( $atts['id'] ) && !empty( $atts['id'] ) )
             $default_deck_link_text = get_the_title( $atts['id'] ) . ' <small>[' . __( "see the SlideDeck", $this->namespace ) . ']</small>';
         
@@ -3514,12 +3528,12 @@ class SlideDeckLitePlugin {
                 return '<div class="slidedeck-link"><a href="' . get_permalink( $post->ID ) . '#SlideDeck-' . $id . '">' . $feed_link_text . '</a></div>';
         
             if( ( $iframe !== false ) || ( $ress !== false ) ) {
-                return $this->_render_iframe( $id, $width, $height, $nocovers, $ress, $proportional );
+                return $this->_render_iframe( $id, $width, $height, $nocovers, $ress, $proportional, $post, $front_page );
             } else {
                 $deck_output = '';
 
                 if( $has_custom_css ) $deck_output .= '<div class="' . $this->namespace . '-custom-css-wrapper-' . $id . '">';
-                $deck_output .= $this->SlideDeck->render( $id, array( 'width' => $width, 'height' => $height ), $include_lens_files, $preview, $echo_js, $start );
+                $deck_output .= $this->SlideDeck->render( $id, array( 'width' => $width, 'height' => $height ), $include_lens_files, $preview, $echo_js, $start, $post, $front_page );
                 if( $has_custom_css ) $deck_output .= '</div>';
                 
                 return $deck_output;

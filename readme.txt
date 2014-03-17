@@ -75,6 +75,15 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 
 
 == Changelog ==
+= 2.3.8 =
+* Fixed loss of `$post` context when rendering a deck inside of an iFrame.
+* Fixed issue of missing trailing slash on share overlay links.
+* Share overlay permalink now handles the `front_page` and `home_page` URLs differently.
+* Addressed a z-index issue with the O-Town lens when using videos.
+* Fixed the issue where a vertical deck would not get an `active` class on the current slide.
+* Cleaned up core JavaScript library and linted it using JSHint.
+* Removing the inherited CSS transition for the editor interface links.
+
 = 2.3.7 =
 * Updated the core slidedeck.js to be more compatible with IE11
 
@@ -292,10 +301,12 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 * Fixed an issue where jQuery Masonry was not being enqueued
 
 == Upgrade Notice ==
+= 2.3.8 =
+Fixes for vertical decks and video, the O-Town lens, the sharing overlay
+
 = 2.3.7 =
 Repaired IE11 support
 
-== Upgrade Notice ==
 = 2.3.5 =
 Improved the reliability of and Lazy Loading when using crossfade
 
