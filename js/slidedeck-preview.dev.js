@@ -145,24 +145,26 @@ var SlideDeckPrefix = "sd2-";
         },
         
         isVertical: function(){
-            // If the HTML element is passed in, detect differently.
-            if(typeof(this.slidedeck.deck == 'undefined')){
-                if(this.elems.slidedeck.find('.slidesVertical').length > 0){
-                    return true;
-                }
-                return false;
-            } else {
-                // Are there vertical slides anywhere on this deck?
-                if(this.slidedeck.verticalSlides){
-                    // Does the vertical slides object exist for the slide we're going to?
-                    if(this.slidedeck.verticalSlides[this.slidedeck.current-1]){
-                        // Does the slide we're going to actually have vertical slides?
-                        if(this.slidedeck.verticalSlides[this.slidedeck.current-1].navChildren){
-                            // Vertical
-                            return true;
-                        } else {
-                            // Horizontal
-                            return false;
+            if(typeof(this.slidedeck) !== 'undefined'){
+                // If the HTML element is passed in, detect differently.
+                if(typeof(this.slidedeck.deck) == 'undefined'){
+                    if(this.elems.slidedeck.find('.slidesVertical').length > 0){
+                        return true;
+                    }
+                    return false;
+                } else {
+                    // Are there vertical slides anywhere on this deck?
+                    if(this.slidedeck.verticalSlides){
+                        // Does the vertical slides object exist for the slide we're going to?
+                        if(this.slidedeck.verticalSlides[this.slidedeck.current-1]){
+                            // Does the slide we're going to actually have vertical slides?
+                            if(this.slidedeck.verticalSlides[this.slidedeck.current-1].navChildren){
+                                // Vertical
+                                return true;
+                            } else {
+                                // Horizontal
+                                return false;
+                            }
                         }
                     }
                 }

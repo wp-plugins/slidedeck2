@@ -3,7 +3,7 @@ Contributors: dtelepathy, kynatro, jamie3d, dtrenkner, oriontimbers, nielsfogt, 
 Donate link: http://www.slidedeck.com/
 Tags: Slider, dynamic, responsive, image gallery, dtelepathy, digital telepathy, digital-telepathy, iPad, jquery, media, photo, pictures, plugin, posts, Search Engine Optimized, seo, skinnable, slide, slide show, slider, slideshow, theme, touch support, video, widget, Flickr, Instagram, 500px, RSS, Pinterest, Google+, YouTube, Vimeo, Dailymotion, Picasa, Dribbble, Facebook, NextGEN Gallery
 Requires at least: 3.3
-Tested up to: 3.8
+Tested up to: 3.9
 Stable tag: trunk
 License: GPLv3
 
@@ -75,6 +75,9 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 
 
 == Changelog ==
+= 2.3.9 =
+* Addresses very minor JavaScript error in the editor.
+
 = 2.3.8 =
 * Fixed loss of `$post` context when rendering a deck inside of an iFrame.
 * Fixed issue of missing trailing slash on share overlay links.
@@ -301,6 +304,9 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 * Fixed an issue where jQuery Masonry was not being enqueued
 
 == Upgrade Notice ==
+= 2.3.9 =
+Addresses very minor JavaScript error in the editor
+
 = 2.3.8 =
 Fixes for vertical decks and video, the O-Town lens, the sharing overlay
 
