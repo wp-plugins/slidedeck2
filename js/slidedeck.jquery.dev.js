@@ -1026,19 +1026,17 @@ var SlideDeckLens = {};
 
                     // Detect a function to run after animating
                     if(i === (forward === true && self.current - 1) || i === (forward === false && self.current)){
-                        if(i === self.current -1) {
-                            animOpts.complete = function(){
-                                if(self.looping === true){
-                                    self.slides.each(function(ind){
-                                        if(ind !== (self.current - 1)) {
-                                            this.style.left = (self.current === 1 ? 0 : (0 - width)) + "px";
-                                        }
-                                        this.style.zIndex = self.slides.length - ind;
-                                    });
-                                }
-                                completeCallback(params)();
-                            };
-                        }
+                        animOpts.complete = function(){
+                            if(self.looping === true){
+                                self.slides.each(function(ind){
+                                    if(ind !== (self.current - 1)) {
+                                        this.style.left = (self.current === 1 ? 0 : (0 - width)) + "px";
+                                    }
+                                    this.style.zIndex = self.slides.length - ind;
+                                });
+                            }
+                            completeCallback(params)();
+                        };
                     }
 
                     slide.stop().animate({

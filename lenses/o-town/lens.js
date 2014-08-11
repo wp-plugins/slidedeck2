@@ -33,7 +33,7 @@
         
         if( !isThumbnailNav ){
             // Only for IE - detect background image url and update style for DD element
-            if( ie <= 8.0 ){
+            if( slidedeck_ie <= 8.0 ){
                 elems.verticalSlides.each(function(ind){
                     if( $(elems.verticalSlides[ind]).css('background-image') != 'none' ){
                         var imgurl = $(elems.verticalSlides[ind]).css('background-image').match( /url\([\"\'](.*)[\"\']\)/ )[1];
@@ -152,21 +152,21 @@
                 }
             });
             if( isThumbnailNav ){
-            	// Check to prevent JS crash:
-            	/**
-            	 * If the O-Town height is less than 110px, it causes a
-            	 * JavaScript lockup on the page... 
-            	 */
-            	if( navigation.verticalNavElemsWrapper.height() < 110 ){
-            		// Remove the vertical nav wrapper
-            		elems.frame.find('.vertical-slide-nav-wrapper').hide();
-            		elems.verticalSlides.each(function(){
-            			// Set the slide background and slides to have a left position of 0.
-            			$(this).find('.slide-content, .sd2-slide-background').css({left: 0});
-            		});
-            		return false;
-            	}
-            	
+                // Check to prevent JS crash:
+                /**
+                 * If the O-Town height is less than 110px, it causes a
+                 * JavaScript lockup on the page... 
+                 */
+                if( navigation.verticalNavElemsWrapper.height() < 110 ){
+                    // Remove the vertical nav wrapper
+                    elems.frame.find('.vertical-slide-nav-wrapper').hide();
+                    elems.verticalSlides.each(function(){
+                        // Set the slide background and slides to have a left position of 0.
+                        $(this).find('.slide-content, .sd2-slide-background').css({left: 0});
+                    });
+                    return false;
+                }
+                
                 navigation.verticalNavLinksInner = navigation.verticalNavLinks.find('span.slide-nav-inner');
                 var thumbSrc = new Array();
                 
@@ -182,7 +182,7 @@
                         navigation.verticalNavLinksInner.eq(ind).addClass('no-thumb');
                     } else {
                         // Only for IE - detect background image url and update style for DD element
-                        if( ie <= 8.0  ){
+                        if( slidedeck_ie <= 8.0  ){
                             if( backgroundImage != 'none' ){
                                 var imgurl = backgroundImage.match( /url\([\"\'](.*)[\"\']\)/ )[1];
                                 navigation.verticalNavLinksInner.eq(ind).css({

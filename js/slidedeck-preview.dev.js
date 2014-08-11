@@ -385,7 +385,7 @@ var SlideDeckPrefix = "sd2-";
         }
 
         // Fall back for IE < 9
-        if(ie < 9){
+        if(slidedeck_ie < 9){
             SlideDeckPreview.elems.slidedeckFrame.find('.accent-color').css('color', value);
             SlideDeckPreview.elems.slidedeckFrame.find('.accent-color-background').css('background-color', value);
         }

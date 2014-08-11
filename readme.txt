@@ -75,6 +75,15 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 
 
 == Changelog ==
+= 2.3.10 =
+* Addresses some display issues in custom slide media library modal.
+* Addresses very minor JavaScript variable namespacing error.
+* Fixed an issue with TinyMCE fix in previous version for issue introduced in WordPress 3.9
+* Fixed an issue with the Polarad Lens where some of the layout options were not working correctly
+* Added a Content option to Polarad to hide the Image Link
+* Fixed an issue where the stack transition type was not looping correctly
+* Fixed an issue with the start slide value not outputting properly for RESS and Iframe decks
+
 = 2.3.9 =
 * Addresses very minor JavaScript error in the editor.
 
@@ -304,6 +313,9 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 * Fixed an issue where jQuery Masonry was not being enqueued
 
 == Upgrade Notice ==
+= 2.3.10 =
+Addresses some interface display issues, a minor TinyMCE fixed introduced in the previous version and some lens updates
+
 = 2.3.9 =
 Addresses very minor JavaScript error in the editor
 
