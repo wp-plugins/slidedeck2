@@ -91,21 +91,5 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
                 </div>
             </div>
         </div>
-        
-        <div id="slidedeck-manage-footer">
-            <div class="filament-ad">
-                <div style="height: 510px;">
-                    <iframe height="510px" frameborder="0" scrolling="no" width="100%" allowtransparency="true" src="http://www.slidedeck.com/plugin-filament-footer/"></iframe>
-                </div>
-            </div>
-            <div id="dt-footer-logo">
-                <span id="a-product-of"><?php _e( "Made by", $namespace ); ?></span>
-                <a href="http://www.dtelepathy.com" target="_blank"><img border="0" class="logo" src="<?php echo SLIDEDECK2_URLPATH; ?>/images/dt-logo.png" alt="<?php _e( "digital-telepathy", $namespace ); ?>" /></a>
-                <p>
-                    <a href="http://www.dtelepathy.com" target="_blank"><span id="orange-tag"><?php _e( "UX Design Studio", $namespace ); ?></span></a>
-                </p>
-            </div>
-        </div>
-        
     </div>
 </div>

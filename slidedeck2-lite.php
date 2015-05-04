@@ -13,7 +13,7 @@
  Plugin Name: SlideDeck 2 Lite
  Plugin URI: http://www.slidedeck.com/wordpress
  Description: Create SlideDecks on your WordPress blogging platform and insert them into templates and posts. Get started creating SlideDecks from the new SlideDeck menu in the left hand navigation.
- Version: 2.3.10
+ Version: 2.3.11
  Author: digital-telepathy
  Author URI: http://www.dtelepathy.com
  License: GPL3
@@ -49,7 +49,7 @@ class SlideDeckLitePlugin {
         'ecf3509'
     );
     
-    static $version = '2.3.10';
+    static $version = '2.3.11';
     static $license = 'LITE';
 
     // Generally, we are not installing addons. If we are, this gets set to true.
@@ -3273,7 +3273,7 @@ class SlideDeckLitePlugin {
             slidedeck2_set_flash( __( "SlideDeck successfully deleted!", $this->namespace ) );
 
         if( preg_match( "/admin\.php\?.*page\=" . SLIDEDECK2_BASENAME . "\/support/", $uri ) ) {
-            wp_redirect( "https://dtelepathy.zendesk.com/requests/new" );
+            wp_redirect( "http://support.slidedeck.com/" );
             exit ;
         }
 

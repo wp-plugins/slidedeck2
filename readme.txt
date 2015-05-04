@@ -3,7 +3,7 @@ Contributors: dtelepathy, kynatro, jamie3d, dtrenkner, oriontimbers, nielsfogt, 
 Donate link: http://www.slidedeck.com/
 Tags: Slider, dynamic, responsive, image gallery, dtelepathy, digital telepathy, digital-telepathy, iPad, jquery, media, photo, pictures, plugin, posts, Search Engine Optimized, seo, skinnable, slide, slide show, slider, slideshow, theme, touch support, video, widget, Flickr, Instagram, 500px, RSS, Pinterest, Google+, YouTube, Vimeo, Dailymotion, Picasa, Dribbble, Facebook, NextGEN Gallery
 Requires at least: 3.3
-Tested up to: 3.9
+Tested up to: 4.2
 Stable tag: trunk
 License: GPLv3
 
@@ -22,7 +22,7 @@ SlideDeck 2 for WordPress is a responsive slider plugin that lets you easily cre
 **Important Links:**
 
 * [More Details](http://www.slidedeck.com/)
-* [Knowledge Base](https://dtelepathy.zendesk.com/categories/20031167-slidedeck-2)
+* [Knowledge Base](http://support.slidedeck.com/)
 * [Join our affiliate program](http://www.slidedeck.com/affiliates)
 
 **Lite Version:**
@@ -75,6 +75,10 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 
 
 == Changelog ==
+= 2.3.11 =
+* Fixed Pinterest source issue. Content now is retrieved as expected.
+* misc. ui updates
+
 = 2.3.10 =
 * Addresses some display issues in custom slide media library modal.
 * Addresses very minor JavaScript variable namespacing error.
@@ -313,6 +317,9 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 * Fixed an issue where jQuery Masonry was not being enqueued
 
 == Upgrade Notice ==
+= 2.3.11 =
+Pinterest source updated. Minor ui updates
+
 = 2.3.10 =
 Addresses some interface display issues, a minor TinyMCE fixed introduced in the previous version and some lens updates
 

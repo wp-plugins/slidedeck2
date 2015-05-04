@@ -43,11 +43,11 @@ class SlideDeckSource_Pinterest extends SlideDeck {
             if( isset( $matches['1'] ) && !empty( $matches['1'] ) ) {
                 // Try Username
                 $username = $matches['1'];
-                $feed_url = 'http://pinterest.com/' . $username . '/feed.rss';
+                $feed_url = 'https://pinterest.com/' . $username . '/feed.rss';
                 if( isset( $matches['2'] ) && !empty( $matches['2'] ) ) {
                     // Try board slug
                     $board_name = $matches['2'];
-                    $feed_url = 'http://pinterest.com/' . $username . '/' . $board_name . '/rss';
+                    $feed_url = 'https://pinterest.com/' . $username . '/' . $board_name . '/rss';
                 }
             }
         }
