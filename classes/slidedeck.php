@@ -1669,7 +1669,8 @@ class SlideDeck {
         if( !$response ) {
             switch( $service ) {
                 case "youtube":
-                    $url = 'http://gdata.youtube.com/feeds/api/videos/' . $video_id . '?v=2&alt=json';
+		    $last_used_youtube_api_key = get_option( $this->namespace . '_last_saved_youtube_api_key' );
+                    $url = 'https://www.googleapis.com/youtube/v3/videos?id=' . $video_id . '&part=snippet&key='.$last_used_youtube_api_key;
                 break;
                 
                 case "vimeo":
@@ -1695,15 +1696,31 @@ class SlideDeck {
             if( !empty( $response_json ) ) {
                 switch( $service ){
                     case 'youtube':
-                        $video_meta['title'] = $response_json->entry->title->{'$t'};
+                        //$video_meta['title'] = $response_json->entry->title->{'$t'};
+			        	if( isset( $response_json->items[0]->snippet->thumbnails->standard ) ){
+                    		$video_image = $response_json->items[0]->snippet->thumbnails->standard->url;
+                    	}
+                    	
+                    	else if( isset( $response_json->items[0]->snippet->thumbnails->high ) ){
+                    		$video_image = $response_json->items[0]->snippet->thumbnails->high->url;
+                    	}
+                    	
+                    	else if( isset( $response_json->items[0]->snippet->thumbnails->medium ) ){
+                    		$video_image = $response_json->items[0]->snippet->thumbnails->medium->url;
+                    	}
+                    	
+                    	else if( isset( $response_json->items[0]->snippet->thumbnails->default ) ){
+                    		$video_image = $response_json->items[0]->snippet->thumbnails->default->url;
+                    	}
+                        $video_meta['title'] = $response_json->items[0]->snippet->title;
                         $video_meta['permalink'] = 'http://www.youtube.com/watch?v=' . $video_id;
-                        $video_meta['description'] = $response_json->entry->{'media$group'}->{'media$description'}->{'$t'};
-                        $video_meta['thumbnail'] = 'http://img.youtube.com/vi/' . $video_id . '/mqdefault.jpg';
-                        $video_meta['full_image'] = 'http://img.youtube.com/vi/' . $video_id . '/0.jpg';
-						$video_meta['created_at'] = strtotime( $response_json->entry->published->{'$t'} );
-                        
-                        if( isset( $response_json->entry->author ) ) {
-                            $author = reset( $response_json->entry->author );
+		
+                       				$video_meta['description'] = $response_json->items[0]->snippet->description;
+						$video_meta['thumbnail'] = $video_image;
+						$video_meta['full_image'] = $video_image;
+						$video_meta['created_at'] = strtotime( $response_json->items[0]->snippet->publishedAt );
+                          if( isset( $response_json->entry->author) && 0 ) {	
+			    $author = reset( $response_json->entry->author );
                             $video_meta['author_name'] = $author->name->{'$t'};
                             $video_meta['author_url'] = "http://www.youtube.com/user/" . $author->name->{'$t'};
                         }
@@ -2447,6 +2464,7 @@ class SlideDeck {
         }
         
         // Clean the data for safe storage
+
         $data = slidedeck2_sanitize( $params );
         
         // What type of SlideDeck is this

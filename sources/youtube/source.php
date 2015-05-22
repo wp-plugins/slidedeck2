@@ -64,9 +64,37 @@ class SlideDeckSource_Youtube extends SlideDeck {
         $args = array(
             'sslverify' => false
         );
+	//changes
+        /* Get youtube api key which is passed as query parameter to get the response */
+        //$feed_url = "https://gdata.youtube.com/feeds/api/users/{$user_id}/playlists?alt=json&orderby=updated&max-results=50";
+        $last_used_youtube_api_key = get_option( $this->namespace . '_last_saved_youtube_api_key' );
         
-        $feed_url = "https://gdata.youtube.com/feeds/api/users/{$user_id}/playlists?alt=json&orderby=updated&max-results=50";
+        /* 
+         * Added by Ranjith
+         * Build the channel url to retrieve all channels id's asociated with the user 
+         */
         
+        $channel_url = 'https://www.googleapis.com/youtube/v3/channels?part=id&forUsername='.$user_id.'&key='.$last_used_youtube_api_key;
+        
+            
+        $response = wp_remote_get( $channel_url, $args );
+        
+        if( !is_wp_error( $response ) ) {
+			$response_json = json_decode( $response['body'] );
+			$channel_count = count($response_json->items);
+			
+		/* Loop through the channels to get the playlist */
+				
+	    for( $j=0;$j<$channel_count;$j++ ){
+			$channel_id = $response_json->items[$j]->id;    
+
+		/* 
+		 * Added by Ranjith
+		 * Build playlist url to retrieve all the playlists available in channel 
+		 */	
+        if( isset( $channel_id ) && !empty( $channel_id ) ){
+       		 $feed_url = 'https://www.googleapis.com/youtube/v3/playlists?part=snippet&channelId='.$channel_id.'&maxResults=50&key='.$last_used_youtube_api_key;
+        }
         if( isset( $user_id ) && !empty( $user_id ) ){
             // Create a cache key
             $cache_key = $slidedeck['id'] . $feed_url;
@@ -81,20 +109,24 @@ class SlideDeckSource_Youtube extends SlideDeck {
                 $response = wp_remote_get( $feed_url, $args );
                 if( !is_wp_error( $response ) ) {
                     $response_json = json_decode( $response['body'] );
-                    
+                    $item_count = count( $response_json->items) ;
+		    //changes
                     /**
                      * If this is empty, the user probably has no playlists
                      */
-                    if( isset( $response_json->feed->entry ) && !empty( $response_json->feed->entry )){
-                        foreach( (array) $response_json->feed->entry as $key => $entry ){
+                    //if( isset( $response_json->feed->entry ) && !empty( $response_json->feed->entry )){
+                      //  foreach( (array) $response_json->feed->entry as $key => $entry ){
                                 
-                            $playlist_feed = $entry->{'yt$playlistId'}->{'$t'}; 
-                            
-                            $playlists[ ] = array(
-                                'href' => 'https://gdata.youtube.com/feeds/api/playlists/' . $playlist_feed,
-                                'title' => $entry->title->{'$t'},
-                                'created' => $entry->published->{'$t'},
-                                'updated' => $entry->updated->{'$t'}
+                        //    $playlist_feed = $entry->{'yt$playlistId'}->{'$t'}; 
+                       if( $item_count ){
+					/* Build playlist items url to retreive items from playlist */     
+                            for( $i=0; $i< $item_count; $i++){
+					$playlist_id = $response_json->items[$i]->id;
+					$playlists[] = array(
+							'href' => 'https://www.googleapis.com/youtube/v3/playlistItems?playlistId='.$playlist_id,
+							'title' => $response_json->items[$i]->snippet->title,
+							'created' => $response_json->items[$i]->snippet->publishedAt,
+							'updated' => $response_json->items[$i]->snippet->publishedAt
                             );
                         }
                         
@@ -104,7 +136,8 @@ class SlideDeckSource_Youtube extends SlideDeck {
                 }
             }
         }
-
+}	
+	}
         // YouTube User playlists Call
         $playlists_select = array( 
             'recent' => __( 'Recent Uploads', $this->namespace )
@@ -141,25 +174,57 @@ class SlideDeckSource_Youtube extends SlideDeck {
         );
         $slidedeck_id = $slidedeck['id'];
         
+	$last_used_youtube_api_key = get_option( $this->namespace . '_last_saved_youtube_api_key' );
+	
         if( isset( $slidedeck['options']['youtube_playlist'] ) && !empty( $slidedeck['options']['youtube_playlist'] ) ){
             switch( $slidedeck['options']['search_or_user'] ){
                 case 'user':
                     switch( $slidedeck['options']['youtube_playlist'] ){
                         case 'recent':
                             // Feed of the user's recent Videos
-                            $feed_url = 'https://gdata.youtube.com/feeds/api/users/' . $slidedeck['options']['youtube_username'] . '/uploads?alt=json&max-results=' . $slidedeck['options']['total_slides'];
+			    //changes
+                            //$feed_url = 'https://gdata.youtube.com/feeds/api/users/' . $slidedeck['options']['youtube_username'] . '/uploads?alt=json&max-results=' . $slidedeck['options']['total_slides'];
+			    $feed_url = 'https://www.googleapis.com/youtube/v3/playlists?part=snippet&id='.$slidedeck['options']['youtube_username'].'&key='.$last_used_youtube_api_key;
                         break;
                         default:
                             // Feed of the Playlist's Videos
-                            $feed_url = $slidedeck['options']['youtube_playlist'] . '?alt=json&max-results=' . $slidedeck['options']['total_slides'];
+			    //changes
+                            //$feed_url = $slidedeck['options']['youtube_playlist'] . '?alt=json&max-results=' . $slidedeck['options']['total_slides'];
+			    $feed_url = $slidedeck['options']['youtube_playlist'] .'&part=snippet&maxResults='. $slidedeck['options']['total_slides'].'&key='.$last_used_youtube_api_key;
                         break;
                     }
                 break;
                 case 'search':
-                    $feed_url = 'https://gdata.youtube.com/feeds/api/videos?alt=json&max-results=' . $slidedeck['options']['total_slides'] . '&q=' . urlencode( $slidedeck['options']['youtube_q'] );
+			//changes
+                    //$feed_url = 'https://gdata.youtube.com/feeds/api/videos?alt=json&max-results=' . $slidedeck['options']['total_slides'] . '&q=' . urlencode( $slidedeck['options']['youtube_q'] );
+		    $feed_url = 'https://www.googleapis.com/youtube/v3/search/?q='.urlencode( $slidedeck['options']['youtube_q']).'&part=snippet&maxResults='.$slidedeck['options']['total_slides'].'&key='.$last_used_youtube_api_key;
                 break;
             }
-            
+            /* 
+             * Added by Ranjith
+             * Get video id's if videos from selected is username 
+             */
+             
+            if( $slidedeck['options']['search_or_user'] != 'search' ){
+            	$response = wp_remote_get( $feed_url, $args );
+            	$video_ids = array();
+            	if( !is_wp_error( $response ) ) {
+            		$response_json = json_decode( $response['body'] );
+            		$respons_item_count = count( $response_json->items );
+            		for( $i=0;$i<$respons_item_count;$i++ )
+            		{
+            			$video_ids[] = $response_json->items[$i]->snippet->resourceId->videoId;
+            		}	
+            		$video_ids_string = implode(',',$video_ids);
+            		
+            		/* 
+            		 * Added by Ranjith
+            		 * Build url to get all videos from playlist 
+            		 */
+            		
+            		$feed_url = 'https://www.googleapis.com/youtube/v3/videos?part=snippet&id='.$video_ids_string.'&maxResults=5&key='.$last_used_youtube_api_key;
+            	}
+            }
             // Create a cache key
             $cache_key = $slidedeck_id . $feed_url . $slidedeck['options']['cache_duration'] . $this->name;
 			
@@ -190,33 +255,26 @@ class SlideDeckSource_Youtube extends SlideDeck {
             
             $videos = array();
             $count = 0;
-            foreach( $response_json->feed->entry as $key => $entry ){
-                if( $count < $slidedeck['options']['total_slides'] ) {
-                    /**
-                     * Loop through the links and grab the
-                     * rel link.
+	    $response_count = count($response_json->items);
+            /*
+             * Changed by Ranjith to retreive values from response json 
                      */
-                    foreach( $entry->link as $link ) {
-                        if( $link->rel == 'alternate' ) {
-                            $url = $link->href;
+		 for($i=0;$i<$response_count;$i++){
+               	 if( $count < $slidedeck['options']['total_slides'] ) {
+                	if($slidedeck['options']['search_or_user']!='search'){
+                		$video_id = $response_json->items[$i]->id;
                         }
+			else{
+                		$video_id = $response_json->items[$i]->id->videoId;
                     }
-                    
-                    if( isset( $entry->author ) ) {
-                        $author = reset( $entry->author );
-                        $videos[$key]['author_username'] = $author->name->{'$t'};
-                        $videos[$key]['author_name'] = $author->name->{'$t'};
-                        $videos[$key]['author_url'] = "http://www.youtube.com/user/" . $author->name->{'$t'};
-                    }
-                    
-					// Set the created time even though we'll overload it shortly...
-                    $videos[$key]['created_at'] = strtotime( $entry->published->{'$t'} );
+                    $url = 'http://www.youtube.com/watch?v='.$video_id;
+                        $videos[$i]['author_username'] = $slidedeck['options']['youtube_username'];
+                        $videos[$i]['author_name'] = $slidedeck['options']['youtube_username'];
+                        $videos[$i]['author_url'] = "http://www.youtube.com/user/" . $slidedeck['options']['youtube_username'];
 					
-    				// Fetch the meta for this specific video
-                    $videos[$key]['video_meta'] = $this->get_video_meta_from_url( $url );
-					
-					// Overwrite the created_at date with potentially more accurate info.
-					$videos[$key]['created_at'] = $videos[$key]['video_meta']['created_at'];
+			$videos[$i]['created_at'] = strtotime( $response_json->items[$i]->snippet->publishedAt );
+                        $videos[$i]['video_meta'] = $this->get_video_meta_from_url( $url );		
+			$videos[$i]['created_at'] = $videos[$i]['video_meta']['created_at'];
                 }
                 
                 $count++;
@@ -367,3 +425,4 @@ class SlideDeckSource_Youtube extends SlideDeck {
         return $slides;
     }
 }
+?>
