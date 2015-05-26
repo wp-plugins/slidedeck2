@@ -49,7 +49,7 @@ class SlideDeckLitePlugin {
         'ecf3509'
     );
     
-    static $version = '2.3.11';
+    static $version = '2.3.12';
     static $license = 'LITE';
 
     // Generally, we are not installing addons. If we are, this gets set to true.
