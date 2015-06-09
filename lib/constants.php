@@ -51,7 +51,7 @@ define( 'SLIDEDECK2_CUSTOM_LENS_DIR',                WP_PLUGIN_DIR . "/slidedeck
 define( 'SLIDEDECK2_IS_AJAX_REQUEST',                ( !empty( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) == 'xmlhttprequest' ) );
 define( 'SLIDEDECK2_DEFAULT_LENS',                   'tool-kit' );
 define( 'SLIDEDECK2_UPDATE_SITE',                    'http://update.slidedeck.com' );
-define( 'SLIDEDECK2_RENEWAL_URL',                    'http://www.dtelepathy.com/dte-directbuy?item_id=11845' );
+define( 'SLIDEDECK2_RENEWAL_URL',                    'http://www.slidedeck.com/?post_type=product&add-to-cart=13323' );
 
 // SlideDeck anonymous user hash
 define( 'SLIDEDECK2_USER_HASH', sha1( ( isset( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : '' ) . $_SERVER['REMOTE_ADDR'] ) );

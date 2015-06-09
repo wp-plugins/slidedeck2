@@ -1,5 +1,5 @@
 === SlideDeck 2 Lite Responsive Content Slider ===
-Contributors: dtelepathy, kynatro, jamie3d, dtrenkner, oriontimbers, nielsfogt, bkenyon, barefootceo, dtlabs
+Contributors: WPEka Club, dtelepathy
 Donate link: http://www.slidedeck.com/
 Tags: Slider, dynamic, responsive, image gallery, dtelepathy, digital telepathy, digital-telepathy, iPad, jquery, media, photo, pictures, plugin, posts, Search Engine Optimized, seo, skinnable, slide, slide show, slider, slideshow, theme, touch support, video, widget, Flickr, Instagram, 500px, RSS, Pinterest, Google+, YouTube, Vimeo, Dailymotion, Picasa, Dribbble, Facebook, NextGEN Gallery
 Requires at least: 3.3
@@ -75,6 +75,10 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 
 
 == Changelog ==
+
+= 2.3.12 =
+* Fixed issue of youtube compatibility with api version 3.
+
 = 2.3.11 =
 * Fixed Pinterest source issue. Content now is retrieved as expected.
 * misc. ui updates
@@ -125,6 +129,7 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 
 = 2.3.1 =
 * Fixing corrupt commit
+
 
 = 2.3 =
 * Removed Twitter Feed from Manage Page

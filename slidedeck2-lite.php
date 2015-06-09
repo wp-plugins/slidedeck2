@@ -13,7 +13,7 @@
  Plugin Name: SlideDeck 2 Lite
  Plugin URI: http://www.slidedeck.com/wordpress
  Description: Create SlideDecks on your WordPress blogging platform and insert them into templates and posts. Get started creating SlideDecks from the new SlideDeck menu in the left hand navigation.
- Version: 2.3.11
+Version: 2.3.12
  Author: digital-telepathy
  Author URI: http://www.dtelepathy.com
  License: GPL3
@@ -49,7 +49,7 @@ class SlideDeckLitePlugin {
         'ecf3509'
     );
     
-    static $version = '2.3.11';
+    static $version = '2.3.12';
     static $license = 'LITE';
 
     // Generally, we are not installing addons. If we are, this gets set to true.
@@ -184,6 +184,8 @@ class SlideDeckLitePlugin {
      * @uses SlideDeckLitePlugin::wp_register_styles()
      */
     function __construct( ) {
+	define('SLIDEDECK2_URL',plugin_dir_url(__FILE__ ));
+    	define('SLIDEDECK2_PATH',plugin_dir_path(__FILE__ ));
         SlideDeckLitePlugin::load_constants();
         
         $this->friendly_name = SlideDeckLitePlugin::$st_friendly_name;
@@ -840,6 +842,7 @@ class SlideDeckLitePlugin {
         update_option( $this->namespace . '_last_saved_instagram_access_token', slidedeck2_sanitize( $_POST['last_saved_instagram_access_token'] ) );
         // Update the Google+ API  Key
         update_option( $this->namespace . '_last_saved_gplus_api_key', slidedeck2_sanitize( $_POST['last_saved_gplus_api_key'] ) );
+	update_option( $this->namespace . '_last_saved_youtube_api_key', slidedeck2_sanitize( $_POST['last_saved_youtube_api_key'] ) );
 
         /**
          * Updating the options that can be serialized.
@@ -2002,6 +2005,7 @@ class SlideDeckLitePlugin {
             return;
         }
     
+
         if( !WP_Filesystem( $credentials ) ) {
             request_filesystem_credentials( $url, '', true ); // Failed to connect, Error and request again
             $data = ob_get_contents();
@@ -2810,6 +2814,7 @@ class SlideDeckLitePlugin {
         
         // Get the Google+ API  Key
         $last_saved_gplus_api_key = get_option( $this->namespace . '_last_saved_gplus_api_key' );
+	$last_saved_youtube_api_key = get_option( $this->namespace . '_last_saved_youtube_api_key' );
 
         include (SLIDEDECK2_DIRNAME . '/views/admin-options.php');
     }
