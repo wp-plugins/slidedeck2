@@ -81,9 +81,11 @@ along with SlideDeck.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="right">
                     <div class="right-inner">
                         <?php if( !SlideDeckLitePlugin::get_partner_data() ){ ?>
-                        <div id="manage-iab" class="iab">
-                            <iframe height="100%" frameborder="0" scrolling="no" width="100%" allowtransparency="true" src="<?php echo $sidebar_ad_url; ?>"></iframe>
-                        </div>
+                       <!-- <div id="manage-iab" class="iab">
+                         <iframe height="100%" frameborder="0" scrolling="no" width="100%" allowtransparency="true" src="<?php echo $sidebar_ad_url; ?>"></iframe>
+                        </div>-->
+			<div id="manage-pro-img"><a target="_blank" href="http://www.slidedeck.com/pricing"><img src="https://s3.amazonaws.com/wpeka-slidedeck-pro/slidedeck-tips-and-tricks.png" border="0"/></a></div><br/>
+			
                         <?php } ?>
                         
                         <?php do_action( "{$namespace}_manage_sidebar_bottom" ); ?>

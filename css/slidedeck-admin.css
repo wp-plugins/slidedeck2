@@ -4315,6 +4315,21 @@ div.upgrade-button-cta.renewal-state-nearing-expiration .upgrade-button .button-
     padding: 0 25px;
     height: 38px;
 }
+#manage-pro-img
+{
+    border-bottom: solid 1px #dedede !important;
+    padding-bottom: 20px;
+}
+
+a > img 
+{
+    float: left;
+    border: none;
+    padding-right: 5px;
+    padding-bottom: 20px;
+    width: 184px;
+    height: 180px;
+}
 /* End of Additional Sources Upsell */
 
 
