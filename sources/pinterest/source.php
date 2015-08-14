@@ -47,7 +47,7 @@ class SlideDeckSource_Pinterest extends SlideDeck {
                 if( isset( $matches['2'] ) && !empty( $matches['2'] ) ) {
                     // Try board slug
                     $board_name = $matches['2'];
-                    $feed_url = 'https://pinterest.com/' . $username . '/' . $board_name . '/rss';
+                    $feed_url = 'https://pinterest.com/' . $username . '/' . $board_name . '.rss';
                 }
             }
         }

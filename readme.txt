@@ -75,6 +75,9 @@ Where to begin! The most important improvement is that SlideDeck 2 is designed t
 
 
 == Changelog ==
+= 2.3.14=
+* Pinterest board issue fixed. Content now is retrieved as expected.
+
 = 2.3.13=
 * Updated version number to keep parity with core
 
